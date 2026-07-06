@@ -139,6 +139,11 @@ def main():
                              f"{sched.get_last_lr()[0]:.2e}", int(tps)])
             log_f.flush()
 
+    if hasattr(task, "sample_text"):
+        model.eval()
+        with open(os.path.join(run_dir, "samples.txt"), "w") as f:
+            f.write(task.sample_text(model, device=device))
+
     summary = {"run": run_name, "config": args.config, "device": device,
                "params": n_params, "steps": steps, "final": ev, "best": best,
                "eranks": {k: round(v, 2) for k, v in eranks.items()},

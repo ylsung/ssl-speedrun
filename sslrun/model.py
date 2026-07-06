@@ -129,3 +129,17 @@ class GPT(nn.Module):
             nxt = logits[:, -1].argmax(dim=-1, keepdim=True)
             idx = torch.cat([idx, nxt], dim=1)
         return idx
+
+    @torch.no_grad()
+    def generate(self, idx, max_new_tokens: int, temperature: float = 0.8,
+                 top_k: int = 50):
+        for _ in range(max_new_tokens):
+            logits, _ = self(idx[:, -self.cfg.max_seq_len:])
+            lg = logits[:, -1] / max(temperature, 1e-6)
+            if top_k:
+                kth = lg.topk(min(top_k, lg.size(-1)), dim=-1).values[:, -1:]
+                lg = lg.masked_fill(lg < kth, float("-inf"))
+            probs = torch.softmax(lg, dim=-1)
+            nxt = torch.multinomial(probs, 1)
+            idx = torch.cat([idx, nxt], dim=1)
+        return idx

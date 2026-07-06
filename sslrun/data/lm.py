@@ -69,3 +69,24 @@ class LMTask:
             n += toks.numel()
         vl = tot / n
         return {"val_loss": vl, "val_ppl": float(np.exp(vl))}
+
+    @torch.no_grad()
+    def sample_text(self, model, device="cpu", n_samples: int = 3,
+                    max_new: int = 256):
+        """Sample stories from <|endoftext|> (needs tokenizer.json + tokenizers)."""
+        try:
+            from tokenizers import Tokenizer
+            tok = Tokenizer.from_file(
+                os.path.join(self.cfg.data_dir, "tokenizer.json"))
+        except Exception as e:
+            return f"(no samples: {e})"
+        with open(os.path.join(self.cfg.data_dir, "meta.json")) as f:
+            eot = json.load(f)["eot_id"]
+        idx = torch.full((n_samples, 1), eot, dtype=torch.long, device=device)
+        out = model.generate(idx, max_new)
+        texts = []
+        for row in out[:, 1:].tolist():
+            if eot in row:
+                row = row[:row.index(eot)]
+            texts.append(tok.decode(row))
+        return "\n\n=====\n\n".join(texts)
