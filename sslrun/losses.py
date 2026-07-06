@@ -117,7 +117,57 @@ class JepaPooledLoss(nn.Module):
         return self.weight * loss
 
 
-LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss)}
+class JepaPerTokenLoss(nn.Module):
+    """Position-indexed JEPA arm: from hidden at src_layer, position t, predict
+    the (stop-grad) tgt_layer representation of each of tokens t+1..t+M.
+    M=1 is the NITP repro; M>1 is the short-horizon rung of the pyramid.
+
+    Predictor: shared expansion + per-offset output heads (asymmetry vs target,
+    parameters O(M) in the cheap output layer only).
+    """
+    name = "jepa_pertoken"
+
+    def __init__(self, d_model: int, m: int = 1, weight: float = 1.0,
+                 src_layer: int = -1, tgt_layer: int = 1,
+                 answer_only: bool = False, **kw):
+        super().__init__()
+        assert m >= 1
+        self.m = m
+        self.weight = weight
+        self.src_layer = src_layer
+        self.tgt_layer = tgt_layer
+        self.answer_only = answer_only
+        self.shared = nn.Sequential(
+            nn.Linear(d_model, 2 * d_model, bias=False), nn.GELU())
+        self.heads = nn.ModuleList(
+            nn.Linear(2 * d_model, d_model, bias=False) for _ in range(m))
+
+    def forward(self, logits, hiddens, batch):
+        h_src = hiddens[self.src_layer]
+        T = h_src.size(1)
+        tgt = hiddens[self.tgt_layer].detach().float()
+        vmask = batch["target_mask"] if self.answer_only else batch["valid_mask"]
+
+        z = self.shared(h_src)
+        total, n_terms = h_src.new_zeros(()), 0
+        for i, head in enumerate(self.heads):
+            off = i + 1  # predict z_{t+off} from position t
+            if T <= off:
+                continue
+            m = vmask[:, :-off] & vmask[:, off:]  # src and target both real
+            if m.sum() == 0:
+                continue
+            pred = head(z[:, :-off])
+            cos = F.cosine_similarity(pred.float(), tgt[:, off:], dim=-1)
+            total = total + (1.0 - cos)[m].mean()
+            n_terms += 1
+        if n_terms == 0:
+            return h_src.new_zeros(())
+        return self.weight * total / n_terms
+
+
+LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss,
+                                     JepaPerTokenLoss)}
 
 
 class LossStack(nn.Module):

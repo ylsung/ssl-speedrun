@@ -15,6 +15,7 @@ import yaml
 
 from .model import GPT, ModelConfig
 from .losses import LossStack
+from .metrics import layer_effective_ranks
 from .data.stargraph import StarGraphConfig, StarGraphTask
 
 
@@ -38,6 +39,7 @@ def main():
     ap.add_argument("config")
     ap.add_argument("--device", default="auto")
     ap.add_argument("--steps", type=int, default=None, help="override train.steps")
+    ap.add_argument("--seed", type=int, default=None, help="override train.seed")
     ap.add_argument("--run_name", default=None)
     args = ap.parse_args()
 
@@ -46,6 +48,8 @@ def main():
     tr = cfg["train"]
     if args.steps is not None:
         tr["steps"] = args.steps
+    if args.seed is not None:
+        tr["seed"] = args.seed
     device = pick_device(args.device)
     seed = tr.get("seed", 0)
     torch.manual_seed(seed)
@@ -78,7 +82,7 @@ def main():
     log_f = open(log_path, "w", newline="")
     logger = csv.writer(log_f)
     logger.writerow(["step", "loss", "loss_parts", "path_acc", "decision_acc",
-                     "lr", "tok_per_s"])
+                     "erank_last", "lr", "tok_per_s"])
 
     print(f"[{run_name}] device={device} params={n_params/1e6:.2f}M "
           f"vocab={vocab_size} seq_len={seq_len}")
@@ -102,20 +106,25 @@ def main():
             model.eval()
             ev = task.evaluate(model, np.random.default_rng(eval_rng_seed),
                                device=device)
+            eranks = layer_effective_ranks(
+                model, task.batch(256, np.random.default_rng(eval_rng_seed), device))
             model.train()
             best = {k: max(best[k], ev[k]) for k in best}
             tps = toks_seen / (time.time() - t0)
+            lv = float(loss.detach())
+            er_last = eranks[f"erank_{len(model.blocks)}"]
             parts_s = " ".join(f"{k}={v:.3f}" for k, v in parts.items())
-            print(f"step {step:6d} loss {float(loss):.4f} [{parts_s}] "
+            print(f"step {step:6d} loss {lv:.4f} [{parts_s}] "
                   f"path_acc {ev['path_acc']:.3f} dec_acc {ev['decision_acc']:.3f} "
-                  f"({tps/1e3:.1f}k tok/s)")
-            logger.writerow([step, f"{float(loss):.5f}", json.dumps(parts),
-                             ev["path_acc"], ev["decision_acc"],
+                  f"erank {er_last:.1f} ({tps/1e3:.1f}k tok/s)")
+            logger.writerow([step, f"{lv:.5f}", json.dumps(parts),
+                             ev["path_acc"], ev["decision_acc"], f"{er_last:.2f}",
                              f"{sched.get_last_lr()[0]:.2e}", int(tps)])
             log_f.flush()
 
     summary = {"run": run_name, "config": args.config, "device": device,
                "params": n_params, "steps": steps, "final": ev, "best": best,
+               "eranks": {k: round(v, 2) for k, v in eranks.items()},
                "wall_s": round(time.time() - t0, 1)}
     with open(os.path.join(run_dir, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2)
