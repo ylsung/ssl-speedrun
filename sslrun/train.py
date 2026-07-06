@@ -17,6 +17,10 @@ from .model import GPT, ModelConfig
 from .losses import LossStack
 from .metrics import layer_effective_ranks
 from .data.stargraph import StarGraphConfig, StarGraphTask
+from .data.maze import MazeConfig, MazeTask
+
+TASKS = {"stargraph": (StarGraphConfig, StarGraphTask),
+         "maze": (MazeConfig, MazeTask)}
 
 
 def pick_device(arg):
@@ -28,10 +32,11 @@ def pick_device(arg):
 def build_task(cfg):
     tcfg = cfg["task"]
     kind = tcfg["kind"]
-    if kind == "stargraph":
-        c = StarGraphConfig(**{k: v for k, v in tcfg.items() if k != "kind"})
-        return StarGraphTask(c), c.vocab_size, c.seq_len
-    raise ValueError(f"unknown task {kind}")
+    if kind not in TASKS:
+        raise ValueError(f"unknown task {kind}")
+    cfg_cls, task_cls = TASKS[kind]
+    c = cfg_cls(**{k: v for k, v in tcfg.items() if k != "kind"})
+    return task_cls(c), c.vocab_size, c.seq_len
 
 
 def main():
