@@ -1,0 +1,13 @@
+# NTP + multi-token prediction (discrete control arm).
+task: {kind: lm, data_dir: data/tinystories, seq_len: 512}
+model: {n_layer: 8, n_head: 8, d_model: 512}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: mtp, k: 4, weight: 0.5}
+train:
+  steps: 20000
+  batch_size: 64
+  lr: 6.0e-4
+  warmup: 500
+  eval_every: 500
+  seed: 0

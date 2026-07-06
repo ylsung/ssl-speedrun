@@ -19,6 +19,7 @@ for p in sorted(glob.glob(f"{root}/*/summary.json")):
 if not by_method:
     sys.exit(f"no summaries under {root}/")
 
+
 def last_erank(r):
     e = r.get("eranks") or {}
     if not e:
@@ -26,14 +27,18 @@ def last_erank(r):
     return e[max(e, key=lambda k: int(k.rsplit("_", 1)[1]))]
 
 
-print(f"{'method':28s} {'n':>2s} {'path_acc':>15s} {'decision_acc':>15s} "
-      f"{'erank_last':>12s} {'wall_s':>7s}")
+metrics = sorted({k for runs in by_method.values()
+                  for r in runs for k in r["final"]})
+hdr = f"{'method':28s} {'n':>2s}"
+for k in metrics:
+    hdr += f" {k:>16s}"
+hdr += f" {'erank_last':>11s} {'wall_s':>7s}"
+print(hdr)
 for method, runs in sorted(by_method.items()):
-    pa = np.array([r["final"]["path_acc"] for r in runs])
-    da = np.array([r["final"]["decision_acc"] for r in runs])
+    row = f"{method:28s} {len(runs):2d}"
+    for k in metrics:
+        v = np.array([r["final"][k] for r in runs if k in r["final"]], dtype=float)
+        row += f"  {v.mean():7.3f} ±{v.std():.3f}" if len(v) else " " * 17
     er = np.array([last_erank(r) for r in runs], dtype=float)
-    wall = np.mean([r["wall_s"] for r in runs])
-    print(f"{method:28s} {len(runs):2d} "
-          f"{pa.mean():7.3f} ±{pa.std():.3f} "
-          f"{da.mean():7.3f} ±{da.std():.3f} "
-          f"{np.nanmean(er):8.1f} {wall:7.0f}")
+    row += f" {np.nanmean(er):11.1f} {np.mean([r['wall_s'] for r in runs]):7.0f}"
+    print(row)
