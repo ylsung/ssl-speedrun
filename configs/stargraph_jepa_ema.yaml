@@ -1,0 +1,16 @@
+# Pooled-window JEPA with an EMA teacher (deep target layer) instead of
+# same-pass shallow stop-grad. Upgrade arm: run only where the free version
+# shows signal (proposal §4).
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: jepa_pooled, k: 5, weight: 0.5, src_layer: -1, tgt_layer: 4, target: ema, answer_only: false}
+train:
+  steps: 4000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 200
+  ema_decay: 0.999
+  seed: 0

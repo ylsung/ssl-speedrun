@@ -64,10 +64,12 @@ def main():
     task, vocab_size, seq_len = build_task(cfg)
     mcfg = ModelConfig(vocab_size=vocab_size, max_seq_len=seq_len, **cfg["model"])
     model = GPT(mcfg).to(device)
-    stack = LossStack(model, cfg["losses"]).to(device)
-    n_params = sum(p.numel() for p in stack.parameters())
+    stack = LossStack(model, cfg["losses"],
+                      ema_decay=tr.get("ema_decay", 0.999)).to(device)
+    train_params = [p for p in stack.parameters() if p.requires_grad]
+    n_params = sum(p.numel() for p in train_params)
 
-    opt = torch.optim.AdamW(stack.parameters(), lr=tr["lr"],
+    opt = torch.optim.AdamW(train_params, lr=tr["lr"],
                             weight_decay=tr.get("weight_decay", 0.01),
                             betas=(0.9, 0.95))
     steps, warmup = tr["steps"], tr.get("warmup", 100)
@@ -102,9 +104,10 @@ def main():
         loss, parts = stack(batch)
         opt.zero_grad(set_to_none=True)
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(stack.parameters(), 1.0)
+        torch.nn.utils.clip_grad_norm_(train_params, 1.0)
         opt.step()
         sched.step()
+        stack.update_ema()
         toks_seen += bs * seq_len
 
         if step % eval_every == 0 or step == steps:

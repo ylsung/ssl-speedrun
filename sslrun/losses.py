@@ -1,6 +1,11 @@
 """Loss plugins. Every method in the benchmark = a list of these in a YAML config.
 
-Contract: plugin(logits, hiddens, batch) -> scalar loss (already weighted).
+Contract: plugin(logits, hiddens, batch, tgt_hiddens) -> scalar loss (already
+weighted). tgt_hiddens are the hidden states latent targets are drawn from:
+the same-pass hiddens by default, or an EMA teacher's if the plugin sets
+target: ema (LossStack then maintains the EMA copy; trainer calls update_ema()
+after each optimizer step).
+
 batch dict: tokens (B,T) long, target_mask (B,T) bool - True at positions whose
 *token is a supervised target* (answer region incl. EOS), pad excluded.
 
@@ -8,6 +13,8 @@ Conventions:
 - NTP: logits at t-1 predict token t where target_mask[t].
 - Plugins may own parameters (heads); LossStack registers them for the optimizer.
 """
+import copy
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,7 +27,7 @@ class NTPLoss(nn.Module):
         super().__init__()
         self.weight = weight
 
-    def forward(self, logits, hiddens, batch):
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         tokens, mask = batch["tokens"], batch["target_mask"]
         # predict token t from position t-1
         lg = logits[:, :-1]
@@ -47,7 +54,7 @@ class MTPLoss(nn.Module):
         self.heads = nn.ModuleList(
             nn.Linear(d_model, vocab_size, bias=False) for _ in range(k - 1))
 
-    def forward(self, logits, hiddens, batch):
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         tokens, mask = batch["tokens"], batch["target_mask"]
         h = hiddens[self.src_layer]
         total, n_terms = h.new_zeros(()), 0
@@ -78,26 +85,28 @@ class JepaPooledLoss(nn.Module):
 
     def __init__(self, d_model: int, k: int = 8, weight: float = 1.0,
                  src_layer: int = -1, tgt_layer: int = 1,
-                 answer_only: bool = False, **kw):
+                 answer_only: bool = False, target: str = "same", **kw):
         super().__init__()
         self.k = k
         self.weight = weight
         self.src_layer = src_layer
         self.tgt_layer = tgt_layer
         self.answer_only = answer_only
+        self.target = target
         self.predictor = nn.Sequential(
             nn.Linear(d_model, 2 * d_model, bias=False),
             nn.GELU(),
             nn.Linear(2 * d_model, d_model, bias=False),
         )
 
-    def forward(self, logits, hiddens, batch):
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         k = self.k
         h_src = hiddens[self.src_layer]
         B, T, D = h_src.shape
         if T <= k:
             return h_src.new_zeros(())
-        tgt = hiddens[self.tgt_layer].detach()
+        src_of_tgt = tgt_hiddens if self.target == "ema" else hiddens
+        tgt = src_of_tgt[self.tgt_layer].detach()
 
         # mean over window t+1..t+k via cumsum: pooled[t] = (cs[t+k]-cs[t])/k
         cs = tgt.float().cumsum(dim=1)
@@ -129,7 +138,7 @@ class JepaPerTokenLoss(nn.Module):
 
     def __init__(self, d_model: int, m: int = 1, weight: float = 1.0,
                  src_layer: int = -1, tgt_layer: int = 1,
-                 answer_only: bool = False, **kw):
+                 answer_only: bool = False, target: str = "same", **kw):
         super().__init__()
         assert m >= 1
         self.m = m
@@ -137,15 +146,17 @@ class JepaPerTokenLoss(nn.Module):
         self.src_layer = src_layer
         self.tgt_layer = tgt_layer
         self.answer_only = answer_only
+        self.target = target
         self.shared = nn.Sequential(
             nn.Linear(d_model, 2 * d_model, bias=False), nn.GELU())
         self.heads = nn.ModuleList(
             nn.Linear(2 * d_model, d_model, bias=False) for _ in range(m))
 
-    def forward(self, logits, hiddens, batch):
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         h_src = hiddens[self.src_layer]
         T = h_src.size(1)
-        tgt = hiddens[self.tgt_layer].detach().float()
+        src_of_tgt = tgt_hiddens if self.target == "ema" else hiddens
+        tgt = src_of_tgt[self.tgt_layer].detach().float()
         vmask = batch["target_mask"] if self.answer_only else batch["valid_mask"]
 
         z = self.shared(h_src)
@@ -171,11 +182,17 @@ LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss,
 
 
 class LossStack(nn.Module):
-    """Owns the model + all loss plugins so a single optimizer covers everything."""
+    """Owns the model + all loss plugins so a single optimizer covers everything.
 
-    def __init__(self, model, loss_cfgs: list):
+    If any plugin sets target: ema, an EMA copy of the model provides target
+    hiddens (one extra no-grad forward per step); trainer must call
+    update_ema() after each optimizer step.
+    """
+
+    def __init__(self, model, loss_cfgs: list, ema_decay: float = 0.999):
         super().__init__()
         self.model = model
+        self.ema_decay = ema_decay
         plugins = []
         for cfg in loss_cfgs:
             cfg = dict(cfg)
@@ -184,13 +201,30 @@ class LossStack(nn.Module):
             plugins.append(cls(d_model=model.cfg.d_model,
                                vocab_size=model.cfg.vocab_size, **cfg))
         self.plugins = nn.ModuleList(plugins)
+        self.ema_model = None
+        if any(getattr(p, "target", "same") == "ema" for p in plugins):
+            self.ema_model = copy.deepcopy(model).requires_grad_(False)
+
+    @torch.no_grad()
+    def update_ema(self):
+        if self.ema_model is None:
+            return
+        d = self.ema_decay
+        for pe, pm in zip(self.ema_model.parameters(), self.model.parameters()):
+            pe.lerp_(pm, 1.0 - d)
+        for be, bm in zip(self.ema_model.buffers(), self.model.buffers()):
+            be.copy_(bm)
 
     def forward(self, batch):
         logits, hiddens = self.model(batch["tokens"])
+        tgt_hiddens = None
+        if self.ema_model is not None:
+            with torch.no_grad():
+                _, tgt_hiddens = self.ema_model(batch["tokens"])
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:
-            l = p(logits, hiddens, batch)
+            l = p(logits, hiddens, batch, tgt_hiddens)
             parts[p.name] = float(l.detach())
             total = total + l
         return total, parts
