@@ -1,0 +1,25 @@
+{
+  "run": "maze2_pyramid_hi_seed2",
+  "config": "configs/maze2_pyramid_hi.yaml",
+  "device": "cuda",
+  "params": 5650176,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.60546875,
+    "decision_acc": 0.7114624505928854
+  },
+  "best": {
+    "path_acc": 0.63671875,
+    "decision_acc": 0.7351778656126482
+  },
+  "eranks": {
+    "erank_0": 30.79,
+    "erank_1": 28.57,
+    "erank_2": 33.15,
+    "erank_3": 36.65,
+    "erank_4": 40.11,
+    "erank_5": 47.41,
+    "erank_6": 56.45
+  },
+  "wall_s": 533.4
+}

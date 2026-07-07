@@ -1,0 +1,27 @@
+{
+  "run": "tinystories_pertoken_seed0",
+  "config": "configs/tinystories_pertoken.yaml",
+  "device": "cuda",
+  "params": 29893120,
+  "steps": 20000,
+  "final": {
+    "val_loss": 1.302452102303505,
+    "val_ppl": 3.678305198836352
+  },
+  "best": {
+    "val_loss": 1.302452102303505,
+    "val_ppl": 3.678305198836352
+  },
+  "eranks": {
+    "erank_0": 160.14,
+    "erank_1": 163.67,
+    "erank_2": 227.8,
+    "erank_3": 256.76,
+    "erank_4": 290.07,
+    "erank_5": 302.54,
+    "erank_6": 291.24,
+    "erank_7": 300.79,
+    "erank_8": 193.3
+  },
+  "wall_s": 3870.7
+}

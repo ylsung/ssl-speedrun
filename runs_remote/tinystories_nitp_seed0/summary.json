@@ -1,0 +1,27 @@
+{
+  "run": "tinystories_nitp_seed0",
+  "config": "configs/tinystories_nitp.yaml",
+  "device": "cuda",
+  "params": 28320256,
+  "steps": 20000,
+  "final": {
+    "val_loss": 1.3062904179096222,
+    "val_ppl": 3.692450825407826
+  },
+  "best": {
+    "val_loss": 1.3062904179096222,
+    "val_ppl": 3.692450825407826
+  },
+  "eranks": {
+    "erank_0": 161.15,
+    "erank_1": 166.28,
+    "erank_2": 227.8,
+    "erank_3": 262.7,
+    "erank_4": 287.26,
+    "erank_5": 287.93,
+    "erank_6": 290.14,
+    "erank_7": 300.74,
+    "erank_8": 190.38
+  },
+  "wall_s": 3631.5
+}

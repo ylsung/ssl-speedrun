@@ -75,9 +75,10 @@ class LMTask:
                     max_new: int = 256):
         """Sample stories from <|endoftext|> (needs tokenizer.json + tokenizers)."""
         try:
-            from tokenizers import Tokenizer
+            from tokenizers import Tokenizer, decoders
             tok = Tokenizer.from_file(
                 os.path.join(self.cfg.data_dir, "tokenizer.json"))
+            tok.decoder = decoders.ByteLevel()
         except Exception as e:
             return f"(no samples: {e})"
         with open(os.path.join(self.cfg.data_dir, "meta.json")) as f:

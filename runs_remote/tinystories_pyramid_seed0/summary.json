@@ -1,0 +1,27 @@
+{
+  "run": "tinystories_pyramid_seed0",
+  "config": "configs/tinystories_pyramid.yaml",
+  "device": "cuda",
+  "params": 30941696,
+  "steps": 20000,
+  "final": {
+    "val_loss": 1.3055803179740906,
+    "val_ppl": 3.689829747038679
+  },
+  "best": {
+    "val_loss": 1.3055803179740906,
+    "val_ppl": 3.689829747038679
+  },
+  "eranks": {
+    "erank_0": 159.46,
+    "erank_1": 162.0,
+    "erank_2": 223.21,
+    "erank_3": 252.48,
+    "erank_4": 289.79,
+    "erank_5": 303.9,
+    "erank_6": 292.91,
+    "erank_7": 301.3,
+    "erank_8": 196.6
+  },
+  "wall_s": 3991.0
+}

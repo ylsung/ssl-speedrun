@@ -1,0 +1,66 @@
+=== maze2_pyramid_hi_seed0 ===
+step   3800 loss 0.2445 [ntp=0.056 jepa_pertoken=0.137 jepa_pooled=0.051] path_acc 0.613 decision_acc 0.676 erank 55.4 (236.1k tok/s)
+step   4000 loss 0.2426 [ntp=0.053 jepa_pertoken=0.138 jepa_pooled=0.051] path_acc 0.621 decision_acc 0.696 erank 54.9 (228.4k tok/s)
+SUMMARY {"run": "maze2_pyramid_hi_seed0", "config": "configs/maze2_pyramid_hi.yaml", "device": "cuda", "params": 5650176, "steps": 4000, "final": {"path_acc": 0.62109375, "decision_acc": 0.6956521739130435}, "best": {"path_acc": 0.62890625, "decision_acc": 0.7114624505928854}, "eranks": {"erank_0": 29.55, "erank_1": 28.34, "erank_2": 30.27, "erank_3": 37.6, "erank_4": 42.16, "erank_5": 45.38, "erank_6": 54.92}, "wall_s": 329.6}
+=== maze2_pyramid_hi_seed1 ===
+step   3800 loss 0.2597 [ntp=0.057 jepa_pertoken=0.159 jepa_pooled=0.044] path_acc 0.676 decision_acc 0.741 erank 55.2 (141.3k tok/s)
+step   4000 loss 0.2466 [ntp=0.046 jepa_pertoken=0.158 jepa_pooled=0.043] path_acc 0.691 decision_acc 0.753 erank 54.0 (141.3k tok/s)
+SUMMARY {"run": "maze2_pyramid_hi_seed1", "config": "configs/maze2_pyramid_hi.yaml", "device": "cuda", "params": 5650176, "steps": 4000, "final": {"path_acc": 0.69140625, "decision_acc": 0.7529411764705882}, "best": {"path_acc": 0.69140625, "decision_acc": 0.7568627450980392}, "eranks": {"erank_0": 28.58, "erank_1": 18.81, "erank_2": 25.65, "erank_3": 28.91, "erank_4": 33.84, "erank_5": 42.33, "erank_6": 54.01}, "wall_s": 532.6}
+=== maze2_pyramid_hi_seed2 ===
+step   3800 loss 0.2400 [ntp=0.053 jepa_pertoken=0.139 jepa_pooled=0.048] path_acc 0.613 decision_acc 0.680 erank 56.0 (141.1k tok/s)
+step   4000 loss 0.2416 [ntp=0.055 jepa_pertoken=0.139 jepa_pooled=0.048] path_acc 0.605 decision_acc 0.711 erank 56.4 (141.1k tok/s)
+SUMMARY {"run": "maze2_pyramid_hi_seed2", "config": "configs/maze2_pyramid_hi.yaml", "device": "cuda", "params": 5650176, "steps": 4000, "final": {"path_acc": 0.60546875, "decision_acc": 0.7114624505928854}, "best": {"path_acc": 0.63671875, "decision_acc": 0.7351778656126482}, "eranks": {"erank_0": 30.79, "erank_1": 28.57, "erank_2": 33.15, "erank_3": 36.65, "erank_4": 40.11, "erank_5": 47.41, "erank_6": 56.45}, "wall_s": 533.4}
+=== maze2_jepa_ans_seed0 ===
+step   3800 loss 0.1116 [ntp=0.058 jepa_pooled=0.053] path_acc 0.613 decision_acc 0.692 erank 27.5 (200.7k tok/s)
+step   4000 loss 0.1163 [ntp=0.060 jepa_pooled=0.056] path_acc 0.602 decision_acc 0.680 erank 27.5 (200.2k tok/s)
+SUMMARY {"run": "maze2_jepa_ans_seed0", "config": "configs/maze2_jepa_ans.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.6015625, "decision_acc": 0.6798418972332015}, "best": {"path_acc": 0.65234375, "decision_acc": 0.7114624505928854}, "eranks": {"erank_0": 22.74, "erank_1": 11.32, "erank_2": 18.7, "erank_3": 23.54, "erank_4": 24.46, "erank_5": 26.74, "erank_6": 27.53}, "wall_s": 376.0}
+=== maze2_jepa_ans_seed1 ===
+step   3800 loss 0.1069 [ntp=0.056 jepa_pooled=0.050] path_acc 0.656 decision_acc 0.765 erank 21.1 (188.4k tok/s)
+step   4000 loss 0.1068 [ntp=0.054 jepa_pooled=0.053] path_acc 0.672 decision_acc 0.769 erank 20.1 (188.5k tok/s)
+SUMMARY {"run": "maze2_jepa_ans_seed1", "config": "configs/maze2_jepa_ans.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.671875, "decision_acc": 0.7686274509803922}, "best": {"path_acc": 0.671875, "decision_acc": 0.7764705882352941}, "eranks": {"erank_0": 22.73, "erank_1": 6.46, "erank_2": 10.32, "erank_3": 12.46, "erank_4": 14.56, "erank_5": 16.87, "erank_6": 20.09}, "wall_s": 399.2}
+=== maze2_jepa_ans_seed2 ===
+step   3800 loss 0.1190 [ntp=0.060 jepa_pooled=0.059] path_acc 0.672 decision_acc 0.755 erank 26.9 (196.2k tok/s)
+step   4000 loss 0.1160 [ntp=0.063 jepa_pooled=0.053] path_acc 0.660 decision_acc 0.759 erank 27.0 (195.8k tok/s)
+SUMMARY {"run": "maze2_jepa_ans_seed2", "config": "configs/maze2_jepa_ans.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.66015625, "decision_acc": 0.758893280632411}, "best": {"path_acc": 0.671875, "decision_acc": 0.766798418972332}, "eranks": {"erank_0": 22.83, "erank_1": 8.41, "erank_2": 14.81, "erank_3": 17.58, "erank_4": 20.94, "erank_5": 23.48, "erank_6": 27.03}, "wall_s": 384.3}
+=== maze2_jepa_ema_seed0 ===
+step   3800 loss 0.1249 [ntp=0.057 jepa_pooled=0.068] path_acc 0.621 decision_acc 0.704 erank 44.0 (170.9k tok/s)
+step   4000 loss 0.1211 [ntp=0.053 jepa_pooled=0.068] path_acc 0.652 decision_acc 0.727 erank 43.6 (171.4k tok/s)
+SUMMARY {"run": "maze2_jepa_ema_seed0", "config": "configs/maze2_jepa_ema.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.65234375, "decision_acc": 0.7272727272727273}, "best": {"path_acc": 0.65234375, "decision_acc": 0.7272727272727273}, "eranks": {"erank_0": 27.88, "erank_1": 27.7, "erank_2": 34.01, "erank_3": 38.61, "erank_4": 38.34, "erank_5": 40.99, "erank_6": 43.57}, "wall_s": 439.2}
+=== maze2_jepa_ema_seed1 ===
+step   3800 loss 0.1200 [ntp=0.056 jepa_pooled=0.064] path_acc 0.598 decision_acc 0.710 erank 57.5 (169.7k tok/s)
+step   4000 loss 0.1095 [ntp=0.047 jepa_pooled=0.062] path_acc 0.688 decision_acc 0.773 erank 55.7 (170.2k tok/s)
+SUMMARY {"run": "maze2_jepa_ema_seed1", "config": "configs/maze2_jepa_ema.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.6875, "decision_acc": 0.7725490196078432}, "best": {"path_acc": 0.6875, "decision_acc": 0.7725490196078432}, "eranks": {"erank_0": 29.45, "erank_1": 32.12, "erank_2": 39.33, "erank_3": 46.85, "erank_4": 51.88, "erank_5": 54.38, "erank_6": 55.68}, "wall_s": 442.1}
+=== maze2_jepa_ema_seed2 ===
+step   3800 loss 0.1171 [ntp=0.053 jepa_pooled=0.064] path_acc 0.617 decision_acc 0.696 erank 54.0 (164.5k tok/s)
+step   4000 loss 0.1198 [ntp=0.057 jepa_pooled=0.062] path_acc 0.648 decision_acc 0.731 erank 54.1 (164.5k tok/s)
+SUMMARY {"run": "maze2_jepa_ema_seed2", "config": "configs/maze2_jepa_ema.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.6484375, "decision_acc": 0.7312252964426877}, "best": {"path_acc": 0.65234375, "decision_acc": 0.7430830039525692}, "eranks": {"erank_0": 29.19, "erank_1": 30.11, "erank_2": 29.48, "erank_3": 40.17, "erank_4": 44.76, "erank_5": 53.61, "erank_6": 54.08}, "wall_s": 457.6}
+=== maze2_jepa_k16_seed0 ===
+step   3800 loss 0.0872 [ntp=0.066 jepa_pooled=0.021] path_acc 0.609 decision_acc 0.692 erank 31.5 (195.8k tok/s)
+step   4000 loss 0.0813 [ntp=0.060 jepa_pooled=0.022] path_acc 0.641 decision_acc 0.700 erank 31.4 (196.0k tok/s)
+SUMMARY {"run": "maze2_jepa_k16_seed0", "config": "configs/maze2_jepa_k16.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.640625, "decision_acc": 0.6996047430830039}, "best": {"path_acc": 0.640625, "decision_acc": 0.7035573122529645}, "eranks": {"erank_0": 25.18, "erank_1": 13.11, "erank_2": 20.26, "erank_3": 24.64, "erank_4": 28.03, "erank_5": 30.13, "erank_6": 31.42}, "wall_s": 383.9}
+=== maze2_jepa_k16_seed1 ===
+step   3800 loss 0.0940 [ntp=0.064 jepa_pooled=0.030] path_acc 0.586 decision_acc 0.678 erank 32.4 (194.8k tok/s)
+step   4000 loss 0.0919 [ntp=0.056 jepa_pooled=0.036] path_acc 0.605 decision_acc 0.698 erank 36.8 (194.6k tok/s)
+SUMMARY {"run": "maze2_jepa_k16_seed1", "config": "configs/maze2_jepa_k16.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.60546875, "decision_acc": 0.6980392156862745}, "best": {"path_acc": 0.60546875, "decision_acc": 0.6980392156862745}, "eranks": {"erank_0": 23.97, "erank_1": 17.49, "erank_2": 27.04, "erank_3": 32.59, "erank_4": 37.1, "erank_5": 39.04, "erank_6": 36.81}, "wall_s": 386.7}
+=== maze2_jepa_k16_seed2 ===
+step   3800 loss 0.0855 [ntp=0.055 jepa_pooled=0.031] path_acc 0.609 decision_acc 0.704 erank 40.9 (200.9k tok/s)
+step   4000 loss 0.0903 [ntp=0.059 jepa_pooled=0.031] path_acc 0.641 decision_acc 0.743 erank 40.0 (200.5k tok/s)
+SUMMARY {"run": "maze2_jepa_k16_seed2", "config": "configs/maze2_jepa_k16.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.640625, "decision_acc": 0.7430830039525692}, "best": {"path_acc": 0.64453125, "decision_acc": 0.7509881422924901}, "eranks": {"erank_0": 28.72, "erank_1": 21.59, "erank_2": 22.22, "erank_3": 32.24, "erank_4": 35.36, "erank_5": 39.78, "erank_6": 39.98}, "wall_s": 375.3}
+--- results ---
+method                        n     decision_acc         path_acc  erank_last  wall_s
+maze2_jepa_ans                3    0.736 ±0.040    0.645 ±0.031        24.9     386
+maze2_jepa_ema                3    0.744 ±0.020    0.663 ±0.018        51.1     446
+maze2_jepa_k16                3    0.714 ±0.021    0.629 ±0.017        36.1     382
+maze2_pyramid_hi              3    0.720 ±0.024    0.639 ±0.037        55.1     465
+maze_jepa                     3    0.712 ±0.009    0.639 ±0.013        39.7     233
+maze_mtp                      3    0.821 ±0.014    0.780 ±0.016        16.3     234
+maze_nitp                     3    0.709 ±0.025    0.637 ±0.025        43.7     218
+maze_ntp                      3    0.696 ±0.043    0.605 ±0.031        27.4     222
+maze_pertoken                 3    0.712 ±0.029    0.643 ±0.023        37.1     240
+maze_pyramid                  3    0.731 ±0.025    0.656 ±0.016        44.6     249
+stargraph_jepa                3    0.094 ±0.072    0.065 ±0.092        40.3     175
+stargraph_mtp                 3    0.185 ±0.040    0.185 ±0.040         3.4     182
+stargraph_nitp                3    0.049 ±0.013    0.000 ±0.000        24.1     170
+stargraph_ntp                 3    0.076 ±0.057    0.052 ±0.074        17.7     167
+stargraph_pertoken            3    0.134 ±0.079    0.125 ±0.091        17.6     193
+stargraph_pyramid             3    0.109 ±0.081    0.074 ±0.105        34.2     213
