@@ -1,0 +1,25 @@
+{
+  "run": "maze_jepa_seed0",
+  "config": "configs/maze_jepa.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.63671875,
+    "decision_acc": 0.6996047430830039
+  },
+  "best": {
+    "path_acc": 0.63671875,
+    "decision_acc": 0.6996047430830039
+  },
+  "eranks": {
+    "erank_0": 25.88,
+    "erank_1": 14.57,
+    "erank_2": 23.21,
+    "erank_3": 29.12,
+    "erank_4": 32.08,
+    "erank_5": 33.41,
+    "erank_6": 34.22
+  },
+  "wall_s": 235.1
+}

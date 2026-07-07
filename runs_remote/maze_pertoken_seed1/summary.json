@@ -1,0 +1,25 @@
+{
+  "run": "maze_pertoken_seed1",
+  "config": "configs/maze_pertoken.yaml",
+  "device": "cuda",
+  "params": 5388032,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6484375,
+    "decision_acc": 0.7294117647058823
+  },
+  "best": {
+    "path_acc": 0.6484375,
+    "decision_acc": 0.7372549019607844
+  },
+  "eranks": {
+    "erank_0": 23.98,
+    "erank_1": 15.04,
+    "erank_2": 19.98,
+    "erank_3": 23.39,
+    "erank_4": 27.04,
+    "erank_5": 29.93,
+    "erank_6": 34.64
+  },
+  "wall_s": 221.9
+}

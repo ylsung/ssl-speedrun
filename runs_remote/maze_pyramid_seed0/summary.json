@@ -1,0 +1,25 @@
+{
+  "run": "maze_pyramid_seed0",
+  "config": "configs/maze_pyramid.yaml",
+  "device": "cuda",
+  "params": 5650176,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.65625,
+    "decision_acc": 0.7035573122529645
+  },
+  "best": {
+    "path_acc": 0.65625,
+    "decision_acc": 0.7035573122529645
+  },
+  "eranks": {
+    "erank_0": 28.18,
+    "erank_1": 23.81,
+    "erank_2": 20.58,
+    "erank_3": 28.83,
+    "erank_4": 33.09,
+    "erank_5": 37.64,
+    "erank_6": 39.92
+  },
+  "wall_s": 257.5
+}

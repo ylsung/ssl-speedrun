@@ -1,0 +1,25 @@
+{
+  "run": "stargraph_nitp_seed0",
+  "config": "configs/stargraph_nitp.yaml",
+  "device": "cuda",
+  "params": 4998400,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.0,
+    "decision_acc": 0.0546875
+  },
+  "best": {
+    "path_acc": 0.0,
+    "decision_acc": 0.07421875
+  },
+  "eranks": {
+    "erank_0": 31.74,
+    "erank_1": 19.62,
+    "erank_2": 25.69,
+    "erank_3": 33.0,
+    "erank_4": 38.34,
+    "erank_5": 40.19,
+    "erank_6": 46.01
+  },
+  "wall_s": 173.4
+}

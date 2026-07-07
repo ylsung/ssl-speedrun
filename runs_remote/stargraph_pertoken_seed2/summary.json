@@ -1,0 +1,25 @@
+{
+  "run": "stargraph_pertoken_seed2",
+  "config": "configs/stargraph_pertoken.yaml",
+  "device": "cuda",
+  "params": 5391616,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.21484375,
+    "decision_acc": 0.21484375
+  },
+  "best": {
+    "path_acc": 0.22265625,
+    "decision_acc": 0.22265625
+  },
+  "eranks": {
+    "erank_0": 32.97,
+    "erank_1": 23.75,
+    "erank_2": 31.34,
+    "erank_3": 12.44,
+    "erank_4": 8.78,
+    "erank_5": 7.62,
+    "erank_6": 13.68
+  },
+  "wall_s": 194.3
+}

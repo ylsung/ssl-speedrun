@@ -1,0 +1,25 @@
+{
+  "run": "stargraph_jepa_seed1",
+  "config": "configs/stargraph_jepa.yaml",
+  "device": "cuda",
+  "params": 4998400,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.0,
+    "decision_acc": 0.046875
+  },
+  "best": {
+    "path_acc": 0.0,
+    "decision_acc": 0.078125
+  },
+  "eranks": {
+    "erank_0": 33.62,
+    "erank_1": 27.16,
+    "erank_2": 25.71,
+    "erank_3": 24.49,
+    "erank_4": 26.74,
+    "erank_5": 30.92,
+    "erank_6": 30.31
+  },
+  "wall_s": 178.9
+}

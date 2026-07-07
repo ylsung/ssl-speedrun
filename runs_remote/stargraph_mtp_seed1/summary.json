@@ -1,0 +1,25 @@
+{
+  "run": "stargraph_mtp_seed1",
+  "config": "configs/stargraph_mtp.yaml",
+  "device": "cuda",
+  "params": 4779264,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.17578125,
+    "decision_acc": 0.17578125
+  },
+  "best": {
+    "path_acc": 0.20703125,
+    "decision_acc": 0.20703125
+  },
+  "eranks": {
+    "erank_0": 38.87,
+    "erank_1": 32.02,
+    "erank_2": 39.36,
+    "erank_3": 35.64,
+    "erank_4": 6.28,
+    "erank_5": 3.67,
+    "erank_6": 4.87
+  },
+  "wall_s": 189.6
+}

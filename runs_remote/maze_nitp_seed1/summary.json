@@ -1,0 +1,25 @@
+{
+  "run": "maze_nitp_seed1",
+  "config": "configs/maze_nitp.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.671875,
+    "decision_acc": 0.7450980392156863
+  },
+  "best": {
+    "path_acc": 0.68359375,
+    "decision_acc": 0.7568627450980392
+  },
+  "eranks": {
+    "erank_0": 28.45,
+    "erank_1": 20.39,
+    "erank_2": 27.96,
+    "erank_3": 32.57,
+    "erank_4": 36.88,
+    "erank_5": 41.15,
+    "erank_6": 45.81
+  },
+  "wall_s": 202.9
+}

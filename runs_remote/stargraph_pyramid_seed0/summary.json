@@ -1,0 +1,25 @@
+{
+  "run": "stargraph_pyramid_seed0",
+  "config": "configs/stargraph_pyramid.yaml",
+  "device": "cuda",
+  "params": 5653760,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.0,
+    "decision_acc": 0.06640625
+  },
+  "best": {
+    "path_acc": 0.0,
+    "decision_acc": 0.078125
+  },
+  "eranks": {
+    "erank_0": 33.17,
+    "erank_1": 26.55,
+    "erank_2": 33.54,
+    "erank_3": 37.39,
+    "erank_4": 39.56,
+    "erank_5": 40.97,
+    "erank_6": 46.8
+  },
+  "wall_s": 208.4
+}

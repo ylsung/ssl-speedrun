@@ -1,0 +1,25 @@
+{
+  "run": "maze_mtp_seed0",
+  "config": "configs/maze_mtp.yaml",
+  "device": "cuda",
+  "params": 4764928,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.7578125,
+    "decision_acc": 0.8023715415019763
+  },
+  "best": {
+    "path_acc": 0.7578125,
+    "decision_acc": 0.8023715415019763
+  },
+  "eranks": {
+    "erank_0": 26.77,
+    "erank_1": 2.2,
+    "erank_2": 3.91,
+    "erank_3": 4.66,
+    "erank_4": 4.48,
+    "erank_5": 5.02,
+    "erank_6": 9.67
+  },
+  "wall_s": 236.0
+}
