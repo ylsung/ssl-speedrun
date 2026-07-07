@@ -4,3 +4,12 @@ step  19500 loss 1.2169 [ntp=1.217] val_loss 1.285 val_ppl 3.613 erank 183.6 (18
 step  20000 loss 1.2451 [ntp=1.245] val_loss 1.284 val_ppl 3.612 erank 181.1 (186.9k tok/s)
 SUMMARY {"run": "tinystories_ntp_seed1", "config": "configs/tinystories_ntp.yaml", "device": "cuda", "params": 27271680, "steps": 20000, "final": {"val_loss": 1.284390926361084, "val_ppl": 3.6124670285831186}, "best": {"val_loss": 1.284390926361084, "val_ppl": 3.6124670285831186}, "eranks": {"erank_0": 161.16, "erank_1": 155.9, "erank_2": 239.58, "erank_3": 225.78, "erank_4": 269.14, "erank_5": 283.51, "erank_6": 296.6, "erank_7": 290.37, "erank_8": 181.1}, "wall_s": 3508.3}
 === tinystories_ntp_seed2 ===
+step  19500 loss 1.3051 [ntp=1.305] val_loss 1.301 val_ppl 3.672 erank 184.3 (186.7k tok/s)
+step  20000 loss 1.2860 [ntp=1.286] val_loss 1.299 val_ppl 3.667 erank 181.2 (186.7k tok/s)
+SUMMARY {"run": "tinystories_ntp_seed2", "config": "configs/tinystories_ntp.yaml", "device": "cuda", "params": 27271680, "steps": 20000, "final": {"val_loss": 1.2993586510419846, "val_ppl": 3.6669441225066346}, "best": {"val_loss": 1.2993586510419846, "val_ppl": 3.6669441225066346}, "eranks": {"erank_0": 164.83, "erank_1": 154.81, "erank_2": 235.82, "erank_3": 247.42, "erank_4": 239.72, "erank_5": 264.84, "erank_6": 285.51, "erank_7": 284.37, "erank_8": 181.18}, "wall_s": 3511.9}
+=== tinystories_mtp_seed0 (done, skipping) ===
+=== tinystories_mtp_seed1 ===
+step  19500 loss 2.6999 [ntp=1.239 mtp=1.461] val_loss 1.300 val_ppl 3.669 erank 243.2 (156.4k tok/s)
+step  20000 loss 2.7561 [ntp=1.269 mtp=1.487] val_loss 1.300 val_ppl 3.669 erank 240.1 (156.4k tok/s)
+SUMMARY {"run": "tinystories_mtp_seed1", "config": "configs/tinystories_mtp.yaml", "device": "cuda", "params": 33563136, "steps": 20000, "final": {"val_loss": 1.2999059110879898, "val_ppl": 3.6689514437290702}, "best": {"val_loss": 1.2999059110879898, "val_ppl": 3.6689514437290702}, "eranks": {"erank_0": 127.91, "erank_1": 167.55, "erank_2": 260.48, "erank_3": 228.36, "erank_4": 258.22, "erank_5": 262.12, "erank_6": 268.9, "erank_7": 266.01, "erank_8": 240.05}, "wall_s": 4191.5}
+=== tinystories_mtp_seed2 ===

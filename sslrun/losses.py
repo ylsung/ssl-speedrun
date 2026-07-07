@@ -74,55 +74,160 @@ class MTPLoss(nn.Module):
         return self.weight * total / n_terms
 
 
-class JepaPooledLoss(nn.Module):
-    """Position-invariant JEPA arm: from hidden at src_layer, position t, predict
-    the mean-pooled (stop-grad) tgt_layer representation of tokens t+1..t+k.
+def _subsample(x, n=4096):
+    if x.size(0) <= n:
+        return x
+    idx = torch.randperm(x.size(0), device=x.device)[:n]
+    return x[idx]
 
-    Loss = 1 - cosine similarity, averaged over positions whose full window is
-    real (non-pad) tokens. Predictor head is a 2-layer MLP (asymmetry vs target).
+
+def _vicreg_reg(p):
+    """VICReg variance hinge + covariance penalty on predictions (N, D).
+    Coefficients follow the paper's 25/25/1 ratio relative to the alignment
+    term: variance at 1x, covariance at 0.04x."""
+    p = p - p.mean(dim=0, keepdim=True)
+    std = p.var(dim=0).clamp_min(1e-6).sqrt()
+    v = F.relu(1.0 - std).mean()
+    n, d = p.shape
+    cov = (p.T @ p) / max(n - 1, 1)
+    c = (cov.pow(2).sum() - cov.diagonal().pow(2).sum()) / d
+    return v + 0.04 * c
+
+
+_SIGREG_T = torch.linspace(0.5, 3.5, 7)
+
+
+def _sigreg_reg(p, n_dirs=32):
+    """SIGReg (LeJEPA): push predictions (N, D) toward an isotropic standard
+    Gaussian. Sketch with fresh random unit directions; match the empirical
+    characteristic function of each 1-D projection to N(0,1)'s (Epps-Pulley
+    style), on a fixed frequency grid weighted by the N(0,1) pdf."""
+    N, D = p.shape
+    u = torch.randn(D, n_dirs, device=p.device, dtype=p.dtype)
+    u = u / u.norm(dim=0, keepdim=True).clamp_min(1e-6)
+    proj = p @ u                                     # (N, n_dirs)
+    t = _SIGREG_T.to(p.device, p.dtype)              # (T,)
+    w = torch.exp(-0.5 * t * t)
+    w = w / w.sum()
+    tp = proj.unsqueeze(-1) * t                      # (N, n_dirs, T)
+    c_emp = torch.cos(tp).mean(dim=0)                # (n_dirs, T)
+    s_emp = torch.sin(tp).mean(dim=0)
+    c_gauss = torch.exp(-0.5 * t * t)
+    err = (c_emp - c_gauss).pow(2) + s_emp.pow(2)
+    return (err * w).sum(dim=-1).mean()
+
+
+class JepaPooledLoss(nn.Module):
+    """Position-invariant JEPA arm: from hidden at src_layer, position t
+    (optionally mean-pooled over the trailing src_pool tokens — chunk-to-chunk),
+    predict the mean-pooled (stop-grad) tgt_layer representation of tokens
+    t+1..t+k.
+
+    alignment objective ∈ {cosine, l2, infonce}; optional distribution
+    regularizer on predictor outputs ∈ {none, sigreg, vicreg} (LeJEPA-style).
+    Predictor head is a 2-layer MLP (asymmetry vs target).
     """
     name = "jepa_pooled"
 
     def __init__(self, d_model: int, k: int = 8, weight: float = 1.0,
                  src_layer: int = -1, tgt_layer: int = 1,
-                 answer_only: bool = False, target: str = "same", **kw):
+                 answer_only: bool = False, target: str = "same",
+                 objective: str = "cosine", reg: str = "none",
+                 reg_weight: float = 1.0, src_pool: int = 1,
+                 pool: str = "mean", temperature: float = 0.1, **kw):
         super().__init__()
+        assert objective in ("cosine", "l2", "infonce")
+        assert reg in ("none", "sigreg", "vicreg")
+        assert pool in ("mean", "attn")
         self.k = k
         self.weight = weight
         self.src_layer = src_layer
         self.tgt_layer = tgt_layer
         self.answer_only = answer_only
         self.target = target
+        self.objective = objective
+        self.reg = reg
+        self.reg_weight = reg_weight
+        self.src_pool = src_pool
+        self.pool = pool
+        self.temperature = temperature
         self.predictor = nn.Sequential(
             nn.Linear(d_model, 2 * d_model, bias=False),
             nn.GELU(),
             nn.Linear(2 * d_model, d_model, bias=False),
         )
+        # attention pooling: scorer trains through the loss; pooled *values*
+        # stay stop-grad. Shared by target window and (if src_pool>1) source.
+        self.scorer = nn.Linear(d_model, 1, bias=False) if pool == "attn" else None
+
+    def _attn_pool_windows(self, z, start, length):
+        """Attention-pool sliding windows of `length` starting at `start`.
+        z: (B, T, D) -> (B, T-start-length+1, D)."""
+        w = z[:, start:].unfold(1, length, 1)          # (B, n, D, length)
+        s = self.scorer(z[:, start:]).squeeze(-1)      # (B, T-start)
+        a = s.unfold(1, length, 1).softmax(dim=-1)     # (B, n, length)
+        return torch.einsum("bnl,bndl->bnd", a, w)
 
     def forward(self, logits, hiddens, batch, tgt_hiddens=None):
-        k = self.k
+        k, c = self.k, self.src_pool
         h_src = hiddens[self.src_layer]
         B, T, D = h_src.shape
-        if T <= k:
+        if T <= k + c - 1:
             return h_src.new_zeros(())
         src_of_tgt = tgt_hiddens if self.target == "ema" else hiddens
         tgt = src_of_tgt[self.tgt_layer].detach()
 
-        # mean over window t+1..t+k via cumsum: pooled[t] = (cs[t+k]-cs[t])/k
-        cs = tgt.float().cumsum(dim=1)
-        pooled = (cs[:, k:] - cs[:, :-k]) / k        # (B, T-k, D), aligned with t=0..T-k-1
-        pred = self.predictor(h_src[:, :T - k])       # (B, T-k, D)
+        # target: pool window t+1..t+k (mean via cumsum, or attention)
+        if self.pool == "attn":
+            pooled = self._attn_pool_windows(tgt.float(), 1, k)  # t = 0..T-k-1
+        else:
+            cs = tgt.float().cumsum(dim=1)
+            pooled = (cs[:, k:] - cs[:, :-k]) / k    # aligned with t = 0..T-k-1
+        # source: hidden at t, or pooled trailing window t-c+1..t
+        if c > 1:
+            if self.pool == "attn":
+                src = self._attn_pool_windows(h_src, 0, c).to(h_src.dtype)
+            else:
+                ss = h_src.float().cumsum(dim=1)
+                src = torch.cat([ss[:, c - 1:c], ss[:, c:] - ss[:, :-c]], dim=1) / c
+                src = src.to(h_src.dtype)            # (B, T-c+1, D), t = c-1..T-1
+        else:
+            src = h_src
+        # align source t with target window starting at t+1
+        src = src[:, :T - k] if c == 1 else src[:, :T - k - c + 1]
+        pooled = pooled if c == 1 else pooled[:, c - 1:]
+        pred = self.predictor(src)
 
-        # validity: every token in the window must be a real (non-pad) token;
-        # optionally restrict to windows fully inside the answer region.
+        # validity: full target window (and, for c>1, full source window) real
         vmask = batch["target_mask"] if self.answer_only else batch["valid_mask"]
         vm = vmask.float().cumsum(dim=1)
-        full = (vm[:, k:] - vm[:, :-k]) >= (k - 0.5)  # all k window positions valid
+        full = (vm[:, k:] - vm[:, :-k]) >= (k - 0.5)
+        if c > 1:
+            vsrc = torch.cat([vm[:, c - 1:c], vm[:, c:] - vm[:, :-c]], dim=1) >= (c - 0.5)
+            full = full[:, c - 1:] & vsrc[:, :T - k - c + 1]
         if full.sum() == 0:
             return h_src.new_zeros(())
 
-        cos = F.cosine_similarity(pred.float(), pooled, dim=-1)  # (B, T-k)
-        loss = (1.0 - cos)[full].mean()
+        p = pred.float()[full]                        # (N, D)
+        z = pooled[full]                              # (N, D)
+        if self.objective == "cosine":
+            align = (1.0 - F.cosine_similarity(p, z, dim=-1)).mean()
+        elif self.objective == "l2":
+            align = F.mse_loss(p, z)
+        else:  # infonce: in-batch negatives over subsampled pairs
+            n = min(p.size(0), 1024)
+            idx = torch.randperm(p.size(0), device=p.device)[:n]
+            pn = F.normalize(p[idx], dim=-1)
+            zn = F.normalize(z[idx], dim=-1)
+            sim = pn @ zn.T / self.temperature
+            labels = torch.arange(n, device=p.device)
+            align = F.cross_entropy(sim, labels)
+
+        loss = align
+        if self.reg == "vicreg":
+            loss = loss + self.reg_weight * _vicreg_reg(_subsample(p))
+        elif self.reg == "sigreg":
+            loss = loss + self.reg_weight * _sigreg_reg(_subsample(p))
         return self.weight * loss
 
 

@@ -1,0 +1,27 @@
+{
+  "run": "tinystories_mtp_seed1",
+  "config": "configs/tinystories_mtp.yaml",
+  "device": "cuda",
+  "params": 33563136,
+  "steps": 20000,
+  "final": {
+    "val_loss": 1.2999059110879898,
+    "val_ppl": 3.6689514437290702
+  },
+  "best": {
+    "val_loss": 1.2999059110879898,
+    "val_ppl": 3.6689514437290702
+  },
+  "eranks": {
+    "erank_0": 127.91,
+    "erank_1": 167.55,
+    "erank_2": 260.48,
+    "erank_3": 228.36,
+    "erank_4": 258.22,
+    "erank_5": 262.12,
+    "erank_6": 268.9,
+    "erank_7": 266.01,
+    "erank_8": 240.05
+  },
+  "wall_s": 4191.5
+}
