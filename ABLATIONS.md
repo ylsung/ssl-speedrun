@@ -111,6 +111,32 @@ yet found a good JEPA configuration, and 4×2 more hour-long runs of
 known-suboptimal configs is compute better spent on this ablation. Tier-1
 seeds for the JEPA arms resume once the ablation picks a winner.
 
+## Round 3 — hardness program (designed 2026-07-08, not yet run)
+
+Diagnosis from rounds 1–2: continuous pooled targets reach a low-loss blur
+within ~20% of training (aux loss → 0.01–0.02), after which they supply no
+gradient; MTP's CE targets stay hard throughout and win planning. "Harder"
+must therefore mean one of: (i) less input information, (ii) targets that
+resist averaging, (iii) loss mass on uncertain positions, (iv) discrimination
+among confusable futures.
+
+| # | cell | mechanism | notes |
+|---|---|---|---|
+| 0 | **causal data2vec** — student pass with p ∈ {.25, .5} of past tokens dropped/masked does NTP + latent-predicts clean-EMA future latents | (i) input bottleneck | 2 passes (NTP rides the corrupted pass); needs corrupted-NTP-only control. Noisy-*target* variant (corrupt the EMA input instead) expected to fail — label variance, not signal; run once as the control that proves the distinction |
+| 1 | **gap targets** — predict pooled t+g+1..t+g+k, g ∈ {8, 16} | (i)/(ii) drop the easy near future | most literal I-JEPA transplant (their targets are far from context); ~5-line change |
+| 2 | **discrete latent codes** — sign-LSH (random proj → bits, BCE) or online-VQ codes of EMA latents, CE | (ii) no mean-embedding escape | sharpest test of "continuous loss is the problem"; if it matches MTP while staying abstract, that's the headline |
+| 3 | **hard-negative InfoNCE** — negatives = other windows of the *same* sequence (star graph: the other d−1 arms' pooled futures) | (iv) discrimination | builds on the best round-1 cell (InfoNCE .750, erank 85) |
+| 4 | **difficulty-weighted loss** — per-position weight = detached NTP entropy | (iii) loss-mass routing | junctions are exactly the high-entropy positions; ~free |
+
+**Health metric adopted:** every hardness cell must keep aux loss > ~0.1 nats
+at half-training; early aux-loss collapse = dead on arrival. Log and report
+alongside accuracy.
+
+Stage-2 context: the three mild round-1 wins do **not** stack
+(`abl_s2_combo` .746 ≈ c4 alone), and the first `abl_s2_mtp8jepa` seed
+suggests MTP+JEPA *interferes* (.798 < .845, erank collapses to 5.6) — the
+hardness program is the remaining path for the latent family on Tier 0.
+
 ## Assumption to revisit
 
 Q4–Q6 fix the teacher at (EMA, tgt=4) — today's best — rather than waiting

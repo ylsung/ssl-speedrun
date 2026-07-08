@@ -1,0 +1,25 @@
+{
+  "run": "abl_s2_combo_seed0",
+  "config": "configs/ablation/abl_s2_combo.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6484375,
+    "decision_acc": 0.7114624505928854
+  },
+  "best": {
+    "path_acc": 0.66796875,
+    "decision_acc": 0.7114624505928854
+  },
+  "eranks": {
+    "erank_0": 32.76,
+    "erank_1": 46.69,
+    "erank_2": 61.66,
+    "erank_3": 57.52,
+    "erank_4": 58.25,
+    "erank_5": 56.61,
+    "erank_6": 51.18
+  },
+  "wall_s": 263.4
+}

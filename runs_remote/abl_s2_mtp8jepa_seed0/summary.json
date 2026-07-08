@@ -1,0 +1,25 @@
+{
+  "run": "abl_s2_mtp8jepa_seed0",
+  "config": "configs/ablation/abl_s2_mtp8jepa.yaml",
+  "device": "cuda",
+  "params": 5070080,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.7734375,
+    "decision_acc": 0.7984189723320159
+  },
+  "best": {
+    "path_acc": 0.7734375,
+    "decision_acc": 0.8142292490118577
+  },
+  "eranks": {
+    "erank_0": 30.13,
+    "erank_1": 21.8,
+    "erank_2": 2.74,
+    "erank_3": 2.78,
+    "erank_4": 2.57,
+    "erank_5": 3.6,
+    "erank_6": 5.57
+  },
+  "wall_s": 292.4
+}
