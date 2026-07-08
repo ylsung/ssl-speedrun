@@ -134,11 +134,14 @@ class JepaPooledLoss(nn.Module):
                  answer_only: bool = False, target: str = "same",
                  objective: str = "cosine", reg: str = "none",
                  reg_weight: float = 1.0, src_pool: int = 1,
-                 pool: str = "mean", temperature: float = 0.1, **kw):
+                 pool: str = "mean", temperature: float = 0.1,
+                 gap: int = 0, n_bits: int = 64,
+                 weight_by: str = "none", **kw):
         super().__init__()
-        assert objective in ("cosine", "l2", "infonce")
+        assert objective in ("cosine", "l2", "infonce", "infonce_hard", "lsh")
         assert reg in ("none", "sigreg", "vicreg")
         assert pool in ("mean", "attn")
+        assert weight_by in ("none", "entropy")
         self.k = k
         self.weight = weight
         self.src_layer = src_layer
@@ -151,6 +154,8 @@ class JepaPooledLoss(nn.Module):
         self.src_pool = src_pool
         self.pool = pool
         self.temperature = temperature
+        self.gap = gap
+        self.weight_by = weight_by
         self.predictor = nn.Sequential(
             nn.Linear(d_model, 2 * d_model, bias=False),
             nn.GELU(),
@@ -159,6 +164,10 @@ class JepaPooledLoss(nn.Module):
         # attention pooling: scorer trains through the loss; pooled *values*
         # stay stop-grad. Shared by target window and (if src_pool>1) source.
         self.scorer = nn.Linear(d_model, 1, bias=False) if pool == "attn" else None
+        if objective == "lsh":
+            # fixed random hyperplanes; same projection on both sides
+            self.register_buffer("lsh_proj",
+                                 torch.randn(d_model, n_bits) / d_model ** 0.5)
 
     def _attn_pool_windows(self, z, start, length):
         """Attention-pool sliding windows of `length` starting at `start`.
@@ -169,59 +178,92 @@ class JepaPooledLoss(nn.Module):
         return torch.einsum("bnl,bndl->bnd", a, w)
 
     def forward(self, logits, hiddens, batch, tgt_hiddens=None):
-        k, c = self.k, self.src_pool
+        k, c, g = self.k, self.src_pool, self.gap
         h_src = hiddens[self.src_layer]
         B, T, D = h_src.shape
-        if T <= k + c - 1:
+        # pairing: source at position t (pooled over t-c+1..t when c>1)
+        # predicts the pooled target window t+g+1 .. t+g+k.
+        n_pairs = T - k - g - (c - 1)
+        if n_pairs <= 0:
             return h_src.new_zeros(())
         src_of_tgt = tgt_hiddens if self.target == "ema" else hiddens
         tgt = src_of_tgt[self.tgt_layer].detach()
 
-        # target: pool window t+1..t+k (mean via cumsum, or attention)
+        # pooled_all[i] = pool of tgt[i+1..i+k], i = 0..T-k-1
         if self.pool == "attn":
-            pooled = self._attn_pool_windows(tgt.float(), 1, k)  # t = 0..T-k-1
+            pooled_all = self._attn_pool_windows(tgt.float(), 1, k)
         else:
             cs = tgt.float().cumsum(dim=1)
-            pooled = (cs[:, k:] - cs[:, :-k]) / k    # aligned with t = 0..T-k-1
-        # source: hidden at t, or pooled trailing window t-c+1..t
+            pooled_all = (cs[:, k:] - cs[:, :-k]) / k
+        # src_arr[m] = source at t = m + c - 1
         if c > 1:
             if self.pool == "attn":
-                src = self._attn_pool_windows(h_src, 0, c).to(h_src.dtype)
+                src_arr = self._attn_pool_windows(h_src, 0, c).to(h_src.dtype)
             else:
                 ss = h_src.float().cumsum(dim=1)
-                src = torch.cat([ss[:, c - 1:c], ss[:, c:] - ss[:, :-c]], dim=1) / c
-                src = src.to(h_src.dtype)            # (B, T-c+1, D), t = c-1..T-1
+                src_arr = torch.cat([ss[:, c - 1:c], ss[:, c:] - ss[:, :-c]], dim=1) / c
+                src_arr = src_arr.to(h_src.dtype)
         else:
-            src = h_src
-        # align source t with target window starting at t+1
-        src = src[:, :T - k] if c == 1 else src[:, :T - k - c + 1]
-        pooled = pooled if c == 1 else pooled[:, c - 1:]
+            src_arr = h_src
+        src = src_arr[:, :n_pairs]                        # t = c-1 .. c-1+n_pairs-1
+        pooled = pooled_all[:, c - 1 + g: c - 1 + g + n_pairs]
         pred = self.predictor(src)
 
         # validity: full target window (and, for c>1, full source window) real
         vmask = batch["target_mask"] if self.answer_only else batch["valid_mask"]
         vm = vmask.float().cumsum(dim=1)
-        full = (vm[:, k:] - vm[:, :-k]) >= (k - 0.5)
+        full_all = (vm[:, k:] - vm[:, :-k]) >= (k - 0.5)  # aligned with pooled_all
+        full = full_all[:, c - 1 + g: c - 1 + g + n_pairs]
         if c > 1:
             vsrc = torch.cat([vm[:, c - 1:c], vm[:, c:] - vm[:, :-c]], dim=1) >= (c - 0.5)
-            full = full[:, c - 1:] & vsrc[:, :T - k - c + 1]
+            full = full & vsrc[:, :n_pairs]
         if full.sum() == 0:
             return h_src.new_zeros(())
 
-        p = pred.float()[full]                        # (N, D)
-        z = pooled[full]                              # (N, D)
-        if self.objective == "cosine":
-            align = (1.0 - F.cosine_similarity(p, z, dim=-1)).mean()
-        elif self.objective == "l2":
-            align = F.mse_loss(p, z)
-        else:  # infonce: in-batch negatives over subsampled pairs
-            n = min(p.size(0), 1024)
-            idx = torch.randperm(p.size(0), device=p.device)[:n]
-            pn = F.normalize(p[idx], dim=-1)
-            zn = F.normalize(z[idx], dim=-1)
-            sim = pn @ zn.T / self.temperature
-            labels = torch.arange(n, device=p.device)
-            align = F.cross_entropy(sim, labels)
+        # optional per-position difficulty weights: detached NTP entropy at t
+        w = None
+        if self.weight_by == "entropy":
+            lp = F.log_softmax(logits.detach().float(), dim=-1)
+            ent = -(lp.exp() * lp).sum(-1)                # (B, T)
+            w = ent[:, c - 1: c - 1 + n_pairs][full]
+            w = w / w.mean().clamp_min(1e-6)
+
+        if self.objective == "infonce_hard":
+            # negatives = other target windows of the SAME sequence
+            pn = F.normalize(pred.float(), dim=-1)
+            zn = F.normalize(pooled, dim=-1)
+            sim = torch.einsum("bnd,bmd->bnm", pn, zn) / self.temperature
+            sim = sim.masked_fill(~full.unsqueeze(1), float("-inf"))
+            lbl = torch.arange(n_pairs, device=sim.device).expand(B, -1)
+            ce = F.cross_entropy(sim.flatten(0, 1), lbl.flatten(), reduction="none")
+            ce = ce.view(B, n_pairs)[full]
+            align = (ce * w).mean() / w.mean() if w is not None else ce.mean()
+            p = pred.float()[full]
+        else:
+            p = pred.float()[full]                        # (N, D)
+            z = pooled[full]                              # (N, D)
+            if self.objective == "cosine":
+                per = 1.0 - F.cosine_similarity(p, z, dim=-1)
+                align = (per * w).mean() / w.mean() if w is not None else per.mean()
+            elif self.objective == "l2":
+                per = (p - z).pow(2).mean(-1)
+                align = (per * w).mean() / w.mean() if w is not None else per.mean()
+            elif self.objective == "lsh":
+                # discrete latent codes: sign bits of centered random projections
+                mu = z.mean(dim=0, keepdim=True)
+                bits = ((z - mu) @ self.lsh_proj > 0).float()
+                bit_logits = (p - mu) @ self.lsh_proj
+                per = F.binary_cross_entropy_with_logits(
+                    bit_logits, bits, reduction="none").mean(-1)
+                align = (per * w).mean() / w.mean() if w is not None else per.mean()
+            else:  # infonce: in-batch negatives over subsampled pairs
+                n = min(p.size(0), 1024)
+                idx = torch.randperm(p.size(0), device=p.device)[:n]
+                pn = F.normalize(p[idx], dim=-1)
+                zn = F.normalize(z[idx], dim=-1)
+                sim = pn @ zn.T / self.temperature
+                labels = torch.arange(n, device=p.device)
+                align = F.cross_entropy(sim, labels)
 
         loss = align
         if self.reg == "vicreg":
@@ -294,10 +336,14 @@ class LossStack(nn.Module):
     update_ema() after each optimizer step.
     """
 
-    def __init__(self, model, loss_cfgs: list, ema_decay: float = 0.999):
+    def __init__(self, model, loss_cfgs: list, ema_decay: float = 0.999,
+                 corrupt_p: float = 0.0, corrupt_side: str = "student"):
         super().__init__()
+        assert corrupt_side in ("student", "ema")
         self.model = model
         self.ema_decay = ema_decay
+        self.corrupt_p = corrupt_p
+        self.corrupt_side = corrupt_side
         plugins = []
         for cfg in loss_cfgs:
             cfg = dict(cfg)
@@ -321,11 +367,18 @@ class LossStack(nn.Module):
             be.copy_(bm)
 
     def forward(self, batch):
-        logits, hiddens = self.model(batch["tokens"])
+        drop = None
+        if self.corrupt_p > 0 and self.training:
+            drop = (torch.rand_like(batch["tokens"], dtype=torch.float)
+                    < self.corrupt_p) & batch["valid_mask"]
+        logits, hiddens = self.model(
+            batch["tokens"], drop if self.corrupt_side == "student" else None)
         tgt_hiddens = None
         if self.ema_model is not None:
             with torch.no_grad():
-                _, tgt_hiddens = self.ema_model(batch["tokens"])
+                _, tgt_hiddens = self.ema_model(
+                    batch["tokens"],
+                    drop if self.corrupt_side == "ema" else None)
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:

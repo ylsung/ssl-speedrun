@@ -66,9 +66,33 @@ CELLS = {
     "infonce_ema_tgt4": pooled(tgt_layer=4, target="ema", objective="infonce"),
 }
 
+# Round 3 — hardness program (ABLATIONS.md). value = (loss_lines, train_extra)
+EMA4 = dict(tgt_layer=4, target="ema")
+HARD = {
+    # 0: causal data2vec — corrupted student pass (NTP rides it), clean EMA targets
+    "h_d2v25": (pooled(**EMA4), "  corrupt_p: 0.25\n"),
+    "h_d2v50": (pooled(**EMA4), "  corrupt_p: 0.5\n"),
+    "h_d2vctl50": ("", "  corrupt_p: 0.5\n"),          # corrupted-NTP-only control
+    "h_noisytgt50": (pooled(**EMA4),                    # noisy-target control (expect fail)
+                     "  corrupt_p: 0.5\n  corrupt_side: ema\n"),
+    # 1: gap targets — drop the easy near future
+    "h_gap8": (pooled(gap=8, **EMA4), ""),
+    "h_gap16": (pooled(gap=16, **EMA4), ""),
+    # 2: discrete latent codes (sign-LSH bits, BCE)
+    "h_lsh": (pooled(objective="lsh", n_bits=64, **EMA4), ""),
+    # 3: hard-negative InfoNCE (same-sequence negatives)
+    "h_nceh": (pooled(objective="infonce_hard", **EMA4), ""),
+    # 4: difficulty-weighted (detached NTP entropy)
+    "h_entw": (pooled(weight_by="entropy", **EMA4), ""),
+}
+
 os.makedirs("configs/ablation", exist_ok=True)
 for name, loss_line in CELLS.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# ablation cell {name} (see ABLATIONS.md)\n"
                 + HEAD + loss_line + TRAIN)
-print(f"wrote {len(CELLS)} configs to configs/ablation/")
+for name, (loss_line, extra) in HARD.items():
+    with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
+        f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
+                + HEAD + loss_line + TRAIN + extra)
+print(f"wrote {len(CELLS) + len(HARD)} configs to configs/ablation/")

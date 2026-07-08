@@ -57,3 +57,97 @@ SUMMARY {"run": "abl_s2_combo_seed2", "config": "configs/ablation/abl_s2_combo.y
 step   4000 loss 0.6124 [ntp=0.034 mtp=0.546 jepa_pooled=0.032] path_acc 0.773 decision_acc 0.798 erank 5.6 (257.4k tok/s)
 SUMMARY {"run": "abl_s2_mtp8jepa_seed0", "config": "configs/ablation/abl_s2_mtp8jepa.yaml", "device": "cuda", "params": 5070080, "steps": 4000, "final": {"path_acc": 0.7734375, "decision_acc": 0.7984189723320159}, "best": {"path_acc": 0.7734375, "decision_acc": 0.8142292490118577}, "eranks": {"erank_0": 30.13, "erank_1": 21.8, "erank_2": 2.74, "erank_3": 2.78, "erank_4": 2.57, "erank_5": 3.6, "erank_6": 5.57}, "wall_s": 292.4}
 === abl_s2_mtp8jepa_seed1 ===
+step   4000 loss 0.6363 [ntp=0.036 mtp=0.573 jepa_pooled=0.027] path_acc 0.738 decision_acc 0.804 erank 48.4 (266.5k tok/s)
+SUMMARY {"run": "abl_s2_mtp8jepa_seed1", "config": "configs/ablation/abl_s2_mtp8jepa.yaml", "device": "cuda", "params": 5070080, "steps": 4000, "final": {"path_acc": 0.73828125, "decision_acc": 0.803921568627451}, "best": {"path_acc": 0.73828125, "decision_acc": 0.803921568627451}, "eranks": {"erank_0": 30.77, "erank_1": 27.96, "erank_2": 18.26, "erank_3": 21.89, "erank_4": 25.29, "erank_5": 31.52, "erank_6": 48.39}, "wall_s": 282.4}
+=== abl_s2_mtp8jepa_seed2 ===
+step   4000 loss 0.6896 [ntp=0.048 mtp=0.611 jepa_pooled=0.031] path_acc 0.730 decision_acc 0.783 erank 28.5 (258.7k tok/s)
+SUMMARY {"run": "abl_s2_mtp8jepa_seed2", "config": "configs/ablation/abl_s2_mtp8jepa.yaml", "device": "cuda", "params": 5070080, "steps": 4000, "final": {"path_acc": 0.73046875, "decision_acc": 0.782608695652174}, "best": {"path_acc": 0.73046875, "decision_acc": 0.782608695652174}, "eranks": {"erank_0": 31.36, "erank_1": 28.05, "erank_2": 15.63, "erank_3": 14.49, "erank_4": 14.94, "erank_5": 19.36, "erank_6": 28.55}, "wall_s": 290.9}
+=== abl_s2_sg_combo_seed0 ===
+step   4000 loss 0.8811 [ntp=0.239 jepa_pooled=0.642] path_acc 0.230 decision_acc 0.230 erank 12.1 (260.8k tok/s)
+SUMMARY {"run": "abl_s2_sg_combo_seed0", "config": "configs/ablation/abl_s2_sg_combo.yaml", "device": "cuda", "params": 4998400, "steps": 4000, "final": {"path_acc": 0.23046875, "decision_acc": 0.23046875}, "best": {"path_acc": 0.25, "decision_acc": 0.25}, "eranks": {"erank_0": 27.83, "erank_1": 30.24, "erank_2": 22.33, "erank_3": 4.26, "erank_4": 4.29, "erank_5": 4.49, "erank_6": 12.11}, "wall_s": 170.8}
+=== abl_s2_sg_combo_seed1 ===
+step   4000 loss 0.8073 [ntp=0.243 jepa_pooled=0.564] path_acc 0.195 decision_acc 0.195 erank 12.3 (216.1k tok/s)
+SUMMARY {"run": "abl_s2_sg_combo_seed1", "config": "configs/ablation/abl_s2_sg_combo.yaml", "device": "cuda", "params": 4998400, "steps": 4000, "final": {"path_acc": 0.1953125, "decision_acc": 0.1953125}, "best": {"path_acc": 0.2578125, "decision_acc": 0.2578125}, "eranks": {"erank_0": 35.21, "erank_1": 34.83, "erank_2": 24.24, "erank_3": 6.2, "erank_4": 5.69, "erank_5": 5.35, "erank_6": 12.25}, "wall_s": 206.1}
+=== abl_s2_sg_combo_seed2 ===
+step   4000 loss 0.8338 [ntp=0.241 jepa_pooled=0.593] path_acc 0.168 decision_acc 0.168 erank 4.5 (215.4k tok/s)
+SUMMARY {"run": "abl_s2_sg_combo_seed2", "config": "configs/ablation/abl_s2_sg_combo.yaml", "device": "cuda", "params": 4998400, "steps": 4000, "final": {"path_acc": 0.16796875, "decision_acc": 0.16796875}, "best": {"path_acc": 0.2265625, "decision_acc": 0.2265625}, "eranks": {"erank_0": 31.58, "erank_1": 32.74, "erank_2": 6.68, "erank_3": 2.97, "erank_4": 2.75, "erank_5": 3.18, "erank_6": 4.46}, "wall_s": 206.8}
+=== abl_s2_sg_mtp8_seed0 ===
+step   4000 loss 0.9899 [ntp=0.256 mtp=0.734] path_acc 0.207 decision_acc 0.207 erank 44.5 (220.9k tok/s)
+SUMMARY {"run": "abl_s2_sg_mtp8_seed0", "config": "configs/ablation/abl_s2_sg_mtp8.yaml", "device": "cuda", "params": 4836608, "steps": 4000, "final": {"path_acc": 0.20703125, "decision_acc": 0.20703125}, "best": {"path_acc": 0.24609375, "decision_acc": 0.24609375}, "eranks": {"erank_0": 36.66, "erank_1": 46.68, "erank_2": 22.19, "erank_3": 17.19, "erank_4": 27.21, "erank_5": 25.78, "erank_6": 44.53}, "wall_s": 201.6}
+=== abl_s2_sg_mtp8_seed1 ===
+step   4000 loss 1.0121 [ntp=0.270 mtp=0.742] path_acc 0.164 decision_acc 0.164 erank 23.9 (231.4k tok/s)
+SUMMARY {"run": "abl_s2_sg_mtp8_seed1", "config": "configs/ablation/abl_s2_sg_mtp8.yaml", "device": "cuda", "params": 4836608, "steps": 4000, "final": {"path_acc": 0.1640625, "decision_acc": 0.1640625}, "best": {"path_acc": 0.25, "decision_acc": 0.25}, "eranks": {"erank_0": 36.12, "erank_1": 52.29, "erank_2": 12.78, "erank_3": 13.78, "erank_4": 14.08, "erank_5": 23.18, "erank_6": 23.94}, "wall_s": 192.5}
+=== abl_s2_sg_mtp8_seed2 ===
+step   4000 loss 0.9250 [ntp=0.264 mtp=0.661] path_acc 0.199 decision_acc 0.199 erank 21.6 (203.6k tok/s)
+SUMMARY {"run": "abl_s2_sg_mtp8_seed2", "config": "configs/ablation/abl_s2_sg_mtp8.yaml", "device": "cuda", "params": 4836608, "steps": 4000, "final": {"path_acc": 0.19921875, "decision_acc": 0.19921875}, "best": {"path_acc": 0.23828125, "decision_acc": 0.23828125}, "eranks": {"erank_0": 33.75, "erank_1": 46.58, "erank_2": 8.5, "erank_3": 7.34, "erank_4": 9.79, "erank_5": 12.65, "erank_6": 21.58}, "wall_s": 218.8}
+=== abl_same_tgt2_seed0 (done, skipping) ===
+=== abl_same_tgt2_seed1 (done, skipping) ===
+=== abl_same_tgt2_seed2 (done, skipping) ===
+=== abl_same_tgt4_seed0 (done, skipping) ===
+=== abl_same_tgt4_seed1 (done, skipping) ===
+=== abl_same_tgt4_seed2 (done, skipping) ===
+=== abl_same_tgt6_seed0 (done, skipping) ===
+=== abl_same_tgt6_seed1 (done, skipping) ===
+=== abl_same_tgt6_seed2 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed2 (done, skipping) ===
+--- results ---
+method                        n     decision_acc         path_acc         val_loss          val_ppl  erank_last  wall_s
+abl_attn_ema_tgt4             3    0.725 ±0.034    0.639 ±0.023                                          39.0     264
+abl_attnc8_ema_tgt4           3    0.706 ±0.011    0.607 ±0.016                                          32.5     271
+abl_c4_ema_tgt4               3    0.746 ±0.015    0.676 ±0.022                                          35.7     245
+abl_c8_ema_tgt4               3    0.744 ±0.026    0.667 ±0.008                                          31.0     259
+abl_ema_tgt1                  3    0.725 ±0.010    0.635 ±0.010                                          55.0     254
+abl_ema_tgt2                  3    0.733 ±0.027    0.667 ±0.016                                          48.7     255
+abl_ema_tgt6                  3    0.729 ±0.022    0.641 ±0.006                                          55.0     263
+abl_infonce_ema_tgt4          3    0.750 ±0.037    0.667 ±0.029                                          85.1     254
+abl_k16_ema_tgt4              3    0.745 ±0.027    0.660 ±0.015                                          49.4     253
+abl_k32_ema_tgt4              3    0.740 ±0.031    0.650 ±0.024                                          41.1     256
+abl_k4_ema_tgt4               3    0.732 ±0.018    0.645 ±0.010                                          53.4     256
+abl_l2_ema_tgt4               3    0.742 ±0.033    0.673 ±0.024                                          52.0     253
+abl_m16_ema_tgt4              3    0.729 ±0.021    0.647 ±0.021                                          36.0     344
+abl_m8_ema_tgt4               3    0.738 ±0.022    0.654 ±0.010                                          45.5     300
+abl_mtp_k8                    3    0.845 ±0.025    0.811 ±0.018                                          20.7     250
+abl_s2_combo                  3    0.746 ±0.027    0.673 ±0.018                                          52.4     265
+abl_s2_mtp8jepa               3    0.795 ±0.009    0.747 ±0.019                                          27.5     289
+abl_s2_sg_combo               3    0.198 ±0.026    0.198 ±0.026                                           9.6     195
+abl_s2_sg_mtp8                3    0.190 ±0.019    0.190 ±0.019                                          30.0     204
+abl_same_tgt2                 3    0.723 ±0.023    0.648 ±0.021                                          32.2     236
+abl_same_tgt4                 3    0.692 ±0.025    0.608 ±0.040                                          37.8     231
+abl_same_tgt6                 3    0.686 ±0.034    0.599 ±0.037                                          24.3     228
+abl_sigreg_ema_tgt4           3    0.706 ±0.029    0.621 ±0.028                                          54.7     261
+abl_src2_ema_tgt4             3    0.729 ±0.024    0.646 ±0.018                                          37.8     261
+abl_src4_ema_tgt4             3    0.732 ±0.038    0.645 ±0.022                                          36.1     266
+abl_vicreg_ema_tgt4           3    0.729 ±0.020    0.652 ±0.010                                          57.7     272
+maze2_jepa_ans                3    0.736 ±0.040    0.645 ±0.031                                          24.9     386
+maze2_jepa_ema                3    0.744 ±0.020    0.663 ±0.018                                          51.1     446
+maze2_jepa_k16                3    0.714 ±0.021    0.629 ±0.017                                          36.1     382
+maze2_pyramid_hi              3    0.720 ±0.024    0.639 ±0.037                                          55.1     465
+maze_jepa                     3    0.712 ±0.009    0.639 ±0.013                                          39.7     233
+maze_mtp                      3    0.821 ±0.014    0.780 ±0.016                                          16.3     234
+maze_nitp                     3    0.709 ±0.025    0.637 ±0.025                                          43.7     218
+maze_ntp                      3    0.696 ±0.043    0.605 ±0.031                                          27.4     222
+maze_pertoken                 3    0.712 ±0.029    0.643 ±0.023                                          37.1     240
+maze_pyramid                  3    0.731 ±0.025    0.656 ±0.016                                          44.6     249
+stargraph_jepa                3    0.094 ±0.072    0.065 ±0.092                                          40.3     175
+stargraph_mtp                 3    0.185 ±0.040    0.185 ±0.040                                           3.4     182
+stargraph_nitp                3    0.049 ±0.013    0.000 ±0.000                                          24.1     170
+stargraph_ntp                 3    0.076 ±0.057    0.052 ±0.074                                          17.7     167
+stargraph_pertoken            3    0.134 ±0.079    0.125 ±0.091                                          17.6     193
+stargraph_pyramid             3    0.109 ±0.081    0.074 ±0.105                                          34.2     213
+tinystories_jepa              2                                      1.295 ±0.011    3.649 ±0.040       187.1    3626
+tinystories_mtp               3                                      1.310 ±0.008    3.706 ±0.030       239.4    4194
+tinystories_nitp              1                                      1.306 ±0.000    3.692 ±0.000       190.4    3632
+tinystories_ntp               3                                      1.297 ±0.010    3.660 ±0.037       185.0    4229
+tinystories_pertoken          1                                      1.302 ±0.000    3.678 ±0.000       193.3    3871
+tinystories_pyramid           1                                      1.306 ±0.000    3.690 ±0.000       196.6    3991

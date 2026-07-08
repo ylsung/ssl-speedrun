@@ -67,7 +67,9 @@ def main():
     mcfg = ModelConfig(vocab_size=vocab_size, max_seq_len=seq_len, **cfg["model"])
     model = GPT(mcfg).to(device)
     stack = LossStack(model, cfg["losses"],
-                      ema_decay=tr.get("ema_decay", 0.999)).to(device)
+                      ema_decay=tr.get("ema_decay", 0.999),
+                      corrupt_p=tr.get("corrupt_p", 0.0),
+                      corrupt_side=tr.get("corrupt_side", "student")).to(device)
     train_params = [p for p in stack.parameters() if p.requires_grad]
     n_params = sum(p.numel() for p in train_params)
 

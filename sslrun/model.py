@@ -111,10 +111,14 @@ class GPT(nn.Module):
         elif isinstance(m, nn.Embedding):
             nn.init.normal_(m.weight, std=0.02)
 
-    def forward(self, idx):
+    def forward(self, idx, drop_mask=None):
         """Returns (logits, hiddens). hiddens[0] = embedding output,
-        hiddens[i] = output of block i (pre final norm), len = n_layer + 1."""
+        hiddens[i] = output of block i (pre final norm), len = n_layer + 1.
+        drop_mask (B, T) bool: zero those positions' input embeddings
+        (token-dropout corruption for denoising-style objectives)."""
         x = self.tok_emb(idx)
+        if drop_mask is not None:
+            x = x * (~drop_mask).unsqueeze(-1)
         hiddens = [x]
         for blk in self.blocks:
             x = blk(x, self.rope_cos, self.rope_sin)
