@@ -95,6 +95,7 @@ class GPT(nn.Module):
         super().__init__()
         self.cfg = cfg
         self.tok_emb = nn.Embedding(cfg.vocab_size, cfg.d_model)
+        self.mask_emb = nn.Parameter(0.02 * torch.randn(cfg.d_model))  # corruption token
         self.blocks = nn.ModuleList(Block(cfg) for _ in range(cfg.n_layer))
         self.norm_f = RMSNorm(cfg.d_model)
         self.lm_head = nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
@@ -114,11 +115,13 @@ class GPT(nn.Module):
     def forward(self, idx, drop_mask=None):
         """Returns (logits, hiddens). hiddens[0] = embedding output,
         hiddens[i] = output of block i (pre final norm), len = n_layer + 1.
-        drop_mask (B, T) bool: zero those positions' input embeddings
-        (token-dropout corruption for denoising-style objectives)."""
+        drop_mask (B, T) bool: replace those positions' input embeddings with
+        the learned mask embedding (corruption for denoising-style
+        objectives; a zero-out was numerically unstable through RMSNorm)."""
         x = self.tok_emb(idx)
         if drop_mask is not None:
-            x = x * (~drop_mask).unsqueeze(-1)
+            m = drop_mask.unsqueeze(-1)
+            x = torch.where(m, self.mask_emb.to(x.dtype).expand_as(x), x)
         hiddens = [x]
         for blk in self.blocks:
             x = blk(x, self.rope_cos, self.rope_sin)

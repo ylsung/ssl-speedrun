@@ -371,6 +371,7 @@ class LossStack(nn.Module):
         if self.corrupt_p > 0 and self.training:
             drop = (torch.rand_like(batch["tokens"], dtype=torch.float)
                     < self.corrupt_p) & batch["valid_mask"]
+            drop[:, 0] = False  # never corrupt BOS
         logits, hiddens = self.model(
             batch["tokens"], drop if self.corrupt_side == "student" else None)
         tgt_hiddens = None

@@ -1,0 +1,47 @@
+wrote 31 configs to configs/ablation/
+=== abl_attn_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed2 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_ema_tgt1_seed0 (done, skipping) ===
+=== abl_ema_tgt1_seed1 (done, skipping) ===
+=== abl_ema_tgt1_seed2 (done, skipping) ===
+=== abl_ema_tgt2_seed0 (done, skipping) ===
+=== abl_ema_tgt2_seed1 (done, skipping) ===
+=== abl_ema_tgt2_seed2 (done, skipping) ===
+=== abl_ema_tgt6_seed0 (done, skipping) ===
+=== abl_ema_tgt6_seed1 (done, skipping) ===
+=== abl_ema_tgt6_seed2 (done, skipping) ===
+=== abl_h_d2v25_seed0 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (267.2k tok/s)
+SUMMARY {"run": "abl_h_d2v25_seed0", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.24609375, "decision_acc": 0.5059288537549407}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 281.7}
+=== abl_h_d2v25_seed1 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (263.9k tok/s)
+SUMMARY {"run": "abl_h_d2v25_seed1", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.1953125, "decision_acc": 0.5176470588235295}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 285.3}
+=== abl_h_d2v25_seed2 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (264.4k tok/s)
+SUMMARY {"run": "abl_h_d2v25_seed2", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.03125, "decision_acc": 0.32806324110671936}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 284.7}
+=== abl_h_d2v50_seed0 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (264.2k tok/s)
+SUMMARY {"run": "abl_h_d2v50_seed0", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.0, "decision_acc": 0.308300395256917}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 284.8}
+=== abl_h_d2v50_seed1 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (273.0k tok/s)
+SUMMARY {"run": "abl_h_d2v50_seed1", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.0, "decision_acc": 0.28627450980392155}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 275.7}
+=== abl_h_d2v50_seed2 ===
+step   4000 loss nan [ntp=nan jepa_pooled=nan] path_acc 0.000 decision_acc 0.000 erank nan (262.0k tok/s)
+SUMMARY {"run": "abl_h_d2v50_seed2", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.0}, "best": {"path_acc": 0.00390625, "decision_acc": 0.3794466403162055}, "eranks": {"erank_0": NaN, "erank_1": NaN, "erank_2": NaN, "erank_3": NaN, "erank_4": NaN, "erank_5": NaN, "erank_6": NaN}, "wall_s": 287.2}
+=== abl_h_d2vctl50_seed0 ===
+step   4000 loss 1.2265 [ntp=1.227] path_acc 0.000 decision_acc 0.040 erank 3.2 (333.4k tok/s)
+SUMMARY {"run": "abl_h_d2vctl50_seed0", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732672, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.039525691699604744}, "best": {"path_acc": 0.0, "decision_acc": 0.2727272727272727}, "eranks": {"erank_0": 24.05, "erank_1": 5.52, "erank_2": 4.31, "erank_3": 4.38, "erank_4": 4.39, "erank_5": 4.47, "erank_6": 3.17}, "wall_s": 225.7}
+=== abl_h_d2vctl50_seed1 ===
+step   4000 loss 1.1796 [ntp=1.180] path_acc 0.000 decision_acc 0.027 erank 4.0 (314.5k tok/s)
+SUMMARY {"run": "abl_h_d2vctl50_seed1", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732672, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.027450980392156862}, "best": {"path_acc": 0.0078125, "decision_acc": 0.34901960784313724}, "eranks": {"erank_0": 22.06, "erank_1": 5.53, "erank_2": 5.62, "erank_3": 6.09, "erank_4": 5.44, "erank_5": 4.55, "erank_6": 4.02}, "wall_s": 239.3}
+=== abl_h_d2vctl50_seed2 ===
