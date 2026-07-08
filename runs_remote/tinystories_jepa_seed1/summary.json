@@ -1,0 +1,27 @@
+{
+  "run": "tinystories_jepa_seed1",
+  "config": "configs/tinystories_jepa.yaml",
+  "device": "cuda",
+  "params": 28320256,
+  "steps": 20000,
+  "final": {
+    "val_loss": 1.2834294736385345,
+    "val_ppl": 3.6089954814550085
+  },
+  "best": {
+    "val_loss": 1.2834294736385345,
+    "val_ppl": 3.6089954814550085
+  },
+  "eranks": {
+    "erank_0": 160.11,
+    "erank_1": 156.97,
+    "erank_2": 234.83,
+    "erank_3": 225.39,
+    "erank_4": 249.93,
+    "erank_5": 273.56,
+    "erank_6": 290.57,
+    "erank_7": 293.92,
+    "erank_8": 182.99
+  },
+  "wall_s": 3624.0
+}

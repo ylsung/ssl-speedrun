@@ -1,0 +1,25 @@
+{
+  "run": "abl_attn_ema_tgt4_seed0",
+  "config": "configs/ablation/abl_attn_ema_tgt4.yaml",
+  "device": "cuda",
+  "params": 4995072,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.625,
+    "decision_acc": 0.6956521739130435
+  },
+  "best": {
+    "path_acc": 0.65234375,
+    "decision_acc": 0.7114624505928854
+  },
+  "eranks": {
+    "erank_0": 25.57,
+    "erank_1": 16.78,
+    "erank_2": 23.07,
+    "erank_3": 28.35,
+    "erank_4": 30.37,
+    "erank_5": 33.58,
+    "erank_6": 38.61
+  },
+  "wall_s": 255.3
+}

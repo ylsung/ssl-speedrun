@@ -1,0 +1,25 @@
+{
+  "run": "abl_same_tgt2_seed1",
+  "config": "configs/ablation/abl_same_tgt2.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.64453125,
+    "decision_acc": 0.7294117647058823
+  },
+  "best": {
+    "path_acc": 0.64453125,
+    "decision_acc": 0.7294117647058823
+  },
+  "eranks": {
+    "erank_0": 24.08,
+    "erank_1": 10.08,
+    "erank_2": 16.6,
+    "erank_3": 21.55,
+    "erank_4": 25.05,
+    "erank_5": 28.78,
+    "erank_6": 31.83
+  },
+  "wall_s": 229.7
+}

@@ -1,0 +1,25 @@
+{
+  "run": "abl_infonce_ema_tgt4_seed0",
+  "config": "configs/ablation/abl_infonce_ema_tgt4.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6328125,
+    "decision_acc": 0.6996047430830039
+  },
+  "best": {
+    "path_acc": 0.66796875,
+    "decision_acc": 0.7312252964426877
+  },
+  "eranks": {
+    "erank_0": 32.4,
+    "erank_1": 51.16,
+    "erank_2": 63.26,
+    "erank_3": 67.29,
+    "erank_4": 73.77,
+    "erank_5": 80.43,
+    "erank_6": 87.54
+  },
+  "wall_s": 261.4
+}

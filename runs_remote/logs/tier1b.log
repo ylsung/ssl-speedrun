@@ -13,3 +13,15 @@ step  19500 loss 2.6999 [ntp=1.239 mtp=1.461] val_loss 1.300 val_ppl 3.669 erank
 step  20000 loss 2.7561 [ntp=1.269 mtp=1.487] val_loss 1.300 val_ppl 3.669 erank 240.1 (156.4k tok/s)
 SUMMARY {"run": "tinystories_mtp_seed1", "config": "configs/tinystories_mtp.yaml", "device": "cuda", "params": 33563136, "steps": 20000, "final": {"val_loss": 1.2999059110879898, "val_ppl": 3.6689514437290702}, "best": {"val_loss": 1.2999059110879898, "val_ppl": 3.6689514437290702}, "eranks": {"erank_0": 127.91, "erank_1": 167.55, "erank_2": 260.48, "erank_3": 228.36, "erank_4": 258.22, "erank_5": 262.12, "erank_6": 268.9, "erank_7": 266.01, "erank_8": 240.05}, "wall_s": 4191.5}
 === tinystories_mtp_seed2 ===
+step  19500 loss 2.8592 [ntp=1.323 mtp=1.536] val_loss 1.312 val_ppl 3.713 erank 241.5 (156.3k tok/s)
+step  20000 loss 2.8229 [ntp=1.302 mtp=1.521] val_loss 1.310 val_ppl 3.706 erank 239.2 (156.3k tok/s)
+SUMMARY {"run": "tinystories_mtp_seed2", "config": "configs/tinystories_mtp.yaml", "device": "cuda", "params": 33563136, "steps": 20000, "final": {"val_loss": 1.309970185160637, "val_ppl": 3.7060632148835557}, "best": {"val_loss": 1.309970185160637, "val_ppl": 3.7060632148835557}, "eranks": {"erank_0": 131.46, "erank_1": 164.94, "erank_2": 230.62, "erank_3": 261.73, "erank_4": 263.05, "erank_5": 245.73, "erank_6": 251.02, "erank_7": 268.09, "erank_8": 239.18}, "wall_s": 4194.6}
+=== tinystories_jepa_seed0 (done, skipping) ===
+=== tinystories_jepa_seed1 ===
+step  19500 loss 1.2282 [ntp=1.218 jepa_pooled=0.010] val_loss 1.284 val_ppl 3.610 erank 185.6 (180.9k tok/s)
+step  20000 loss 1.2653 [ntp=1.255 jepa_pooled=0.011] val_loss 1.283 val_ppl 3.609 erank 183.0 (180.9k tok/s)
+SUMMARY {"run": "tinystories_jepa_seed1", "config": "configs/tinystories_jepa.yaml", "device": "cuda", "params": 28320256, "steps": 20000, "final": {"val_loss": 1.2834294736385345, "val_ppl": 3.6089954814550085}, "best": {"val_loss": 1.2834294736385345, "val_ppl": 3.6089954814550085}, "eranks": {"erank_0": 160.11, "erank_1": 156.97, "erank_2": 234.83, "erank_3": 225.39, "erank_4": 249.93, "erank_5": 273.56, "erank_6": 290.57, "erank_7": 293.92, "erank_8": 182.99}, "wall_s": 3624.0}
+=== tinystories_jepa_seed2 ===
+step   2000 loss 1.7840 [ntp=1.738 jepa_pooled=0.046] val_loss 1.713 val_ppl 5.548 erank 195.0 (180.6k tok/s)
+step   2500 loss 1.7161 [ntp=1.679 jepa_pooled=0.037] val_loss 1.656 val_ppl 5.239 erank 194.9 (180.7k tok/s)
+step   3000 loss 1.6477 [ntp=1.616 jepa_pooled=0.032] val_loss 1.616 val_ppl 5.034 erank 200.2 (180.8k tok/s)

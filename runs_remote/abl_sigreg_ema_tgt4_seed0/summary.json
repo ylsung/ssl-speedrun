@@ -1,0 +1,25 @@
+{
+  "run": "abl_sigreg_ema_tgt4_seed0",
+  "config": "configs/ablation/abl_sigreg_ema_tgt4.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.60546875,
+    "decision_acc": 0.6758893280632411
+  },
+  "best": {
+    "path_acc": 0.6171875,
+    "decision_acc": 0.6837944664031621
+  },
+  "eranks": {
+    "erank_0": 25.06,
+    "erank_1": 25.45,
+    "erank_2": 39.31,
+    "erank_3": 44.25,
+    "erank_4": 50.12,
+    "erank_5": 54.32,
+    "erank_6": 53.33
+  },
+  "wall_s": 261.2
+}

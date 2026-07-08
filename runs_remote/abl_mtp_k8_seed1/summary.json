@@ -1,0 +1,25 @@
+{
+  "run": "abl_mtp_k8_seed1",
+  "config": "configs/ablation/abl_mtp_k8.yaml",
+  "device": "cuda",
+  "params": 4807936,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.8359375,
+    "decision_acc": 0.8784313725490196
+  },
+  "best": {
+    "path_acc": 0.8359375,
+    "decision_acc": 0.8784313725490196
+  },
+  "eranks": {
+    "erank_0": 26.27,
+    "erank_1": 2.29,
+    "erank_2": 2.6,
+    "erank_3": 2.99,
+    "erank_4": 3.3,
+    "erank_5": 4.42,
+    "erank_6": 8.85
+  },
+  "wall_s": 253.3
+}

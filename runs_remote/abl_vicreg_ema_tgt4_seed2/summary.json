@@ -1,0 +1,25 @@
+{
+  "run": "abl_vicreg_ema_tgt4_seed2",
+  "config": "configs/ablation/abl_vicreg_ema_tgt4.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.640625,
+    "decision_acc": 0.7312252964426877
+  },
+  "best": {
+    "path_acc": 0.703125,
+    "decision_acc": 0.7905138339920948
+  },
+  "eranks": {
+    "erank_0": 28.46,
+    "erank_1": 31.63,
+    "erank_2": 44.03,
+    "erank_3": 49.35,
+    "erank_4": 53.66,
+    "erank_5": 57.35,
+    "erank_6": 63.64
+  },
+  "wall_s": 274.6
+}
