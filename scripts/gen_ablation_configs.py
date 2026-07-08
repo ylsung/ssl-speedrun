@@ -73,6 +73,7 @@ HARD = {
     "h_d2v25": (pooled(**EMA4), "  corrupt_p: 0.25\n"),
     "h_d2v50": (pooled(**EMA4), "  corrupt_p: 0.5\n"),
     "h_d2vctl50": ("", "  corrupt_p: 0.5\n"),          # corrupted-NTP-only control
+    "h_d2vctl25": ("", "  corrupt_p: 0.25\n"),         # attribution control for d2v25
     "h_noisytgt50": (pooled(**EMA4),                    # noisy-target control (expect fail)
                      "  corrupt_p: 0.5\n  corrupt_side: ema\n"),
     # 1: gap targets — drop the easy near future
