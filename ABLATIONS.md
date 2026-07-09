@@ -120,8 +120,12 @@ separates the latent family from MTP. Input corruption with NTP riding the
 corrupted pass is a net **loss** (d2v25 .589 ≈ its corrupted-NTP-only
 control .603 → the latent loss adds nothing there; p=.5 worse still, .428
 with erank collapse). Noisy-target control .715, a no-op exactly as
-predicted. Repair cells (`h_d2v25m` masked-source NTP, `h_d2v25c` clean-NTP
-3-pass) pending.
+predicted. Repair cells: masked-source NTP does *not* repair (`h_d2v25m`
+.583 ± .007 — the harm is corrupted-context training itself, not just the
+ill-posed targets); clean-NTP 3-pass fully repairs but does not improve
+(`h_d2v25c` .733 ± .044 ≈ clean JEPA .744, at +30% compute, even though the
+decontaminated latent task provably stays harder, 0.05–0.06 nats). Round 3
+closed: the surviving hypothesis is depth-separated MTP+latent (D2′).
 
 Diagnosis from rounds 1–2: continuous pooled targets reach a low-loss blur
 within ~20% of training (aux loss → 0.01–0.02), after which they supply no
