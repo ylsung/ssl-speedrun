@@ -45,3 +45,178 @@ SUMMARY {"run": "abl_h_d2vctl50_seed0", "config": "configs/ablation/abl_h_d2vctl
 step   4000 loss 1.1796 [ntp=1.180] path_acc 0.000 decision_acc 0.027 erank 4.0 (314.5k tok/s)
 SUMMARY {"run": "abl_h_d2vctl50_seed1", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732672, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.027450980392156862}, "best": {"path_acc": 0.0078125, "decision_acc": 0.34901960784313724}, "eranks": {"erank_0": 22.06, "erank_1": 5.53, "erank_2": 5.62, "erank_3": 6.09, "erank_4": 5.44, "erank_5": 4.55, "erank_6": 4.02}, "wall_s": 239.3}
 === abl_h_d2vctl50_seed2 ===
+step   4000 loss 1.2470 [ntp=1.247] path_acc 0.000 decision_acc 0.024 erank 3.4 (336.4k tok/s)
+SUMMARY {"run": "abl_h_d2vctl50_seed2", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732672, "steps": 4000, "final": {"path_acc": 0.0, "decision_acc": 0.023715415019762844}, "best": {"path_acc": 0.00390625, "decision_acc": 0.3359683794466403}, "eranks": {"erank_0": 23.37, "erank_1": 8.46, "erank_2": 7.53, "erank_3": 7.86, "erank_4": 7.42, "erank_5": 6.89, "erank_6": 3.4}, "wall_s": 223.7}
+=== abl_h_entw_seed0 ===
+step   4000 loss 0.1214 [ntp=0.053 jepa_pooled=0.068] path_acc 0.633 decision_acc 0.688 erank 47.8 (268.6k tok/s)
+SUMMARY {"run": "abl_h_entw_seed0", "config": "configs/ablation/abl_h_entw.yaml", "device": "cuda", "params": 4994816, "steps": 4000, "final": {"path_acc": 0.6328125, "decision_acc": 0.6877470355731226}, "best": {"path_acc": 0.6328125, "decision_acc": 0.691699604743083}, "eranks": {"erank_0": 28.87, "erank_1": 29.32, "erank_2": 39.2, "erank_3": 43.4, "erank_4": 43.92, "erank_5": 48.22, "erank_6": 47.79}, "wall_s": 280.2}
+=== abl_h_entw_seed1 ===
+step   4000 loss 0.1218 [ntp=0.049 jepa_pooled=0.072] path_acc 0.680 decision_acc 0.776 erank 54.3 (286.9k tok/s)
+SUMMARY {"run": "abl_h_entw_seed1", "config": "configs/ablation/abl_h_entw.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6796875, "decision_acc": 0.7764705882352941}, "best": {"path_acc": 0.6796875, "decision_acc": 0.7764705882352941}, "eranks": {"erank_0": 29.28, "erank_1": 30.51, "erank_2": 42.95, "erank_3": 49.01, "erank_4": 53.73, "erank_5": 57.65, "erank_6": 54.3}, "wall_s": 262.3}
+=== abl_h_entw_seed2 ===
+step   4000 loss 0.1148 [ntp=0.049 jepa_pooled=0.065] path_acc 0.680 decision_acc 0.747 erank 59.9 (288.6k tok/s)
+SUMMARY {"run": "abl_h_entw_seed2", "config": "configs/ablation/abl_h_entw.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6796875, "decision_acc": 0.7470355731225297}, "best": {"path_acc": 0.6875, "decision_acc": 0.7786561264822134}, "eranks": {"erank_0": 31.15, "erank_1": 25.48, "erank_2": 39.05, "erank_3": 45.66, "erank_4": 50.14, "erank_5": 56.28, "erank_6": 59.9}, "wall_s": 260.8}
+=== abl_h_gap16_seed0 ===
+step   4000 loss 0.0939 [ntp=0.054 jepa_pooled=0.040] path_acc 0.621 decision_acc 0.715 erank 28.6 (306.3k tok/s)
+SUMMARY {"run": "abl_h_gap16_seed0", "config": "configs/ablation/abl_h_gap16.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.62109375, "decision_acc": 0.7154150197628458}, "best": {"path_acc": 0.62109375, "decision_acc": 0.7154150197628458}, "eranks": {"erank_0": 27.27, "erank_1": 21.26, "erank_2": 19.15, "erank_3": 20.87, "erank_4": 20.5, "erank_5": 22.28, "erank_6": 28.65}, "wall_s": 245.7}
+=== abl_h_gap16_seed1 ===
+step   4000 loss 0.1154 [ntp=0.051 jepa_pooled=0.064] path_acc 0.648 decision_acc 0.737 erank 34.9 (290.3k tok/s)
+SUMMARY {"run": "abl_h_gap16_seed1", "config": "configs/ablation/abl_h_gap16.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6484375, "decision_acc": 0.7372549019607844}, "best": {"path_acc": 0.6484375, "decision_acc": 0.7490196078431373}, "eranks": {"erank_0": 26.57, "erank_1": 12.77, "erank_2": 14.47, "erank_3": 19.69, "erank_4": 22.75, "erank_5": 25.66, "erank_6": 34.89}, "wall_s": 259.3}
+=== abl_h_gap16_seed2 ===
+step   4000 loss 0.1262 [ntp=0.069 jepa_pooled=0.057] path_acc 0.645 decision_acc 0.751 erank 36.6 (276.3k tok/s)
+SUMMARY {"run": "abl_h_gap16_seed2", "config": "configs/ablation/abl_h_gap16.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.64453125, "decision_acc": 0.7509881422924901}, "best": {"path_acc": 0.64453125, "decision_acc": 0.7628458498023716}, "eranks": {"erank_0": 30.88, "erank_1": 26.31, "erank_2": 19.06, "erank_3": 19.55, "erank_4": 22.25, "erank_5": 26.6, "erank_6": 36.56}, "wall_s": 272.4}
+=== abl_h_gap8_seed0 ===
+step   4000 loss 0.1212 [ntp=0.056 jepa_pooled=0.066] path_acc 0.641 decision_acc 0.704 erank 41.9 (291.5k tok/s)
+SUMMARY {"run": "abl_h_gap8_seed0", "config": "configs/ablation/abl_h_gap8.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.640625, "decision_acc": 0.7035573122529645}, "best": {"path_acc": 0.640625, "decision_acc": 0.7035573122529645}, "eranks": {"erank_0": 27.51, "erank_1": 27.65, "erank_2": 25.17, "erank_3": 32.41, "erank_4": 36.46, "erank_5": 39.53, "erank_6": 41.94}, "wall_s": 258.2}
+=== abl_h_gap8_seed1 ===
+step   4000 loss 0.1265 [ntp=0.057 jepa_pooled=0.069] path_acc 0.672 decision_acc 0.773 erank 42.3 (289.1k tok/s)
+SUMMARY {"run": "abl_h_gap8_seed1", "config": "configs/ablation/abl_h_gap8.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.671875, "decision_acc": 0.7725490196078432}, "best": {"path_acc": 0.671875, "decision_acc": 0.7725490196078432}, "eranks": {"erank_0": 26.31, "erank_1": 19.77, "erank_2": 26.48, "erank_3": 30.5, "erank_4": 34.61, "erank_5": 36.69, "erank_6": 42.32}, "wall_s": 260.3}
+=== abl_h_gap8_seed2 ===
+step   4000 loss 0.1281 [ntp=0.057 jepa_pooled=0.071] path_acc 0.664 decision_acc 0.759 erank 52.2 (326.9k tok/s)
+SUMMARY {"run": "abl_h_gap8_seed2", "config": "configs/ablation/abl_h_gap8.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6640625, "decision_acc": 0.758893280632411}, "best": {"path_acc": 0.6640625, "decision_acc": 0.7747035573122529}, "eranks": {"erank_0": 31.14, "erank_1": 29.99, "erank_2": 34.12, "erank_3": 39.07, "erank_4": 39.76, "erank_5": 44.75, "erank_6": 52.22}, "wall_s": 230.3}
+=== abl_h_lsh_seed0 ===
+step   4000 loss 0.2518 [ntp=0.051 jepa_pooled=0.201] path_acc 0.668 decision_acc 0.715 erank 54.0 (289.9k tok/s)
+SUMMARY {"run": "abl_h_lsh_seed0", "config": "configs/ablation/abl_h_lsh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.66796875, "decision_acc": 0.7154150197628458}, "best": {"path_acc": 0.66796875, "decision_acc": 0.7154150197628458}, "eranks": {"erank_0": 29.63, "erank_1": 30.79, "erank_2": 41.57, "erank_3": 45.28, "erank_4": 45.44, "erank_5": 48.5, "erank_6": 53.97}, "wall_s": 259.6}
+=== abl_h_lsh_seed1 ===
+step   4000 loss 0.2533 [ntp=0.048 jepa_pooled=0.206] path_acc 0.680 decision_acc 0.761 erank 57.1 (289.0k tok/s)
+SUMMARY {"run": "abl_h_lsh_seed1", "config": "configs/ablation/abl_h_lsh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6796875, "decision_acc": 0.7607843137254902}, "best": {"path_acc": 0.6796875, "decision_acc": 0.7607843137254902}, "eranks": {"erank_0": 29.7, "erank_1": 31.14, "erank_2": 42.61, "erank_3": 47.26, "erank_4": 51.73, "erank_5": 54.11, "erank_6": 57.13}, "wall_s": 260.5}
+=== abl_h_lsh_seed2 ===
+step   4000 loss 0.2593 [ntp=0.056 jepa_pooled=0.204] path_acc 0.668 decision_acc 0.759 erank 58.8 (292.1k tok/s)
+SUMMARY {"run": "abl_h_lsh_seed2", "config": "configs/ablation/abl_h_lsh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.66796875, "decision_acc": 0.758893280632411}, "best": {"path_acc": 0.67578125, "decision_acc": 0.758893280632411}, "eranks": {"erank_0": 30.03, "erank_1": 25.53, "erank_2": 36.34, "erank_3": 45.47, "erank_4": 51.54, "erank_5": 56.96, "erank_6": 58.79}, "wall_s": 257.6}
+=== abl_h_nceh_seed0 ===
+step   4000 loss 0.9376 [ntp=0.051 jepa_pooled=0.887] path_acc 0.680 decision_acc 0.723 erank 73.6 (308.5k tok/s)
+SUMMARY {"run": "abl_h_nceh_seed0", "config": "configs/ablation/abl_h_nceh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6796875, "decision_acc": 0.7233201581027668}, "best": {"path_acc": 0.6953125, "decision_acc": 0.7391304347826086}, "eranks": {"erank_0": 28.71, "erank_1": 28.26, "erank_2": 41.76, "erank_3": 55.01, "erank_4": 62.35, "erank_5": 69.39, "erank_6": 73.59}, "wall_s": 244.0}
+=== abl_h_nceh_seed1 ===
+step   4000 loss 1.0026 [ntp=0.042 jepa_pooled=0.961] path_acc 0.664 decision_acc 0.753 erank 76.9 (285.0k tok/s)
+SUMMARY {"run": "abl_h_nceh_seed1", "config": "configs/ablation/abl_h_nceh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6640625, "decision_acc": 0.7529411764705882}, "best": {"path_acc": 0.6640625, "decision_acc": 0.7568627450980392}, "eranks": {"erank_0": 29.29, "erank_1": 34.28, "erank_2": 53.51, "erank_3": 58.99, "erank_4": 65.66, "erank_5": 71.23, "erank_6": 76.85}, "wall_s": 264.1}
+=== abl_h_nceh_seed2 ===
+step   4000 loss 1.0298 [ntp=0.053 jepa_pooled=0.977] path_acc 0.684 decision_acc 0.759 erank 74.5 (285.6k tok/s)
+SUMMARY {"run": "abl_h_nceh_seed2", "config": "configs/ablation/abl_h_nceh.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.68359375, "decision_acc": 0.758893280632411}, "best": {"path_acc": 0.68359375, "decision_acc": 0.7707509881422925}, "eranks": {"erank_0": 29.38, "erank_1": 35.12, "erank_2": 50.4, "erank_3": 58.01, "erank_4": 63.51, "erank_5": 69.99, "erank_6": 74.53}, "wall_s": 263.5}
+=== abl_h_noisytgt50_seed0 ===
+step   4000 loss 0.0970 [ntp=0.058 jepa_pooled=0.039] path_acc 0.625 decision_acc 0.700 erank 24.4 (318.4k tok/s)
+SUMMARY {"run": "abl_h_noisytgt50_seed0", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.625, "decision_acc": 0.6996047430830039}, "best": {"path_acc": 0.625, "decision_acc": 0.6996047430830039}, "eranks": {"erank_0": 26.07, "erank_1": 13.51, "erank_2": 11.73, "erank_3": 14.37, "erank_4": 15.45, "erank_5": 16.0, "erank_6": 24.36}, "wall_s": 236.4}
+=== abl_h_noisytgt50_seed1 ===
+step   4000 loss 0.1144 [ntp=0.051 jepa_pooled=0.063] path_acc 0.645 decision_acc 0.733 erank 44.9 (287.5k tok/s)
+SUMMARY {"run": "abl_h_noisytgt50_seed1", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.64453125, "decision_acc": 0.7333333333333333}, "best": {"path_acc": 0.64453125, "decision_acc": 0.7333333333333333}, "eranks": {"erank_0": 26.2, "erank_1": 12.55, "erank_2": 18.2, "erank_3": 25.42, "erank_4": 31.29, "erank_5": 36.75, "erank_6": 44.89}, "wall_s": 261.8}
+=== abl_h_noisytgt50_seed2 ===
+step   4000 loss 0.0867 [ntp=0.061 jepa_pooled=0.026] path_acc 0.602 decision_acc 0.719 erank 32.8 (290.8k tok/s)
+SUMMARY {"run": "abl_h_noisytgt50_seed2", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6015625, "decision_acc": 0.7193675889328063}, "best": {"path_acc": 0.66015625, "decision_acc": 0.7549407114624506}, "eranks": {"erank_0": 29.3, "erank_1": 14.51, "erank_2": 19.58, "erank_3": 23.18, "erank_4": 26.14, "erank_5": 28.71, "erank_6": 32.8}, "wall_s": 258.8}
+=== abl_infonce_ema_tgt4_seed0 (done, skipping) ===
+=== abl_infonce_ema_tgt4_seed1 (done, skipping) ===
+=== abl_infonce_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed0 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed1 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed2 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed0 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed1 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed2 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_mtp_k8_seed0 (done, skipping) ===
+=== abl_mtp_k8_seed1 (done, skipping) ===
+=== abl_mtp_k8_seed2 (done, skipping) ===
+=== abl_s2_combo_seed0 (done, skipping) ===
+=== abl_s2_combo_seed1 (done, skipping) ===
+=== abl_s2_combo_seed2 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed0 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed1 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed2 (done, skipping) ===
+=== abl_s2_sg_combo_seed0 (done, skipping) ===
+=== abl_s2_sg_combo_seed1 (done, skipping) ===
+=== abl_s2_sg_combo_seed2 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed0 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed1 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed2 (done, skipping) ===
+=== abl_same_tgt2_seed0 (done, skipping) ===
+=== abl_same_tgt2_seed1 (done, skipping) ===
+=== abl_same_tgt2_seed2 (done, skipping) ===
+=== abl_same_tgt4_seed0 (done, skipping) ===
+=== abl_same_tgt4_seed1 (done, skipping) ===
+=== abl_same_tgt4_seed2 (done, skipping) ===
+=== abl_same_tgt6_seed0 (done, skipping) ===
+=== abl_same_tgt6_seed1 (done, skipping) ===
+=== abl_same_tgt6_seed2 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed2 (done, skipping) ===
+--- results ---
+method                        n     decision_acc         path_acc         val_loss          val_ppl  erank_last  wall_s
+_nanfix_check                 1    0.530 ±0.000    0.359 ±0.000                                          23.1      91
+abl_attn_ema_tgt4             3    0.725 ±0.034    0.639 ±0.023                                          39.0     264
+abl_attnc8_ema_tgt4           3    0.706 ±0.011    0.607 ±0.016                                          32.5     271
+abl_c4_ema_tgt4               3    0.746 ±0.015    0.676 ±0.022                                          35.7     245
+abl_c8_ema_tgt4               3    0.744 ±0.026    0.667 ±0.008                                          31.0     259
+abl_ema_tgt1                  3    0.725 ±0.010    0.635 ±0.010                                          55.0     254
+abl_ema_tgt2                  3    0.733 ±0.027    0.667 ±0.016                                          48.7     255
+abl_ema_tgt6                  3    0.729 ±0.022    0.641 ±0.006                                          55.0     263
+/workspace/ssl-speedrun/scripts/collect_results.py:43: RuntimeWarning: Mean of empty slice
+  row += f" {np.nanmean(er):11.1f} {np.mean([r['wall_s'] for r in runs]):7.0f}"
+abl_h_d2v25                   3    0.000 ±0.000    0.000 ±0.000                                           nan     284
+abl_h_d2v50                   3    0.000 ±0.000    0.000 ±0.000                                           nan     283
+abl_h_d2vctl50                3    0.030 ±0.007    0.000 ±0.000                                           3.5     230
+abl_h_entw                    3    0.737 ±0.037    0.664 ±0.022                                          54.0     268
+abl_h_gap16                   3    0.735 ±0.015    0.638 ±0.012                                          33.4     259
+abl_h_gap8                    3    0.745 ±0.030    0.659 ±0.013                                          45.5     250
+abl_h_lsh                     3    0.745 ±0.021    0.672 ±0.006                                          56.6     259
+abl_h_nceh                    3    0.745 ±0.016    0.676 ±0.008                                          75.0     257
+abl_h_noisytgt50              3    0.717 ±0.014    0.624 ±0.018                                          34.0     252
+abl_infonce_ema_tgt4          3    0.750 ±0.037    0.667 ±0.029                                          85.1     254
+abl_k16_ema_tgt4              3    0.745 ±0.027    0.660 ±0.015                                          49.4     253
+abl_k32_ema_tgt4              3    0.740 ±0.031    0.650 ±0.024                                          41.1     256
+abl_k4_ema_tgt4               3    0.732 ±0.018    0.645 ±0.010                                          53.4     256
+abl_l2_ema_tgt4               3    0.742 ±0.033    0.673 ±0.024                                          52.0     253
+abl_m16_ema_tgt4              3    0.729 ±0.021    0.647 ±0.021                                          36.0     344
+abl_m8_ema_tgt4               3    0.738 ±0.022    0.654 ±0.010                                          45.5     300
+abl_mtp_k8                    3    0.845 ±0.025    0.811 ±0.018                                          20.7     250
+abl_s2_combo                  3    0.746 ±0.027    0.673 ±0.018                                          52.4     265
+abl_s2_mtp8jepa               3    0.795 ±0.009    0.747 ±0.019                                          27.5     289
+abl_s2_sg_combo               3    0.198 ±0.026    0.198 ±0.026                                           9.6     195
+abl_s2_sg_mtp8                3    0.190 ±0.019    0.190 ±0.019                                          30.0     204
+abl_same_tgt2                 3    0.723 ±0.023    0.648 ±0.021                                          32.2     236
+abl_same_tgt4                 3    0.692 ±0.025    0.608 ±0.040                                          37.8     231
+abl_same_tgt6                 3    0.686 ±0.034    0.599 ±0.037                                          24.3     228
+abl_sigreg_ema_tgt4           3    0.706 ±0.029    0.621 ±0.028                                          54.7     261
+abl_src2_ema_tgt4             3    0.729 ±0.024    0.646 ±0.018                                          37.8     261
+abl_src4_ema_tgt4             3    0.732 ±0.038    0.645 ±0.022                                          36.1     266
+abl_vicreg_ema_tgt4           3    0.729 ±0.020    0.652 ±0.010                                          57.7     272
+maze2_jepa_ans                3    0.736 ±0.040    0.645 ±0.031                                          24.9     386
+maze2_jepa_ema                3    0.744 ±0.020    0.663 ±0.018                                          51.1     446
+maze2_jepa_k16                3    0.714 ±0.021    0.629 ±0.017                                          36.1     382
+maze2_pyramid_hi              3    0.720 ±0.024    0.639 ±0.037                                          55.1     465
+maze_jepa                     3    0.712 ±0.009    0.639 ±0.013                                          39.7     233
+maze_mtp                      3    0.821 ±0.014    0.780 ±0.016                                          16.3     234
+maze_nitp                     3    0.709 ±0.025    0.637 ±0.025                                          43.7     218
+maze_ntp                      3    0.696 ±0.043    0.605 ±0.031                                          27.4     222
+maze_pertoken                 3    0.712 ±0.029    0.643 ±0.023                                          37.1     240
+maze_pyramid                  3    0.731 ±0.025    0.656 ±0.016                                          44.6     249
+stargraph_jepa                3    0.094 ±0.072    0.065 ±0.092                                          40.3     175
+stargraph_mtp                 3    0.185 ±0.040    0.185 ±0.040                                           3.4     182
+stargraph_nitp                3    0.049 ±0.013    0.000 ±0.000                                          24.1     170
+stargraph_ntp                 3    0.076 ±0.057    0.052 ±0.074                                          17.7     167
+stargraph_pertoken            3    0.134 ±0.079    0.125 ±0.091                                          17.6     193
+stargraph_pyramid             3    0.109 ±0.081    0.074 ±0.105                                          34.2     213
+tinystories_jepa              2                                      1.295 ±0.011    3.649 ±0.040       187.1    3626
+tinystories_mtp               3                                      1.310 ±0.008    3.706 ±0.030       239.4    4194
+tinystories_nitp              1                                      1.306 ±0.000    3.692 ±0.000       190.4    3632
+tinystories_ntp               3                                      1.297 ±0.010    3.660 ±0.037       185.0    4229
+tinystories_pertoken          1                                      1.302 ±0.000    3.678 ±0.000       193.3    3871
+tinystories_pyramid           1                                      1.306 ±0.000    3.690 ±0.000       196.6    3991

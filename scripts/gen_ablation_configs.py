@@ -87,6 +87,16 @@ HARD = {
     "h_entw": (pooled(weight_by="entropy", **EMA4), ""),
 }
 
+# cells needing a non-default NTP line: (ntp_line, aux_lines, train_extra)
+HARD_RAW = {
+    # masked-source NTP: skip loss where the predecessor token was corrupted
+    "h_d2v25m": ("  - {kind: ntp, weight: 1.0, mask_corrupt_src: true}\n",
+                 pooled(**EMA4), "  corrupt_p: 0.25\n"),
+    # clean-NTP 3-pass: NTP on clean pass; latent source from corrupted pass
+    "h_d2v25c": ("  - {kind: ntp, weight: 1.0}\n",
+                 pooled(**EMA4), "  corrupt_p: 0.25\n  corrupt_side: latent\n"),
+}
+
 os.makedirs("configs/ablation", exist_ok=True)
 for name, loss_line in CELLS.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
@@ -96,4 +106,9 @@ for name, (loss_line, extra) in HARD.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
                 + HEAD + loss_line + TRAIN + extra)
-print(f"wrote {len(CELLS) + len(HARD)} configs to configs/ablation/")
+TASK_MODEL = HEAD[:HEAD.index("losses:")]
+for name, (ntp_line, aux, extra) in HARD_RAW.items():
+    with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
+        f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
+                + TASK_MODEL + "losses:\n" + ntp_line + aux + TRAIN + extra)
+print(f"wrote {len(CELLS) + len(HARD) + len(HARD_RAW)} configs to configs/ablation/")

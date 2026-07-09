@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_entw_seed0",
+  "config": "configs/ablation/abl_h_entw.yaml",
+  "device": "cuda",
+  "params": 4994816,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6328125,
+    "decision_acc": 0.6877470355731226
+  },
+  "best": {
+    "path_acc": 0.6328125,
+    "decision_acc": 0.691699604743083
+  },
+  "eranks": {
+    "erank_0": 28.87,
+    "erank_1": 29.32,
+    "erank_2": 39.2,
+    "erank_3": 43.4,
+    "erank_4": 43.92,
+    "erank_5": 48.22,
+    "erank_6": 47.79
+  },
+  "wall_s": 280.2
+}

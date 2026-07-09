@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_lsh_seed2",
+  "config": "configs/ablation/abl_h_lsh.yaml",
+  "device": "cuda",
+  "params": 4995072,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.66796875,
+    "decision_acc": 0.758893280632411
+  },
+  "best": {
+    "path_acc": 0.67578125,
+    "decision_acc": 0.758893280632411
+  },
+  "eranks": {
+    "erank_0": 30.03,
+    "erank_1": 25.53,
+    "erank_2": 36.34,
+    "erank_3": 45.47,
+    "erank_4": 51.54,
+    "erank_5": 56.96,
+    "erank_6": 58.79
+  },
+  "wall_s": 257.6
+}

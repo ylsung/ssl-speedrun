@@ -23,9 +23,12 @@ import torch.nn.functional as F
 class NTPLoss(nn.Module):
     name = "ntp"
 
-    def __init__(self, weight: float = 1.0, **kw):
+    def __init__(self, weight: float = 1.0, mask_corrupt_src: bool = False, **kw):
         super().__init__()
         self.weight = weight
+        # skip loss where the predicting position's input token was corrupted
+        # (prediction is ill-posed without the immediate predecessor)
+        self.mask_corrupt_src = mask_corrupt_src
 
     def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         tokens, mask = batch["tokens"], batch["target_mask"]
@@ -33,6 +36,8 @@ class NTPLoss(nn.Module):
         lg = logits[:, :-1]
         tgt = tokens[:, 1:]
         m = mask[:, 1:]
+        if self.mask_corrupt_src and batch.get("drop_mask") is not None:
+            m = m & ~batch["drop_mask"][:, :-1]
         if m.sum() == 0:
             return logits.new_zeros(())
         loss = F.cross_entropy(lg[m], tgt[m])
@@ -179,7 +184,8 @@ class JepaPooledLoss(nn.Module):
 
     def forward(self, logits, hiddens, batch, tgt_hiddens=None):
         k, c, g = self.k, self.src_pool, self.gap
-        h_src = hiddens[self.src_layer]
+        src_hiddens = batch.get("src_hiddens") or hiddens
+        h_src = src_hiddens[self.src_layer]
         B, T, D = h_src.shape
         # pairing: source at position t (pooled over t-c+1..t when c>1)
         # predicts the pooled target window t+g+1 .. t+g+k.
@@ -300,7 +306,8 @@ class JepaPerTokenLoss(nn.Module):
             nn.Linear(2 * d_model, d_model, bias=False) for _ in range(m))
 
     def forward(self, logits, hiddens, batch, tgt_hiddens=None):
-        h_src = hiddens[self.src_layer]
+        src_hiddens = batch.get("src_hiddens") or hiddens
+        h_src = src_hiddens[self.src_layer]
         T = h_src.size(1)
         src_of_tgt = tgt_hiddens if self.target == "ema" else hiddens
         tgt = src_of_tgt[self.tgt_layer].detach().float()
@@ -339,7 +346,11 @@ class LossStack(nn.Module):
     def __init__(self, model, loss_cfgs: list, ema_decay: float = 0.999,
                  corrupt_p: float = 0.0, corrupt_side: str = "student"):
         super().__init__()
-        assert corrupt_side in ("student", "ema")
+        # student: one corrupted pass, NTP rides it (2 passes total)
+        # ema:     corrupt the teacher's input (noisy-target control)
+        # latent:  clean pass for NTP + separate corrupted pass that supplies
+        #          the latent-loss source hiddens (3 passes, clean attribution)
+        assert corrupt_side in ("student", "ema", "latent")
         self.model = model
         self.ema_decay = ema_decay
         self.corrupt_p = corrupt_p
@@ -374,12 +385,16 @@ class LossStack(nn.Module):
             drop[:, 0] = False  # never corrupt BOS
         logits, hiddens = self.model(
             batch["tokens"], drop if self.corrupt_side == "student" else None)
+        src_hiddens = None
+        if drop is not None and self.corrupt_side == "latent":
+            _, src_hiddens = self.model(batch["tokens"], drop)
         tgt_hiddens = None
         if self.ema_model is not None:
             with torch.no_grad():
                 _, tgt_hiddens = self.ema_model(
                     batch["tokens"],
                     drop if self.corrupt_side == "ema" else None)
+        batch = {**batch, "drop_mask": drop, "src_hiddens": src_hiddens}
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:

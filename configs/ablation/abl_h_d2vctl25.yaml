@@ -1,0 +1,13 @@
+# hardness cell h_d2vctl25 (see ABLATIONS.md round 3)
+task: {kind: maze, width: 6, height: 6, min_path: 6, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 4000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 200
+  seed: 0
+  corrupt_p: 0.25

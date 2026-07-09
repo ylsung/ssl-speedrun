@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_gap16_seed1",
+  "config": "configs/ablation/abl_h_gap16.yaml",
+  "device": "cuda",
+  "params": 4995072,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6484375,
+    "decision_acc": 0.7372549019607844
+  },
+  "best": {
+    "path_acc": 0.6484375,
+    "decision_acc": 0.7490196078431373
+  },
+  "eranks": {
+    "erank_0": 26.57,
+    "erank_1": 12.77,
+    "erank_2": 14.47,
+    "erank_3": 19.69,
+    "erank_4": 22.75,
+    "erank_5": 25.66,
+    "erank_6": 34.89
+  },
+  "wall_s": 259.3
+}

@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_nceh_seed2",
+  "config": "configs/ablation/abl_h_nceh.yaml",
+  "device": "cuda",
+  "params": 4995072,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.68359375,
+    "decision_acc": 0.758893280632411
+  },
+  "best": {
+    "path_acc": 0.68359375,
+    "decision_acc": 0.7707509881422925
+  },
+  "eranks": {
+    "erank_0": 29.38,
+    "erank_1": 35.12,
+    "erank_2": 50.4,
+    "erank_3": 58.01,
+    "erank_4": 63.51,
+    "erank_5": 69.99,
+    "erank_6": 74.53
+  },
+  "wall_s": 263.5
+}
