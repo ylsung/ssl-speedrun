@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_noisytgt50_seed0",
+  "config": "configs/ablation/abl_h_noisytgt50.yaml",
+  "device": "cuda",
+  "params": 4995072,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6015625,
+    "decision_acc": 0.691699604743083
+  },
+  "best": {
+    "path_acc": 0.6171875,
+    "decision_acc": 0.7075098814229249
+  },
+  "eranks": {
+    "erank_0": 25.42,
+    "erank_1": 14.37,
+    "erank_2": 19.78,
+    "erank_3": 23.0,
+    "erank_4": 24.61,
+    "erank_5": 25.26,
+    "erank_6": 30.06
+  },
+  "wall_s": 260.8
+}

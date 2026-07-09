@@ -111,7 +111,17 @@ yet found a good JEPA configuration, and 4×2 more hour-long runs of
 known-suboptimal configs is compute better spent on this ablation. Tier-1
 seeds for the JEPA arms resume once the ablation picks a winner.
 
-## Round 3 — hardness program (designed 2026-07-08, not yet run)
+## Round 3 — hardness program (run 2026-07-08/09; results in results/2026-07-08_ablation.md §Round 3)
+
+**Outcome summary:** loss-side hardness (rows 1–4 below) is flat at
+.735–.745 even where the aux loss provably stays hard to the end (LSH 0.20
+nats, hard-negative InfoNCE 0.89 nats) — early-collapse is *not* what
+separates the latent family from MTP. Input corruption with NTP riding the
+corrupted pass is a net **loss** (d2v25 .589 ≈ its corrupted-NTP-only
+control .603 → the latent loss adds nothing there; p=.5 worse still, .428
+with erank collapse). Noisy-target control .715, a no-op exactly as
+predicted. Repair cells (`h_d2v25m` masked-source NTP, `h_d2v25c` clean-NTP
+3-pass) pending.
 
 Diagnosis from rounds 1–2: continuous pooled targets reach a low-loss blur
 within ~20% of training (aux loss → 0.01–0.02), after which they supply no

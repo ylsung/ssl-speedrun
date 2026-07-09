@@ -1,0 +1,27 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+wrote 34 configs to configs/ablation/
+=== abl_attn_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed2 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_ema_tgt1_seed0 (done, skipping) ===
+=== abl_ema_tgt1_seed1 (done, skipping) ===
+=== abl_ema_tgt1_seed2 (done, skipping) ===
+=== abl_ema_tgt2_seed0 (done, skipping) ===
+=== abl_ema_tgt2_seed1 (done, skipping) ===
+=== abl_ema_tgt2_seed2 (done, skipping) ===
+=== abl_ema_tgt6_seed0 (done, skipping) ===
+=== abl_ema_tgt6_seed1 (done, skipping) ===
+=== abl_ema_tgt6_seed2 (done, skipping) ===
+=== abl_h_d2v25_seed0 (done, skipping) ===
+=== abl_h_d2v25_seed1 (done, skipping) ===
+=== abl_h_d2v25_seed2 (done, skipping) ===
+=== abl_h_d2v25c_seed0 ===

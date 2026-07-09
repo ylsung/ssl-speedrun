@@ -1,0 +1,25 @@
+{
+  "run": "abl_h_d2vctl50_seed1",
+  "config": "configs/ablation/abl_h_d2vctl50.yaml",
+  "device": "cuda",
+  "params": 4732928,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.34765625,
+    "decision_acc": 0.5529411764705883
+  },
+  "best": {
+    "path_acc": 0.39453125,
+    "decision_acc": 0.5725490196078431
+  },
+  "eranks": {
+    "erank_0": 22.95,
+    "erank_1": 10.78,
+    "erank_2": 12.09,
+    "erank_3": 11.9,
+    "erank_4": 11.87,
+    "erank_5": 14.42,
+    "erank_6": 17.1
+  },
+  "wall_s": 220.9
+}

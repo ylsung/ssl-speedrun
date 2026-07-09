@@ -20,42 +20,18 @@ wrote 32 configs to configs/ablation/
 === abl_ema_tgt6_seed0 (done, skipping) ===
 === abl_ema_tgt6_seed1 (done, skipping) ===
 === abl_ema_tgt6_seed2 (done, skipping) ===
-=== abl_h_d2v25_seed0 ===
-step   4000 loss 0.5496 [ntp=0.524 jepa_pooled=0.026] path_acc 0.500 decision_acc 0.613 erank 21.7 (327.8k tok/s)
-SUMMARY {"run": "abl_h_d2v25_seed0", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.5, "decision_acc": 0.6126482213438735}, "best": {"path_acc": 0.5, "decision_acc": 0.616600790513834}, "eranks": {"erank_0": 26.6, "erank_1": 15.61, "erank_2": 11.7, "erank_3": 15.33, "erank_4": 16.57, "erank_5": 18.72, "erank_6": 21.67}, "wall_s": 229.6}
-=== abl_h_d2v25_seed1 ===
-step   4000 loss 0.5438 [ntp=0.519 jepa_pooled=0.025] path_acc 0.496 decision_acc 0.604 erank 18.3 (291.5k tok/s)
-SUMMARY {"run": "abl_h_d2v25_seed1", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.49609375, "decision_acc": 0.6039215686274509}, "best": {"path_acc": 0.49609375, "decision_acc": 0.6039215686274509}, "eranks": {"erank_0": 26.81, "erank_1": 15.81, "erank_2": 10.4, "erank_3": 10.84, "erank_4": 11.75, "erank_5": 13.94, "erank_6": 18.34}, "wall_s": 258.2}
-=== abl_h_d2v25_seed2 ===
-step   4000 loss 0.5881 [ntp=0.564 jepa_pooled=0.024] path_acc 0.379 decision_acc 0.549 erank 20.5 (294.6k tok/s)
-SUMMARY {"run": "abl_h_d2v25_seed2", "config": "configs/ablation/abl_h_d2v25.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.37890625, "decision_acc": 0.549407114624506}, "best": {"path_acc": 0.4375, "decision_acc": 0.6403162055335968}, "eranks": {"erank_0": 27.18, "erank_1": 12.14, "erank_2": 10.77, "erank_3": 11.62, "erank_4": 13.95, "erank_5": 16.64, "erank_6": 20.46}, "wall_s": 255.5}
-=== abl_h_d2v50_seed0 ===
-step   4000 loss 1.3073 [ntp=1.282 jepa_pooled=0.025] path_acc 0.195 decision_acc 0.490 erank 19.4 (290.0k tok/s)
-SUMMARY {"run": "abl_h_d2v50_seed0", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.1953125, "decision_acc": 0.4901185770750988}, "best": {"path_acc": 0.1953125, "decision_acc": 0.4901185770750988}, "eranks": {"erank_0": 24.75, "erank_1": 18.57, "erank_2": 11.84, "erank_3": 14.66, "erank_4": 12.78, "erank_5": 15.95, "erank_6": 19.37}, "wall_s": 259.5}
-=== abl_h_d2v50_seed1 ===
-step   4000 loss 1.3142 [ntp=1.302 jepa_pooled=0.012] path_acc 0.043 decision_acc 0.384 erank 8.1 (289.9k tok/s)
-SUMMARY {"run": "abl_h_d2v50_seed1", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.04296875, "decision_acc": 0.3843137254901961}, "best": {"path_acc": 0.0546875, "decision_acc": 0.4235294117647059}, "eranks": {"erank_0": 25.04, "erank_1": 20.36, "erank_2": 7.15, "erank_3": 6.46, "erank_4": 6.26, "erank_5": 6.49, "erank_6": 8.07}, "wall_s": 259.6}
-=== abl_h_d2v50_seed2 ===
-step   4000 loss 1.3423 [ntp=1.330 jepa_pooled=0.013] path_acc 0.039 decision_acc 0.411 erank 12.3 (295.0k tok/s)
-SUMMARY {"run": "abl_h_d2v50_seed2", "config": "configs/ablation/abl_h_d2v50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.0390625, "decision_acc": 0.41106719367588934}, "best": {"path_acc": 0.05078125, "decision_acc": 0.4268774703557312}, "eranks": {"erank_0": 24.93, "erank_1": 19.85, "erank_2": 13.78, "erank_3": 8.06, "erank_4": 7.87, "erank_5": 8.88, "erank_6": 12.35}, "wall_s": 255.2}
-=== abl_h_d2vctl25_seed0 ===
-step   4000 loss 0.4773 [ntp=0.477] path_acc 0.492 decision_acc 0.605 erank 18.0 (339.1k tok/s)
-SUMMARY {"run": "abl_h_d2vctl25_seed0", "config": "configs/ablation/abl_h_d2vctl25.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.4921875, "decision_acc": 0.6047430830039525}, "best": {"path_acc": 0.4921875, "decision_acc": 0.6047430830039525}, "eranks": {"erank_0": 25.92, "erank_1": 4.37, "erank_2": 8.32, "erank_3": 11.88, "erank_4": 13.23, "erank_5": 14.54, "erank_6": 17.97}, "wall_s": 221.9}
-=== abl_h_d2vctl25_seed1 ===
-step   4000 loss 0.4977 [ntp=0.498] path_acc 0.469 decision_acc 0.584 erank 21.4 (338.2k tok/s)
-SUMMARY {"run": "abl_h_d2vctl25_seed1", "config": "configs/ablation/abl_h_d2vctl25.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.46875, "decision_acc": 0.5843137254901961}, "best": {"path_acc": 0.46875, "decision_acc": 0.6}, "eranks": {"erank_0": 23.62, "erank_1": 6.96, "erank_2": 9.41, "erank_3": 12.56, "erank_4": 15.54, "erank_5": 17.87, "erank_6": 21.41}, "wall_s": 222.5}
-=== abl_h_d2vctl25_seed2 ===
-step   4000 loss 0.4898 [ntp=0.490] path_acc 0.477 decision_acc 0.621 erank 22.9 (339.5k tok/s)
-SUMMARY {"run": "abl_h_d2vctl25_seed2", "config": "configs/ablation/abl_h_d2vctl25.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.4765625, "decision_acc": 0.6205533596837944}, "best": {"path_acc": 0.53515625, "decision_acc": 0.6640316205533597}, "eranks": {"erank_0": 26.7, "erank_1": 7.69, "erank_2": 12.28, "erank_3": 13.96, "erank_4": 17.47, "erank_5": 20.66, "erank_6": 22.88}, "wall_s": 221.7}
-=== abl_h_d2vctl50_seed0 ===
-step   4000 loss 1.1850 [ntp=1.185] path_acc 0.391 decision_acc 0.530 erank 26.6 (330.1k tok/s)
-SUMMARY {"run": "abl_h_d2vctl50_seed0", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.390625, "decision_acc": 0.5296442687747036}, "best": {"path_acc": 0.40234375, "decision_acc": 0.5375494071146245}, "eranks": {"erank_0": 24.31, "erank_1": 13.67, "erank_2": 15.57, "erank_3": 20.77, "erank_4": 22.95, "erank_5": 27.35, "erank_6": 26.6}, "wall_s": 228.0}
-=== abl_h_d2vctl50_seed1 ===
-step   4000 loss 1.1808 [ntp=1.181] path_acc 0.348 decision_acc 0.553 erank 17.1 (340.7k tok/s)
-SUMMARY {"run": "abl_h_d2vctl50_seed1", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.34765625, "decision_acc": 0.5529411764705883}, "best": {"path_acc": 0.39453125, "decision_acc": 0.5725490196078431}, "eranks": {"erank_0": 22.95, "erank_1": 10.78, "erank_2": 12.09, "erank_3": 11.9, "erank_4": 11.87, "erank_5": 14.42, "erank_6": 17.1}, "wall_s": 220.9}
-=== abl_h_d2vctl50_seed2 ===
-step   4000 loss 1.2113 [ntp=1.211] path_acc 0.363 decision_acc 0.526 erank 21.8 (327.0k tok/s)
-SUMMARY {"run": "abl_h_d2vctl50_seed2", "config": "configs/ablation/abl_h_d2vctl50.yaml", "device": "cuda", "params": 4732928, "steps": 4000, "final": {"path_acc": 0.36328125, "decision_acc": 0.525691699604743}, "best": {"path_acc": 0.3828125, "decision_acc": 0.5691699604743083}, "eranks": {"erank_0": 23.91, "erank_1": 10.72, "erank_2": 13.86, "erank_3": 14.81, "erank_4": 16.09, "erank_5": 18.89, "erank_6": 21.85}, "wall_s": 230.1}
+=== abl_h_d2v25_seed0 (done, skipping) ===
+=== abl_h_d2v25_seed1 (done, skipping) ===
+=== abl_h_d2v25_seed2 (done, skipping) ===
+=== abl_h_d2v50_seed0 (done, skipping) ===
+=== abl_h_d2v50_seed1 (done, skipping) ===
+=== abl_h_d2v50_seed2 (done, skipping) ===
+=== abl_h_d2vctl25_seed0 (done, skipping) ===
+=== abl_h_d2vctl25_seed1 (done, skipping) ===
+=== abl_h_d2vctl25_seed2 (done, skipping) ===
+=== abl_h_d2vctl50_seed0 (done, skipping) ===
+=== abl_h_d2vctl50_seed1 (done, skipping) ===
+=== abl_h_d2vctl50_seed2 (done, skipping) ===
 === abl_h_entw_seed0 (done, skipping) ===
 === abl_h_entw_seed1 (done, skipping) ===
 === abl_h_entw_seed2 (done, skipping) ===
@@ -71,15 +47,9 @@ SUMMARY {"run": "abl_h_d2vctl50_seed2", "config": "configs/ablation/abl_h_d2vctl
 === abl_h_nceh_seed0 (done, skipping) ===
 === abl_h_nceh_seed1 (done, skipping) ===
 === abl_h_nceh_seed2 (done, skipping) ===
-=== abl_h_noisytgt50_seed0 ===
-step   4000 loss 0.0836 [ntp=0.057 jepa_pooled=0.027] path_acc 0.602 decision_acc 0.692 erank 30.1 (288.6k tok/s)
-SUMMARY {"run": "abl_h_noisytgt50_seed0", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.6015625, "decision_acc": 0.691699604743083}, "best": {"path_acc": 0.6171875, "decision_acc": 0.7075098814229249}, "eranks": {"erank_0": 25.42, "erank_1": 14.37, "erank_2": 19.78, "erank_3": 23.0, "erank_4": 24.61, "erank_5": 25.26, "erank_6": 30.06}, "wall_s": 260.8}
-=== abl_h_noisytgt50_seed1 ===
-step   4000 loss 0.1059 [ntp=0.054 jepa_pooled=0.052] path_acc 0.625 decision_acc 0.722 erank 44.4 (298.0k tok/s)
-SUMMARY {"run": "abl_h_noisytgt50_seed1", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.625, "decision_acc": 0.7215686274509804}, "best": {"path_acc": 0.625, "decision_acc": 0.7215686274509804}, "eranks": {"erank_0": 26.48, "erank_1": 13.16, "erank_2": 16.94, "erank_3": 23.15, "erank_4": 28.76, "erank_5": 33.09, "erank_6": 44.4}, "wall_s": 252.5}
-=== abl_h_noisytgt50_seed2 ===
-step   4000 loss 0.0766 [ntp=0.059 jepa_pooled=0.018] path_acc 0.645 decision_acc 0.731 erank 39.0 (278.7k tok/s)
-SUMMARY {"run": "abl_h_noisytgt50_seed2", "config": "configs/ablation/abl_h_noisytgt50.yaml", "device": "cuda", "params": 4995072, "steps": 4000, "final": {"path_acc": 0.64453125, "decision_acc": 0.7312252964426877}, "best": {"path_acc": 0.66796875, "decision_acc": 0.7430830039525692}, "eranks": {"erank_0": 28.78, "erank_1": 15.48, "erank_2": 22.06, "erank_3": 28.52, "erank_4": 32.29, "erank_5": 35.05, "erank_6": 38.99}, "wall_s": 270.1}
+=== abl_h_noisytgt50_seed0 (done, skipping) ===
+=== abl_h_noisytgt50_seed1 (done, skipping) ===
+=== abl_h_noisytgt50_seed2 (done, skipping) ===
 === abl_infonce_ema_tgt4_seed0 (done, skipping) ===
 === abl_infonce_ema_tgt4_seed1 (done, skipping) ===
 === abl_infonce_ema_tgt4_seed2 (done, skipping) ===
