@@ -156,3 +156,21 @@ hardness program is the remaining path for the latent family on Tier 0.
 Q4–Q6 fix the teacher at (EMA, tgt=4) — today's best — rather than waiting
 for Q1/Q2 to finish. If the factorial overturns that choice, rerun the
 affected Q4–Q6 cells with the revised teacher (~1.5 h).
+
+## Round 4 — D2′ depth separation (designed 2026-07-09)
+
+Stage 2 showed MTP+latent at the *same* depth interfere (.845 → .795, erank
+collapse). Round 3 closed every hardness route. Remaining hypothesis: give
+each objective its own depth — MTP owns the top of the trunk, the latent
+loss supervises mid-depth — so the latent loss shapes intermediate
+representations without fighting MTP for the output geometry.
+
+| cell | losses | latent src→tgt |
+|---|---|---|
+| `abl_d2p_src4` | NTP + MTP k=8 (top) + pooled EMA, w=.5 | 4 → 4 |
+| `abl_d2p_src2` | same | 2 → 2 |
+| `abl_d2p_src4_w25` | latent weight .25 | 4 → 4 |
+
+Read-outs: does any cell hold MTP's .845 (no interference) — and does any
+*exceed* it (complementarity)? Reference: `abl_s2_mtp8jepa` (same-depth
+stack) .795 ± .009.

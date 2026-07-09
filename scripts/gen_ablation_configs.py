@@ -87,6 +87,16 @@ HARD = {
     "h_entw": (pooled(weight_by="entropy", **EMA4), ""),
 }
 
+# Round 4 — D2' depth separation: MTP owns the top of the trunk, the latent
+# loss supervises mid-depth (stage-2 showed same-depth stacking interferes,
+# .845 -> .795). Source depth is the free variable.
+MTP8 = "  - {kind: mtp, k: 8, weight: 0.5}\n"
+D2P = {
+    "d2p_src4": MTP8 + pooled(src_layer=4, **EMA4),
+    "d2p_src2": MTP8 + pooled(src_layer=2, tgt_layer=2, target="ema"),
+    "d2p_src4_w25": MTP8 + pooled(src_layer=4, weight=0.25, **EMA4),
+}
+
 # cells needing a non-default NTP line: (ntp_line, aux_lines, train_extra)
 HARD_RAW = {
     # masked-source NTP: skip loss where the predecessor token was corrupted
@@ -106,9 +116,14 @@ for name, (loss_line, extra) in HARD.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
                 + HEAD + loss_line + TRAIN + extra)
+for name, loss_line in D2P.items():
+    with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
+        f.write(f"# D2' depth-separation cell {name} (see ABLATIONS.md round 4)\n"
+                + HEAD + loss_line + TRAIN)
 TASK_MODEL = HEAD[:HEAD.index("losses:")]
 for name, (ntp_line, aux, extra) in HARD_RAW.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
                 + TASK_MODEL + "losses:\n" + ntp_line + aux + TRAIN + extra)
-print(f"wrote {len(CELLS) + len(HARD) + len(HARD_RAW)} configs to configs/ablation/")
+print(f"wrote {len(CELLS) + len(HARD) + len(D2P) + len(HARD_RAW)} configs "
+      "to configs/ablation/")
