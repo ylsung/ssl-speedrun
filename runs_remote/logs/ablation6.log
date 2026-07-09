@@ -1,0 +1,208 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+wrote 37 configs to configs/ablation/
+=== abl_attn_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attn_ema_tgt4_seed2 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_attnc8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_c8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_d2p_src2_seed0 ===
+step   4000 loss 0.5910 [ntp=0.039 mtp=0.530 jepa_pooled=0.023] path_acc 0.688 decision_acc 0.739 erank 54.5 (267.0k tok/s)
+SUMMARY {"run": "abl_d2p_src2_seed0", "config": "configs/ablation/abl_d2p_src2.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.6875, "decision_acc": 0.7391304347826086}, "best": {"path_acc": 0.7265625, "decision_acc": 0.766798418972332}, "eranks": {"erank_0": 30.11, "erank_1": 15.63, "erank_2": 17.33, "erank_3": 24.41, "erank_4": 27.79, "erank_5": 39.21, "erank_6": 54.53}, "wall_s": 281.9}
+=== abl_d2p_src2_seed1 ===
+step   4000 loss 0.7250 [ntp=0.041 mtp=0.642 jepa_pooled=0.042] path_acc 0.715 decision_acc 0.800 erank 5.7 (259.9k tok/s)
+SUMMARY {"run": "abl_d2p_src2_seed1", "config": "configs/ablation/abl_d2p_src2.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.71484375, "decision_acc": 0.8}, "best": {"path_acc": 0.71484375, "decision_acc": 0.8}, "eranks": {"erank_0": 30.27, "erank_1": 21.84, "erank_2": 32.35, "erank_3": 22.38, "erank_4": 13.78, "erank_5": 3.72, "erank_6": 5.68}, "wall_s": 289.6}
+=== abl_d2p_src2_seed2 ===
+step   4000 loss 0.7021 [ntp=0.060 mtp=0.605 jepa_pooled=0.037] path_acc 0.738 decision_acc 0.822 erank 51.9 (260.1k tok/s)
+SUMMARY {"run": "abl_d2p_src2_seed2", "config": "configs/ablation/abl_d2p_src2.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.73828125, "decision_acc": 0.8221343873517787}, "best": {"path_acc": 0.73828125, "decision_acc": 0.8221343873517787}, "eranks": {"erank_0": 32.11, "erank_1": 36.17, "erank_2": 44.09, "erank_3": 24.33, "erank_4": 26.8, "erank_5": 36.35, "erank_6": 51.88}, "wall_s": 289.4}
+=== abl_d2p_src4_seed0 ===
+step   4000 loss 0.6655 [ntp=0.041 mtp=0.589 jepa_pooled=0.035] path_acc 0.699 decision_acc 0.763 erank 70.3 (257.7k tok/s)
+SUMMARY {"run": "abl_d2p_src4_seed0", "config": "configs/ablation/abl_d2p_src4.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.69921875, "decision_acc": 0.7628458498023716}, "best": {"path_acc": 0.7109375, "decision_acc": 0.766798418972332}, "eranks": {"erank_0": 29.42, "erank_1": 21.19, "erank_2": 30.03, "erank_3": 33.59, "erank_4": 39.51, "erank_5": 53.01, "erank_6": 70.35}, "wall_s": 292.1}
+=== abl_d2p_src4_seed1 ===
+step   4000 loss 0.6361 [ntp=0.043 mtp=0.543 jepa_pooled=0.050] path_acc 0.738 decision_acc 0.792 erank 68.3 (261.9k tok/s)
+SUMMARY {"run": "abl_d2p_src4_seed1", "config": "configs/ablation/abl_d2p_src4.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.73828125, "decision_acc": 0.792156862745098}, "best": {"path_acc": 0.73828125, "decision_acc": 0.792156862745098}, "eranks": {"erank_0": 30.74, "erank_1": 20.38, "erank_2": 40.73, "erank_3": 42.57, "erank_4": 48.53, "erank_5": 58.1, "erank_6": 68.3}, "wall_s": 287.3}
+=== abl_d2p_src4_seed2 ===
+step   4000 loss 0.6081 [ntp=0.043 mtp=0.523 jepa_pooled=0.042] path_acc 0.754 decision_acc 0.814 erank 53.9 (262.2k tok/s)
+SUMMARY {"run": "abl_d2p_src4_seed2", "config": "configs/ablation/abl_d2p_src4.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.75390625, "decision_acc": 0.8142292490118577}, "best": {"path_acc": 0.765625, "decision_acc": 0.8181818181818182}, "eranks": {"erank_0": 31.05, "erank_1": 19.29, "erank_2": 26.95, "erank_3": 31.54, "erank_4": 33.53, "erank_5": 39.04, "erank_6": 53.89}, "wall_s": 287.0}
+=== abl_d2p_src4_w25_seed0 ===
+step   4000 loss 0.5885 [ntp=0.043 mtp=0.523 jepa_pooled=0.023] path_acc 0.742 decision_acc 0.787 erank 58.7 (261.6k tok/s)
+SUMMARY {"run": "abl_d2p_src4_w25_seed0", "config": "configs/ablation/abl_d2p_src4_w25.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.7421875, "decision_acc": 0.7865612648221344}, "best": {"path_acc": 0.75, "decision_acc": 0.7944664031620553}, "eranks": {"erank_0": 27.66, "erank_1": 16.56, "erank_2": 26.24, "erank_3": 27.69, "erank_4": 33.31, "erank_5": 46.44, "erank_6": 58.66}, "wall_s": 287.7}
+=== abl_d2p_src4_w25_seed1 ===
+step   4000 loss 0.4884 [ntp=0.027 mtp=0.443 jepa_pooled=0.019] path_acc 0.781 decision_acc 0.824 erank 33.8 (260.3k tok/s)
+SUMMARY {"run": "abl_d2p_src4_w25_seed1", "config": "configs/ablation/abl_d2p_src4_w25.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.78125, "decision_acc": 0.8235294117647058}, "best": {"path_acc": 0.80078125, "decision_acc": 0.8313725490196079}, "eranks": {"erank_0": 27.92, "erank_1": 4.9, "erank_2": 8.86, "erank_3": 12.5, "erank_4": 15.49, "erank_5": 18.49, "erank_6": 33.77}, "wall_s": 289.1}
+=== abl_d2p_src4_w25_seed2 ===
+step   4000 loss 0.6357 [ntp=0.048 mtp=0.570 jepa_pooled=0.018] path_acc 0.754 decision_acc 0.826 erank 48.4 (267.4k tok/s)
+SUMMARY {"run": "abl_d2p_src4_w25_seed2", "config": "configs/ablation/abl_d2p_src4_w25.yaml", "device": "cuda", "params": 5070336, "steps": 4000, "final": {"path_acc": 0.75390625, "decision_acc": 0.8260869565217391}, "best": {"path_acc": 0.765625, "decision_acc": 0.8260869565217391}, "eranks": {"erank_0": 30.95, "erank_1": 11.36, "erank_2": 18.31, "erank_3": 19.08, "erank_4": 23.72, "erank_5": 34.28, "erank_6": 48.42}, "wall_s": 281.5}
+=== abl_ema_tgt1_seed0 (done, skipping) ===
+=== abl_ema_tgt1_seed1 (done, skipping) ===
+=== abl_ema_tgt1_seed2 (done, skipping) ===
+=== abl_ema_tgt2_seed0 (done, skipping) ===
+=== abl_ema_tgt2_seed1 (done, skipping) ===
+=== abl_ema_tgt2_seed2 (done, skipping) ===
+=== abl_ema_tgt6_seed0 (done, skipping) ===
+=== abl_ema_tgt6_seed1 (done, skipping) ===
+=== abl_ema_tgt6_seed2 (done, skipping) ===
+=== abl_h_d2v25_seed0 (done, skipping) ===
+=== abl_h_d2v25_seed1 (done, skipping) ===
+=== abl_h_d2v25_seed2 (done, skipping) ===
+=== abl_h_d2v25c_seed0 (done, skipping) ===
+=== abl_h_d2v25c_seed1 (done, skipping) ===
+=== abl_h_d2v25c_seed2 (done, skipping) ===
+=== abl_h_d2v25m_seed0 (done, skipping) ===
+=== abl_h_d2v25m_seed1 (done, skipping) ===
+=== abl_h_d2v25m_seed2 (done, skipping) ===
+=== abl_h_d2v50_seed0 (done, skipping) ===
+=== abl_h_d2v50_seed1 (done, skipping) ===
+=== abl_h_d2v50_seed2 (done, skipping) ===
+=== abl_h_d2vctl25_seed0 (done, skipping) ===
+=== abl_h_d2vctl25_seed1 (done, skipping) ===
+=== abl_h_d2vctl25_seed2 (done, skipping) ===
+=== abl_h_d2vctl50_seed0 (done, skipping) ===
+=== abl_h_d2vctl50_seed1 (done, skipping) ===
+=== abl_h_d2vctl50_seed2 (done, skipping) ===
+=== abl_h_entw_seed0 (done, skipping) ===
+=== abl_h_entw_seed1 (done, skipping) ===
+=== abl_h_entw_seed2 (done, skipping) ===
+=== abl_h_gap16_seed0 (done, skipping) ===
+=== abl_h_gap16_seed1 (done, skipping) ===
+=== abl_h_gap16_seed2 (done, skipping) ===
+=== abl_h_gap8_seed0 (done, skipping) ===
+=== abl_h_gap8_seed1 (done, skipping) ===
+=== abl_h_gap8_seed2 (done, skipping) ===
+=== abl_h_lsh_seed0 (done, skipping) ===
+=== abl_h_lsh_seed1 (done, skipping) ===
+=== abl_h_lsh_seed2 (done, skipping) ===
+=== abl_h_nceh_seed0 (done, skipping) ===
+=== abl_h_nceh_seed1 (done, skipping) ===
+=== abl_h_nceh_seed2 (done, skipping) ===
+=== abl_h_noisytgt50_seed0 (done, skipping) ===
+=== abl_h_noisytgt50_seed1 (done, skipping) ===
+=== abl_h_noisytgt50_seed2 (done, skipping) ===
+=== abl_infonce_ema_tgt4_seed0 (done, skipping) ===
+=== abl_infonce_ema_tgt4_seed1 (done, skipping) ===
+=== abl_infonce_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k16_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k32_ema_tgt4_seed2 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_k4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed0 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed1 (done, skipping) ===
+=== abl_l2_ema_tgt4_seed2 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed0 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed1 (done, skipping) ===
+=== abl_m16_ema_tgt4_seed2 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed0 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed1 (done, skipping) ===
+=== abl_m8_ema_tgt4_seed2 (done, skipping) ===
+=== abl_mtp_k8_seed0 (done, skipping) ===
+=== abl_mtp_k8_seed1 (done, skipping) ===
+=== abl_mtp_k8_seed2 (done, skipping) ===
+=== abl_s2_combo_seed0 (done, skipping) ===
+=== abl_s2_combo_seed1 (done, skipping) ===
+=== abl_s2_combo_seed2 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed0 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed1 (done, skipping) ===
+=== abl_s2_mtp8jepa_seed2 (done, skipping) ===
+=== abl_s2_sg_combo_seed0 (done, skipping) ===
+=== abl_s2_sg_combo_seed1 (done, skipping) ===
+=== abl_s2_sg_combo_seed2 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed0 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed1 (done, skipping) ===
+=== abl_s2_sg_mtp8_seed2 (done, skipping) ===
+=== abl_same_tgt2_seed0 (done, skipping) ===
+=== abl_same_tgt2_seed1 (done, skipping) ===
+=== abl_same_tgt2_seed2 (done, skipping) ===
+=== abl_same_tgt4_seed0 (done, skipping) ===
+=== abl_same_tgt4_seed1 (done, skipping) ===
+=== abl_same_tgt4_seed2 (done, skipping) ===
+=== abl_same_tgt6_seed0 (done, skipping) ===
+=== abl_same_tgt6_seed1 (done, skipping) ===
+=== abl_same_tgt6_seed2 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_sigreg_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src2_ema_tgt4_seed2 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed0 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed1 (done, skipping) ===
+=== abl_src4_ema_tgt4_seed2 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed0 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed1 (done, skipping) ===
+=== abl_vicreg_ema_tgt4_seed2 (done, skipping) ===
+--- results ---
+method                        n     decision_acc         path_acc         val_loss          val_ppl  erank_last  wall_s
+abl_attn_ema_tgt4             3    0.725 ±0.034    0.639 ±0.023                                          39.0     264
+abl_attnc8_ema_tgt4           3    0.706 ±0.011    0.607 ±0.016                                          32.5     271
+abl_c4_ema_tgt4               3    0.746 ±0.015    0.676 ±0.022                                          35.7     245
+abl_c8_ema_tgt4               3    0.744 ±0.026    0.667 ±0.008                                          31.0     259
+abl_d2p_src2                  3    0.787 ±0.035    0.714 ±0.021                                          37.4     287
+abl_d2p_src4                  3    0.790 ±0.021    0.730 ±0.023                                          64.2     289
+abl_d2p_src4_w25              3    0.812 ±0.018    0.759 ±0.016                                          47.0     286
+abl_ema_tgt1                  3    0.725 ±0.010    0.635 ±0.010                                          55.0     254
+abl_ema_tgt2                  3    0.733 ±0.027    0.667 ±0.016                                          48.7     255
+abl_ema_tgt6                  3    0.729 ±0.022    0.641 ±0.006                                          55.0     263
+abl_h_d2v25                   3    0.589 ±0.028    0.458 ±0.056                                          20.2     248
+abl_h_d2v25c                  3    0.733 ±0.044    0.652 ±0.031                                          40.8     343
+abl_h_d2v25m                  3    0.583 ±0.007    0.458 ±0.013                                          27.2     258
+abl_h_d2v50                   3    0.428 ±0.045    0.092 ±0.073                                          13.3     258
+abl_h_d2vctl25                3    0.603 ±0.015    0.479 ±0.010                                          20.8     222
+abl_h_d2vctl50                3    0.536 ±0.012    0.367 ±0.018                                          21.9     226
+abl_h_entw                    3    0.737 ±0.037    0.664 ±0.022                                          54.0     268
+abl_h_gap16                   3    0.735 ±0.015    0.638 ±0.012                                          33.4     259
+abl_h_gap8                    3    0.745 ±0.030    0.659 ±0.013                                          45.5     250
+abl_h_lsh                     3    0.745 ±0.021    0.672 ±0.006                                          56.6     259
+abl_h_nceh                    3    0.745 ±0.016    0.676 ±0.008                                          75.0     257
+abl_h_noisytgt50              3    0.715 ±0.017    0.624 ±0.018                                          37.8     261
+abl_infonce_ema_tgt4          3    0.750 ±0.037    0.667 ±0.029                                          85.1     254
+abl_k16_ema_tgt4              3    0.745 ±0.027    0.660 ±0.015                                          49.4     253
+abl_k32_ema_tgt4              3    0.740 ±0.031    0.650 ±0.024                                          41.1     256
+abl_k4_ema_tgt4               3    0.732 ±0.018    0.645 ±0.010                                          53.4     256
+abl_l2_ema_tgt4               3    0.742 ±0.033    0.673 ±0.024                                          52.0     253
+abl_m16_ema_tgt4              3    0.729 ±0.021    0.647 ±0.021                                          36.0     344
+abl_m8_ema_tgt4               3    0.738 ±0.022    0.654 ±0.010                                          45.5     300
+abl_mtp_k8                    3    0.845 ±0.025    0.811 ±0.018                                          20.7     250
+abl_s2_combo                  3    0.746 ±0.027    0.673 ±0.018                                          52.4     265
+abl_s2_mtp8jepa               3    0.795 ±0.009    0.747 ±0.019                                          27.5     289
+abl_s2_sg_combo               3    0.198 ±0.026    0.198 ±0.026                                           9.6     195
+abl_s2_sg_mtp8                3    0.190 ±0.019    0.190 ±0.019                                          30.0     204
+abl_same_tgt2                 3    0.723 ±0.023    0.648 ±0.021                                          32.2     236
+abl_same_tgt4                 3    0.692 ±0.025    0.608 ±0.040                                          37.8     231
+abl_same_tgt6                 3    0.686 ±0.034    0.599 ±0.037                                          24.3     228
+abl_sigreg_ema_tgt4           3    0.706 ±0.029    0.621 ±0.028                                          54.7     261
+abl_src2_ema_tgt4             3    0.729 ±0.024    0.646 ±0.018                                          37.8     261
+abl_src4_ema_tgt4             3    0.732 ±0.038    0.645 ±0.022                                          36.1     266
+abl_vicreg_ema_tgt4           3    0.729 ±0.020    0.652 ±0.010                                          57.7     272
+maze2_jepa_ans                3    0.736 ±0.040    0.645 ±0.031                                          24.9     386
+maze2_jepa_ema                3    0.744 ±0.020    0.663 ±0.018                                          51.1     446
+maze2_jepa_k16                3    0.714 ±0.021    0.629 ±0.017                                          36.1     382
+maze2_pyramid_hi              3    0.720 ±0.024    0.639 ±0.037                                          55.1     465
+maze_jepa                     3    0.712 ±0.009    0.639 ±0.013                                          39.7     233
+maze_mtp                      3    0.821 ±0.014    0.780 ±0.016                                          16.3     234
+maze_nitp                     3    0.709 ±0.025    0.637 ±0.025                                          43.7     218
+maze_ntp                      3    0.696 ±0.043    0.605 ±0.031                                          27.4     222
+maze_pertoken                 3    0.712 ±0.029    0.643 ±0.023                                          37.1     240
+maze_pyramid                  3    0.731 ±0.025    0.656 ±0.016                                          44.6     249
+stargraph_jepa                3    0.094 ±0.072    0.065 ±0.092                                          40.3     175
+stargraph_mtp                 3    0.185 ±0.040    0.185 ±0.040                                           3.4     182
+stargraph_nitp                3    0.049 ±0.013    0.000 ±0.000                                          24.1     170
+stargraph_ntp                 3    0.076 ±0.057    0.052 ±0.074                                          17.7     167
+stargraph_pertoken            3    0.134 ±0.079    0.125 ±0.091                                          17.6     193
+stargraph_pyramid             3    0.109 ±0.081    0.074 ±0.105                                          34.2     213
+tinystories_jepa              2                                      1.295 ±0.011    3.649 ±0.040       187.1    3626
+tinystories_mtp               3                                      1.310 ±0.008    3.706 ±0.030       239.4    4194
+tinystories_nitp              1                                      1.306 ±0.000    3.692 ±0.000       190.4    3632
+tinystories_ntp               3                                      1.297 ±0.010    3.660 ±0.037       185.0    4229
+tinystories_pertoken          1                                      1.302 ±0.000    3.678 ±0.000       193.3    3871
+tinystories_pyramid           1                                      1.306 ±0.000    3.690 ±0.000       196.6    3991

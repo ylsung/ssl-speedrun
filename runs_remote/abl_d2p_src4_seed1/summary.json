@@ -1,0 +1,25 @@
+{
+  "run": "abl_d2p_src4_seed1",
+  "config": "configs/ablation/abl_d2p_src4.yaml",
+  "device": "cuda",
+  "params": 5070336,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.73828125,
+    "decision_acc": 0.792156862745098
+  },
+  "best": {
+    "path_acc": 0.73828125,
+    "decision_acc": 0.792156862745098
+  },
+  "eranks": {
+    "erank_0": 30.74,
+    "erank_1": 20.38,
+    "erank_2": 40.73,
+    "erank_3": 42.57,
+    "erank_4": 48.53,
+    "erank_5": 58.1,
+    "erank_6": 68.3
+  },
+  "wall_s": 287.3
+}

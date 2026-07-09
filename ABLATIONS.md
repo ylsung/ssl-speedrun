@@ -157,7 +157,16 @@ Q4–Q6 fix the teacher at (EMA, tgt=4) — today's best — rather than waiting
 for Q1/Q2 to finish. If the factorial overturns that choice, rerun the
 affected Q4–Q6 cells with the revised teacher (~1.5 h).
 
-## Round 4 — D2′ depth separation (designed 2026-07-09)
+## Round 4 — D2′ depth separation (run 2026-07-09; results in results/2026-07-08_ablation.md §Round 4)
+
+**Outcome:** depth separation does *not* remove the MTP interference —
+src2/src4 taps (.787/.790) equal the same-depth stack (.795), all below MTP
+alone (.845). Halving the latent weight recovers half the gap (.812): the
+damage scales with weight, not placement; weight → 0 recovers MTP. The
+latent loss is parasitic on MTP's planning gain in every configuration,
+even while making representations much healthier (erank 64 vs 21). This
+closes the loss-level hypothesis space on Tier 0; remaining moves are
+scheme-level (teacherless training) or Tier-1 transfer.
 
 Stage 2 showed MTP+latent at the *same* depth interfere (.845 → .795, erank
 collapse). Round 3 closed every hardness route. Remaining hypothesis: give
