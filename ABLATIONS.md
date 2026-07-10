@@ -186,6 +186,16 @@ stack) .795 ± .009.
 
 ## Round 5 — synonym-rendered maze (many-to-one emission)
 
+**Outcome (2026-07-10, results §Round 5):** null — token-level nuisance
+does not separate methods. MTP flat across s (.845→.846 at s=16 despite
+2.77 nats/token target noise); NTP/JEPA flat within noise. The invariance
+probe explains it: every method learns near-perfect synonym clustering in
+the embedding table (within-class cos ~.9, between ~.0) from NTP pressure
+alone, so past the embedding the nuisance is gone — exactly the "defeatable
+by per-token lookup" concern. The floor is a constant offset, not gradient
+noise. Round 6 (order invariance, not absorbable by an embedding) is the
+live test.
+
 Diagnosis after rounds 1–4 (user, 2026-07-09): maze/stargraph may be the
 wrong testbed for latent learning — their token space *is* the semantic
 space (one-to-one emission, unique answer), so token CE is already the
