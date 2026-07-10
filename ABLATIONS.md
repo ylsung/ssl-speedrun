@@ -183,3 +183,42 @@ representations without fighting MTP for the output geometry.
 Read-outs: does any cell hold MTP's .845 (no interference) — and does any
 *exceed* it (complementarity)? Reference: `abl_s2_mtp8jepa` (same-depth
 stack) .795 ± .009.
+
+## Round 5 — synonym-rendered maze (many-to-one emission)
+
+Diagnosis after rounds 1–4 (user, 2026-07-09): maze/stargraph may be the
+wrong testbed for latent learning — their token space *is* the semantic
+space (one-to-one emission, unique answer), so token CE is already the
+maximally informative signal and a latent loss can only re-encode it. Latent
+prediction should pay off when surface realization carries high-entropy
+nuisance that is unpredictable from context while the latent content stays
+predictable (the vision-JEPA regime: generative baselines degrade with
+nuisance noise, latent models stay flat).
+
+**Construction:** each maze cell gets s surface synonyms; every occurrence
+samples one i.i.d. (uniform). The latent path is untouched — still the
+unique tree path — but token-space CE acquires an irreducible log(s)-per-
+token floor (1.39 nats at s=4, 2.77 at s=16) with zero mutual information
+between context and synonym index. Copying breaks: the model must bind
+{c·a..c·s} into one class just to parse the edge list. Eval maps surface →
+class before scoring, so any synonym of the right cell counts. s=1 is
+bit-identical to the original task (rng stream preserved) — existing runs
+are the anchors.
+
+| cell group | task | methods |
+|---|---|---|
+| `abl_syn4_*` | synonyms: 4 | ntp · mtp8 · jepa (pooled k8 EMA tgt4) |
+| `abl_syn16_*` | synonyms: 16 | same |
+| `abl_syn16a_*` | synonyms: 16, answer-only (prefix canonical) | same |
+
+27 runs (9 cells × 3 seeds) ≈ 2 h. Anchors (s=1): ntp .696±.043,
+mtp_k8 .845±.025, ema_tgt4 .744±.020.
+
+**Predictions:** if the many-to-one hypothesis is right, NTP/MTP
+decision_acc degrades with s (MTP's k-step CE eats k·log s of nuisance)
+while the pooled-EMA latent loss degrades less; a crossover (jepa > mtp8 at
+s=16) is the first positive result for the latent family. The answer-only
+variant separates noisy *targets* from noisy *context + binding*. Health
+metrics: aux loss, plus `syn_cos_within`/`syn_cos_between` (embedding-space
+synonym invariance probe) logged at every eval. val_loss is not comparable
+across s (floor shifts); decision/path acc are the cross-s metrics.

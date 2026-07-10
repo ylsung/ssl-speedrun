@@ -9,6 +9,15 @@ The edge list is shuffled; supervision (target_mask) covers path + EOS.
 Hard tokens are the junction decisions: cells where >1 open neighbor
 (excluding the cell we came from) is available. `decision_acc` scores the
 first such junction on each path; forced corridor steps are trivial NTP.
+
+Synonym rendering (round 5): with synonyms=s > 1 each cell has s surface
+tokens and every occurrence samples one i.i.d., so the emission is
+many-to-one — token-space CE has an irreducible floor of log(s) per content
+token while the latent cell sequence stays deterministic. syn_scope="answer"
+restricts sampling to the supervised region (prefix stays canonical).
+Accuracy is scored on equivalence classes (any synonym of the right cell
+counts). With synonyms=1 the task and rng stream are bit-identical to the
+original, so old runs remain valid s=1 anchors.
 """
 from dataclasses import dataclass
 
@@ -24,6 +33,8 @@ class MazeConfig:
     height: int = 6
     min_path: int = 6     # resample start/goal until path has >= this many cells
     seed: int = 0
+    synonyms: int = 1     # surface tokens per cell; 1 = original task
+    syn_scope: str = "all"  # "all" | "answer" (prefix stays canonical)
 
     @property
     def n_cells(self):
@@ -31,7 +42,7 @@ class MazeConfig:
 
     @property
     def vocab_size(self):
-        return N_SPECIAL + self.n_cells
+        return N_SPECIAL + self.n_cells * self.synonyms
 
     @property
     def max_path(self):
@@ -125,12 +136,19 @@ class MazeTask:
                     edges.append((u, v))
         rng.shuffle(edges)
 
-        tok = lambda x: N_SPECIAL + x
+        s = c.synonyms
+
+        def tok(x, ans=False):
+            j = 0
+            if s > 1 and (ans or c.syn_scope == "all"):
+                j = int(rng.integers(s))
+            return N_SPECIAL + x * s + j
+
         seq = [BOS]
         for u, v in edges:
             seq += [tok(u), tok(v), ESEP]
         seq += [QRY, tok(path[0]), tok(path[-1]), EQ]
-        seq += [tok(x) for x in path] + [EOS]
+        seq += [tok(x, ans=True) for x in path] + [EOS]
         return seq, len(path), dec_idx
 
     def batch(self, batch_size: int, rng: np.random.Generator, device="cpu"):
@@ -159,6 +177,15 @@ class MazeTask:
             "decision_idx": torch.from_numpy(dec_idxs).to(device),
         }
 
+    def _classes(self, t):
+        """Map surface tokens to equivalence classes (identity for specials)."""
+        s = self.cfg.synonyms
+        if s == 1:
+            return t
+        return torch.where(t >= N_SPECIAL,
+                           torch.div(t - N_SPECIAL, s, rounding_mode="floor")
+                           + N_SPECIAL, t)
+
     @torch.no_grad()
     def evaluate(self, model, rng: np.random.Generator, n_batches: int = 4,
                  batch_size: int = 64, device="cpu"):
@@ -171,6 +198,7 @@ class MazeTask:
             plen = c.prefix_len
             out = model.generate_greedy(batch["tokens"][:, :plen], n_new)[:, plen:]
             gold = batch["tokens"][:, plen:plen + n_new]
+            out, gold = self._classes(out), self._classes(gold)
             L = batch["path_len"]  # (B,) path cells; +1 for EOS
             pos = torch.arange(n_new, device=out.device).unsqueeze(0)
             m = pos < (L + 1).unsqueeze(1)
@@ -181,5 +209,18 @@ class MazeTask:
             dec_ok += (out.gather(1, di) == gold.gather(1, di)).squeeze(1)[has_dec].sum().item()
             dec_tot += has_dec.sum().item()
             tot += batch_size
-        return {"path_acc": full_ok / tot,
-                "decision_acc": dec_ok / max(dec_tot, 1)}
+        res = {"path_acc": full_ok / tot,
+               "decision_acc": dec_ok / max(dec_tot, 1)}
+        if c.synonyms > 1:
+            # invariance probe: are synonyms of a cell closer in embedding
+            # space than tokens of different cells?
+            E = model.tok_emb.weight[N_SPECIAL:N_SPECIAL + c.n_cells * c.synonyms]
+            E = torch.nn.functional.normalize(E, dim=-1)
+            G = E @ E.T
+            cls = torch.arange(c.n_cells, device=G.device
+                               ).repeat_interleave(c.synonyms)
+            same = cls.unsqueeze(0) == cls.unsqueeze(1)
+            eye = torch.eye(G.shape[0], dtype=torch.bool, device=G.device)
+            res["syn_cos_within"] = G[same & ~eye].mean().item()
+            res["syn_cos_between"] = G[~same].mean().item()
+        return res

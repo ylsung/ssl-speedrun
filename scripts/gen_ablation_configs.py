@@ -97,6 +97,21 @@ D2P = {
     "d2p_src4_w25": MTP8 + pooled(src_layer=4, weight=0.25, **EMA4),
 }
 
+# Round 5 — synonym-rendered maze: emission becomes many-to-one (s surface
+# tokens per cell, sampled i.i.d. per occurrence), so token-space CE has an
+# irreducible log(s)/token floor while the latent path stays deterministic.
+# Hypothesis: NTP/MTP degrade with s, latent (EMA) loss degrades less.
+# s=1 anchors already exist (maze_ntp, abl_mtp_k8, abl_ema_tgt4).
+SYN_METHODS = {"ntp": "", "mtp8": MTP8, "jepa": pooled(**EMA4)}
+SYN_TASKS = {
+    "syn4": "synonyms: 4",
+    "syn16": "synonyms: 16",
+    "syn16a": "synonyms: 16, syn_scope: answer",  # answer-only control
+}
+SYN = {f"{t}_{m}": (task_extra, loss_line)
+       for t, task_extra in SYN_TASKS.items()
+       for m, loss_line in SYN_METHODS.items()}
+
 # cells needing a non-default NTP line: (ntp_line, aux_lines, train_extra)
 HARD_RAW = {
     # masked-source NTP: skip loss where the predecessor token was corrupted
@@ -120,10 +135,15 @@ for name, loss_line in D2P.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# D2' depth-separation cell {name} (see ABLATIONS.md round 4)\n"
                 + HEAD + loss_line + TRAIN)
+for name, (task_extra, loss_line) in SYN.items():
+    head = HEAD.replace("seed: 0}", f"seed: 0, {task_extra}}}")
+    with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
+        f.write(f"# synonym-rendered maze cell {name} (see ABLATIONS.md round 5)\n"
+                + head + loss_line + TRAIN)
 TASK_MODEL = HEAD[:HEAD.index("losses:")]
 for name, (ntp_line, aux, extra) in HARD_RAW.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
                 + TASK_MODEL + "losses:\n" + ntp_line + aux + TRAIN + extra)
-print(f"wrote {len(CELLS) + len(HARD) + len(D2P) + len(HARD_RAW)} configs "
-      "to configs/ablation/")
+print(f"wrote {len(CELLS) + len(HARD) + len(D2P) + len(SYN) + len(HARD_RAW)} "
+      "configs to configs/ablation/")
