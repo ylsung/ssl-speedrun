@@ -222,3 +222,40 @@ variant separates noisy *targets* from noisy *context + binding*. Health
 metrics: aux loss, plus `syn_cos_within`/`syn_cos_between` (embedding-space
 synonym invariance probe) logged at every eval. val_loss is not comparable
 across s (floor shifts); decision/path acc are the cross-s metrics.
+
+## Round 6 — top-k longest paths (order-invariant answers)
+
+Limitation of round 5 (user, 2026-07-10): synonym nuisance is defeatable by
+a per-token *lookup* (learn the groups, sample within group) — invariance
+at the token level only. Round 6 makes the *answer* order-invariant:
+generate the n_paths longest paths in the maze (tree), any order, either
+direction per path. Which token is correct next now depends on a global
+latent assignment (which paths remain), not a lookup. Nuisance entropy
+log(k!·2^k) ≈ 3.9 nats (k=3) concentrated at path boundaries; synonyms add
+k·log s on top everywhere. The mean-pooled latent of the whole answer is
+permutation-invariant, so the latent target can be exactly nuisance-free
+while token targets are maximally nuisance-laden — the sharpest version of
+the many-to-one asymmetry, and structurally closer to language/vision
+(token synonymy × content-order freedom).
+
+Ground truth: maze is a spanning tree → k longest paths = k endpoint pairs
+with max tree distance (one BFS per node, exact). Training samples random
+tie-break / order / direction. Eval parses the generation, checks each path
+is valid+simple in the tree (adjacency rebuilt from the prefix), distinct
+up to reversal, and that sorted lengths match the gold top-k multiset (ties
+free). Metrics: `set_acc` (all-k correct), `path_valid` (fraction valid),
+`len_ratio` (best emitted length / gold — graded signal for calibration).
+
+**Difficulty pilots first** (star-graph lesson — global task may be at
+floor): NTP 1-seed on tp1_5x5, tp1_6x6, tp3_5x5 (`configs/pilot/`). Pick
+the config where NTP is off-floor but not saturated, then the 2×2 grid:
+
+| | no synonyms | syn16 |
+|---|---|---|
+| unique path | done (anchors) | round 5 |
+| top-k paths | round 6 | round 6 — the language-like cell |
+
+× {ntp, mtp8, jepa pooled EMA tgt4} × 3 seeds = 18 runs.
+Read-out ladder: latent helps only bottom row → order invariance is what
+matters; only right column → token invariance; only bottom-right → the
+compositional nuisance regime is where latent learning pays.
