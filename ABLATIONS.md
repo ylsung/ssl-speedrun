@@ -246,9 +246,11 @@ up to reversal, and that sorted lengths match the gold top-k multiset (ties
 free). Metrics: `set_acc` (all-k correct), `path_valid` (fraction valid),
 `len_ratio` (best emitted length / gold — graded signal for calibration).
 
-**Difficulty pilots first** (star-graph lesson — global task may be at
-floor): NTP 1-seed on tp1_5x5, tp1_6x6, tp3_5x5 (`configs/pilot/`). Pick
-the config where NTP is off-floor but not saturated, then the 2×2 grid:
+**Difficulty pilots** (star-graph lesson — global task may be at floor),
+NTP 1-seed, 4000 steps: tp1_5x5 set_acc .941 (saturated), tp1_6x6 .840,
+tp3_5x5 **.809** / path_valid .958 / len_ratio .999 — clearly learnable,
+~19 pts of headroom, and k=3 gives the full 3!·2³ order nuisance. Grid runs
+on **tp3_5x5**. The 2×2:
 
 | | no synonyms | syn16 |
 |---|---|---|

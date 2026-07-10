@@ -112,6 +112,17 @@ SYN = {f"{t}_{m}": (task_extra, loss_line)
        for t, task_extra in SYN_TASKS.items()
        for m, loss_line in SYN_METHODS.items()}
 
+# Round 6 — top-3 longest paths (order-invariant answers), 5x5 per pilot
+# calibration (NTP set_acc .809 — off-floor, unsaturated). 2x2 with round 5:
+# {plain, syn16} x methods; unique-path row = existing anchors + syn cells.
+TP_HEAD = ("task: {kind: maze, width: 5, height: 5, mode: toppaths, "
+           "n_paths: 3, min_path: 6, seed: 0%s}\n"
+           "model: {n_layer: 6, n_head: 4, d_model: 256}\nlosses:\n"
+           "  - {kind: ntp, weight: 1.0}\n")
+TP = {f"{t}_{m}": (TP_HEAD % extra, loss_line)
+      for t, extra in [("tp3", ""), ("tp3s16", ", synonyms: 16")]
+      for m, loss_line in SYN_METHODS.items()}
+
 # cells needing a non-default NTP line: (ntp_line, aux_lines, train_extra)
 HARD_RAW = {
     # masked-source NTP: skip loss where the predecessor token was corrupted
@@ -140,10 +151,14 @@ for name, (task_extra, loss_line) in SYN.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# synonym-rendered maze cell {name} (see ABLATIONS.md round 5)\n"
                 + head + loss_line + TRAIN)
+for name, (head, loss_line) in TP.items():
+    with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
+        f.write(f"# top-3-paths cell {name} (see ABLATIONS.md round 6)\n"
+                + head + loss_line + TRAIN)
 TASK_MODEL = HEAD[:HEAD.index("losses:")]
 for name, (ntp_line, aux, extra) in HARD_RAW.items():
     with open(f"configs/ablation/abl_{name}.yaml", "w") as f:
         f.write(f"# hardness cell {name} (see ABLATIONS.md round 3)\n"
                 + TASK_MODEL + "losses:\n" + ntp_line + aux + TRAIN + extra)
-print(f"wrote {len(CELLS) + len(HARD) + len(D2P) + len(SYN) + len(HARD_RAW)} "
+print(f"wrote {len(CELLS) + len(HARD) + len(D2P) + len(SYN) + len(TP) + len(HARD_RAW)} "
       "configs to configs/ablation/")
