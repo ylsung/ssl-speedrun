@@ -235,6 +235,16 @@ across s (floor shifts); decision/path acc are the cross-s metrics.
 
 ## Round 6 — top-k longest paths (order-invariant answers)
 
+**Outcome (2026-07-10, results §Round 6):** order nuisance alone is a null
+that *neutralizes MTP* (all methods .79–.80; the k-step heads' targets
+become order mixtures). Compositional nuisance (order × syn16) is the
+first that hurts anyone — and the ranking is MTP (−.055) > JEPA (−.096) >
+NTP (−.120): the discrete auxiliary is the *most* robust exactly where the
+pooled latent target is cleanest by construction. "Latent wins under
+nuisance" is falsified on Tier 0 in its strongest instantiation; the
+latent case now rests on irreducible semantic entropy and representation
+transfer — Tier-1 questions.
+
 Limitation of round 5 (user, 2026-07-10): synonym nuisance is defeatable by
 a per-token *lookup* (learn the groups, sample within group) — invariance
 at the token level only. Round 6 makes the *answer* order-invariant:
