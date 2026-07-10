@@ -1,0 +1,27 @@
+{
+  "run": "abl_tp3_jepa_seed0",
+  "config": "configs/ablation/abl_tp3_jepa.yaml",
+  "device": "cuda",
+  "params": 4992256,
+  "steps": 4000,
+  "final": {
+    "set_acc": 0.78515625,
+    "path_valid": 0.946614583333333,
+    "len_ratio": 0.9991743682121973
+  },
+  "best": {
+    "set_acc": 0.7890625,
+    "path_valid": 0.946614583333333,
+    "len_ratio": 0.9991743682121973
+  },
+  "eranks": {
+    "erank_0": 23.45,
+    "erank_1": 41.76,
+    "erank_2": 60.65,
+    "erank_3": 67.86,
+    "erank_4": 73.66,
+    "erank_5": 78.53,
+    "erank_6": 67.11
+  },
+  "wall_s": 584.5
+}

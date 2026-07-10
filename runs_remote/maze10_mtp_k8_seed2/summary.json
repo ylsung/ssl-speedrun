@@ -1,0 +1,25 @@
+{
+  "run": "maze10_mtp_k8_seed2",
+  "config": "configs/larger_maze/maze10_mtp_k8.yaml",
+  "device": "cuda",
+  "params": 4939264,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.42578125,
+    "decision_acc": 0.65234375
+  },
+  "best": {
+    "path_acc": 0.42578125,
+    "decision_acc": 0.6796875
+  },
+  "eranks": {
+    "erank_0": 46.48,
+    "erank_1": 7.89,
+    "erank_2": 11.76,
+    "erank_3": 14.3,
+    "erank_4": 21.05,
+    "erank_5": 30.4,
+    "erank_6": 45.99
+  },
+  "wall_s": 511.8
+}

@@ -1,0 +1,27 @@
+{
+  "run": "abl_tp3_mtp8_seed1",
+  "config": "configs/ablation/abl_tp3_mtp8.yaml",
+  "device": "cuda",
+  "params": 4785664,
+  "steps": 4000,
+  "final": {
+    "set_acc": 0.74609375,
+    "path_valid": 0.9257812499999993,
+    "len_ratio": 0.9988029586834734
+  },
+  "best": {
+    "set_acc": 0.8046875,
+    "path_valid": 0.940104166666666,
+    "len_ratio": 0.9994643702651514
+  },
+  "eranks": {
+    "erank_0": 23.12,
+    "erank_1": 12.98,
+    "erank_2": 40.11,
+    "erank_3": 59.64,
+    "erank_4": 45.25,
+    "erank_5": 66.86,
+    "erank_6": 66.85
+  },
+  "wall_s": 583.4
+}

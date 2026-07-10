@@ -1,0 +1,29 @@
+{
+  "run": "abl_syn4_jepa_seed2",
+  "config": "configs/ablation/abl_syn4_jepa.yaml",
+  "device": "cuda",
+  "params": 5022720,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.65625,
+    "decision_acc": 0.7362204724409449,
+    "syn_cos_within": 0.9849305152893066,
+    "syn_cos_between": -0.010554809123277664
+  },
+  "best": {
+    "path_acc": 0.65625,
+    "decision_acc": 0.7401574803149606,
+    "syn_cos_within": 0.9849305152893066,
+    "syn_cos_between": -0.010526204481720924
+  },
+  "eranks": {
+    "erank_0": 23.38,
+    "erank_1": 16.13,
+    "erank_2": 24.84,
+    "erank_3": 27.94,
+    "erank_4": 32.34,
+    "erank_5": 35.35,
+    "erank_6": 30.47
+  },
+  "wall_s": 376.7
+}

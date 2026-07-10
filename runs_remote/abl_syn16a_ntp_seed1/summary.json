@@ -1,0 +1,29 @@
+{
+  "run": "abl_syn16a_ntp_seed1",
+  "config": "configs/ablation/abl_syn16a_ntp.yaml",
+  "device": "cuda",
+  "params": 4871168,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.6015625,
+    "decision_acc": 0.6852589641434262,
+    "syn_cos_within": 0.8831890821456909,
+    "syn_cos_between": -0.013680786825716496
+  },
+  "best": {
+    "path_acc": 0.625,
+    "decision_acc": 0.7051792828685259,
+    "syn_cos_within": 0.8831890821456909,
+    "syn_cos_between": -0.007463732268661261
+  },
+  "eranks": {
+    "erank_0": 21.54,
+    "erank_1": 7.06,
+    "erank_2": 10.5,
+    "erank_3": 13.59,
+    "erank_4": 15.49,
+    "erank_5": 20.03,
+    "erank_6": 20.19
+  },
+  "wall_s": 250.0
+}

@@ -1,0 +1,27 @@
+{
+  "run": "pilot_tp1_6x6_ntp",
+  "config": "configs/pilot/pilot_tp1_6x6_ntp.yaml",
+  "device": "cuda",
+  "params": 4732928,
+  "steps": 4000,
+  "final": {
+    "set_acc": 0.83984375,
+    "path_valid": 0.98828125,
+    "len_ratio": 0.9592735447667914
+  },
+  "best": {
+    "set_acc": 0.83984375,
+    "path_valid": 0.99609375,
+    "len_ratio": 0.9601080833028086
+  },
+  "eranks": {
+    "erank_0": 32.56,
+    "erank_1": 33.79,
+    "erank_2": 45.57,
+    "erank_3": 50.0,
+    "erank_4": 54.83,
+    "erank_5": 56.56,
+    "erank_6": 55.94
+  },
+  "wall_s": 773.9
+}

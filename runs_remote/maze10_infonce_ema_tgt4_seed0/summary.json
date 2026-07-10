@@ -1,0 +1,25 @@
+{
+  "run": "maze10_infonce_ema_tgt4_seed0",
+  "config": "configs/larger_maze/maze10_infonce_ema_tgt4.yaml",
+  "device": "cuda",
+  "params": 5011456,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.26953125,
+    "decision_acc": 0.58984375
+  },
+  "best": {
+    "path_acc": 0.28515625,
+    "decision_acc": 0.6328125
+  },
+  "eranks": {
+    "erank_0": 61.82,
+    "erank_1": 43.53,
+    "erank_2": 68.18,
+    "erank_3": 68.9,
+    "erank_4": 66.7,
+    "erank_5": 58.75,
+    "erank_6": 79.04
+  },
+  "wall_s": 573.3
+}

@@ -1,0 +1,27 @@
+{
+  "run": "abl_tp3_ntp_seed1",
+  "config": "configs/ablation/abl_tp3_ntp.yaml",
+  "device": "cuda",
+  "params": 4730112,
+  "steps": 4000,
+  "final": {
+    "set_acc": 0.765625,
+    "path_valid": 0.9414062499999993,
+    "len_ratio": 0.99749953161089
+  },
+  "best": {
+    "set_acc": 0.765625,
+    "path_valid": 0.9414062499999993,
+    "len_ratio": 0.9980198841647903
+  },
+  "eranks": {
+    "erank_0": 23.17,
+    "erank_1": 26.68,
+    "erank_2": 53.42,
+    "erank_3": 64.11,
+    "erank_4": 66.84,
+    "erank_5": 46.46,
+    "erank_6": 43.22
+  },
+  "wall_s": 514.8
+}

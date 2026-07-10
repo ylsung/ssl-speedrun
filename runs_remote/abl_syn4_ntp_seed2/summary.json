@@ -1,0 +1,29 @@
+{
+  "run": "abl_syn4_ntp_seed2",
+  "config": "configs/ablation/abl_syn4_ntp.yaml",
+  "device": "cuda",
+  "params": 4760576,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.640625,
+    "decision_acc": 0.7204724409448819,
+    "syn_cos_within": 0.9843398332595825,
+    "syn_cos_between": -0.012460430152714252
+  },
+  "best": {
+    "path_acc": 0.640625,
+    "decision_acc": 0.7204724409448819,
+    "syn_cos_within": 0.9843398332595825,
+    "syn_cos_between": -0.012460430152714252
+  },
+  "eranks": {
+    "erank_0": 20.25,
+    "erank_1": 8.9,
+    "erank_2": 15.49,
+    "erank_3": 19.14,
+    "erank_4": 22.38,
+    "erank_5": 25.05,
+    "erank_6": 22.66
+  },
+  "wall_s": 329.5
+}

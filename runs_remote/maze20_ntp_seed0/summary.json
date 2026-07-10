@@ -1,0 +1,25 @@
+{
+  "run": "maze20_ntp_seed0",
+  "config": "configs/larger_maze/maze20_ntp.yaml",
+  "device": "cuda",
+  "params": 4826112,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.09765625,
+    "decision_acc": 0.5546875
+  },
+  "best": {
+    "path_acc": 0.12890625,
+    "decision_acc": 0.59765625
+  },
+  "eranks": {
+    "erank_0": 72.62,
+    "erank_1": 12.19,
+    "erank_2": 12.59,
+    "erank_3": 11.65,
+    "erank_4": 10.75,
+    "erank_5": 12.59,
+    "erank_6": 18.6
+  },
+  "wall_s": 3198.0
+}

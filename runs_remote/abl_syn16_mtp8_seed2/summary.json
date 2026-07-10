@@ -1,0 +1,29 @@
+{
+  "run": "abl_syn16_mtp8_seed2",
+  "config": "configs/ablation/abl_syn16_mtp8.yaml",
+  "device": "cuda",
+  "params": 5914112,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.79296875,
+    "decision_acc": 0.8188976377952756,
+    "syn_cos_within": 0.9316211938858032,
+    "syn_cos_between": -0.0016990711446851492
+  },
+  "best": {
+    "path_acc": 0.81640625,
+    "decision_acc": 0.8346456692913385,
+    "syn_cos_within": 0.9316211938858032,
+    "syn_cos_between": -0.0016990711446851492
+  },
+  "eranks": {
+    "erank_0": 27.3,
+    "erank_1": 11.99,
+    "erank_2": 15.88,
+    "erank_3": 14.75,
+    "erank_4": 18.42,
+    "erank_5": 23.21,
+    "erank_6": 36.38
+  },
+  "wall_s": 352.0
+}
