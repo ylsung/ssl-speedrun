@@ -281,3 +281,29 @@ on **tp3_5x5**. The 2×2:
 Read-out ladder: latent helps only bottom row → order invariance is what
 matters; only right column → token invariance; only bottom-right → the
 compositional nuisance regime is where latent learning pays.
+
+## Round 7 — gridembed: inverse maze layout (global constraint satisfaction)
+
+User direction after rounds 5–6 (2026-07-10): tp3 admits a copy-paste
+shortcut (transcribe edges, few forks); the drawing task does not. Input:
+shuffled edge list of a maze tree over randomly relabeled vertices (labels
+leak no coordinates — verified). Output: the full (2H−1)×(2W−1) drawing —
+vertex labels at even/even slots, E(dge)/W(all) between them, C filler —
+from a random D4 perspective each sample (8 shown answers; verification
+accepts any valid layout, of which there are far more: median 324 at 4×4,
+3428 at 5×5; acceptance fraction ~1e−11 / ~1e−22 of possible grids).
+Eval on held-out mazes (training resamples hash collisions); strict
+verification: permutation + stated E set == input edge set exactly (edges
+present AND no additional edges). Metrics: embed_acc, perm_valid, edge_f1.
+
+**Why this is the planning testbed the program lacked:** no copy shortcut —
+every placement is constrained by the whole edge list; and myopic policies
+fail — naive greedy solves 0.000 of instances (both sizes), greedy with
+local degree-feasibility pruning 3% per rollout at 4×4, 0.1% at 5×5.
+Lookahead is required, with graded difficulty (unlike star graph's cliff).
+First Tier-0 task where NTP's irreversible autoregressive commitment
+structurally bites — the Bachmann–Nagarajan regime with a dial.
+
+Difficulty pilots: NTP 1-seed, 4×4 and 5×5 (`configs/pilot/pilot_ge_*`).
+Floor watch: edge_f1 is the graded signal; if embed_acc ≈ 0 and edge_f1
+low at 4×4, shrink or add curriculum before the method grid.

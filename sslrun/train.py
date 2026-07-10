@@ -18,10 +18,12 @@ from .losses import LossStack
 from .metrics import layer_effective_ranks
 from .data.stargraph import StarGraphConfig, StarGraphTask
 from .data.maze import MazeConfig, MazeTask
+from .data.gridembed import GridEmbedConfig, GridEmbedTask
 from .data.lm import LMConfig, LMTask
 
 TASKS = {"stargraph": (StarGraphConfig, StarGraphTask),
          "maze": (MazeConfig, MazeTask),
+         "gridembed": (GridEmbedConfig, GridEmbedTask),
          "lm": (LMConfig, LMTask)}
 
 
