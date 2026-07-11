@@ -1,0 +1,27 @@
+{
+  "run": "abl_ge4_mtp8_seed1",
+  "config": "configs/ablation/abl_ge4_mtp8.yaml",
+  "device": "cuda",
+  "params": 4773376,
+  "steps": 4000,
+  "final": {
+    "embed_acc": 0.13671875,
+    "perm_valid": 0.59375,
+    "edge_f1": 0.8548542282487425
+  },
+  "best": {
+    "embed_acc": 0.26171875,
+    "perm_valid": 0.9921875,
+    "edge_f1": 0.8959909510601259
+  },
+  "eranks": {
+    "erank_0": 13.8,
+    "erank_1": 16.18,
+    "erank_2": 21.96,
+    "erank_3": 18.72,
+    "erank_4": 20.12,
+    "erank_5": 32.84,
+    "erank_6": 31.79
+  },
+  "wall_s": 235.1
+}

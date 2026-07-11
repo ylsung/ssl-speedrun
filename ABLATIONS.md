@@ -284,6 +284,17 @@ compositional nuisance regime is where latent learning pays.
 
 ## Round 7 — gridembed: inverse maze layout (global constraint satisfaction)
 
+**Outcome (2026-07-11, results §Round 7):** first big MTP separation of
+the nuisance program — best embed_acc 4×4: mtp8 .203±.082 vs jepa
+.065±.019 vs ntp .040±.035; edge_f1 .878 vs .793 vs .564. NTP learns
+exactly the myopic policy (plateaus at the greedy-with-pruning baseline
+~3%, one seed never leaves the permutation-only phase); MTP roughly
+matches the number of *simultaneously satisfied* edge constraints its
+horizon covers, and at 5×5 lifts edge_f1 off NTP's floor (.78 vs .08)
+even though full solutions stay ~0 — a graded floor-lift star graph never
+showed. JEPA again lands between NTP and MTP. Conditional dominance
+extends to the planning-heavy regime.
+
 User direction after rounds 5–6 (2026-07-10): tp3 admits a copy-paste
 shortcut (transcribe edges, few forks); the drawing task does not. Input:
 shuffled edge list of a maze tree over randomly relabeled vertices (labels

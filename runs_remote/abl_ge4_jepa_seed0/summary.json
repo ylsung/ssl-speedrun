@@ -1,0 +1,27 @@
+{
+  "run": "abl_ge4_jepa_seed0",
+  "config": "configs/ablation/abl_ge4_jepa.yaml",
+  "device": "cuda",
+  "params": 4990720,
+  "steps": 4000,
+  "final": {
+    "embed_acc": 0.05859375,
+    "perm_valid": 0.35546875,
+    "edge_f1": 0.8032173339022969
+  },
+  "best": {
+    "embed_acc": 0.07421875,
+    "perm_valid": 0.96875,
+    "edge_f1": 0.8032173339022969
+  },
+  "eranks": {
+    "erank_0": 12.92,
+    "erank_1": 13.9,
+    "erank_2": 21.07,
+    "erank_3": 23.55,
+    "erank_4": 25.69,
+    "erank_5": 27.77,
+    "erank_6": 26.23
+  },
+  "wall_s": 232.8
+}

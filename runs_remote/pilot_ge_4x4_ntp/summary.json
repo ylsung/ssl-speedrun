@@ -1,0 +1,27 @@
+{
+  "run": "pilot_ge_4x4_ntp",
+  "config": "configs/pilot/pilot_ge_4x4_ntp.yaml",
+  "device": "cuda",
+  "params": 4728576,
+  "steps": 4000,
+  "final": {
+    "embed_acc": 0.03125,
+    "perm_valid": 0.23828125,
+    "edge_f1": 0.7555119409547406
+  },
+  "best": {
+    "embed_acc": 0.0546875,
+    "perm_valid": 1.0,
+    "edge_f1": 0.7897010198042592
+  },
+  "eranks": {
+    "erank_0": 15.49,
+    "erank_1": 12.67,
+    "erank_2": 17.96,
+    "erank_3": 17.12,
+    "erank_4": 22.88,
+    "erank_5": 21.49,
+    "erank_6": 9.39
+  },
+  "wall_s": 208.6
+}

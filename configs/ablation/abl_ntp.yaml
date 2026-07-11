@@ -1,0 +1,11 @@
+# ablation cell ntp (see ABLATIONS.md)
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 4000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 200
+  seed: 0
