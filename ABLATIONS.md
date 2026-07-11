@@ -357,9 +357,10 @@ unbounded horizon through the trunk, no extra passes.
 
 Cells (3 seeds, 4000 steps): `abl_sg_tl` (B alone — replication; expected
 off chance), `abl_sg_belief` (A alone), `abl_sg_belief_ctl` (backward LM
-grounding only, weight=0 — attribution control for A), `abl_sg_tl_jepa`
-(B + forward pooled latent — corruption combo done right), `abl_sg_tl_belief`
-(A + B). Smoke-tested: reverse-index oracle, grad flow, ctl grounding-only,
+grounding only, weight=0 — attribution control for A), `abl_sg_tl_belief`
+(A + B). `abl_sg_tl_jepa` (B + forward pooled latent) designed but dropped
+by user decision 2026-07-11 — forward pooled targets are the mechanism
+already falsified. Smoke-tested: reverse-index oracle, grad flow, ctl grounding-only,
 teacherless leak check, both train.py paths.
 
 Predictions: if the myopic-target diagnosis is right, sg_belief > jepa anchor
