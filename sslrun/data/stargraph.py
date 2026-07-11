@@ -89,17 +89,26 @@ class StarGraphTask:
 
     @torch.no_grad()
     def evaluate(self, model, rng: np.random.Generator, n_batches: int = 4,
-                 batch_size: int = 64, device="cpu"):
+                 batch_size: int = 64, device="cpu", teacherless: bool = False):
         """Greedy-decode from the prefix; fixed-length task so prefix_len is
-        constant and we can decode the whole batch at once."""
+        constant and we can decode the whole batch at once. teacherless:
+        parallel decode instead — one forward pass with the answer-region
+        inputs replaced by the mask embedding (matching training; gold answer
+        tokens never enter the model), predictions read off positions
+        plen-1 .. plen+n_new-2."""
         c = self.cfg
         n_new = c.n + 2  # path (n+1 tokens) + EOS
         tot = full_ok = dec_ok = 0
         for _ in range(n_batches):
             batch = self.batch(batch_size, rng, device)
             plen = int(batch["prefix_len"][0])
-            prefix = batch["tokens"][:, :plen]
-            out = model.generate_greedy(prefix, n_new)[:, plen:]
+            if teacherless:
+                drop = batch["target_mask"] & batch["valid_mask"]
+                logits, _ = model(batch["tokens"], drop)
+                out = logits[:, plen - 1:plen - 1 + n_new].argmax(dim=-1)
+            else:
+                prefix = batch["tokens"][:, :plen]
+                out = model.generate_greedy(prefix, n_new)[:, plen:]
             gold = batch["tokens"][:, plen:plen + n_new]
             full_ok += (out == gold).all(dim=1).sum().item()
             # decision token = first node after the center = 2nd path token

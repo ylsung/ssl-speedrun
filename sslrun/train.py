@@ -68,10 +68,12 @@ def main():
     task, vocab_size, seq_len = build_task(cfg)
     mcfg = ModelConfig(vocab_size=vocab_size, max_seq_len=seq_len, **cfg["model"])
     model = GPT(mcfg).to(device)
+    teacherless = bool(tr.get("teacherless", False))
     stack = LossStack(model, cfg["losses"],
                       ema_decay=tr.get("ema_decay", 0.999),
                       corrupt_p=tr.get("corrupt_p", 0.0),
-                      corrupt_side=tr.get("corrupt_side", "student")).to(device)
+                      corrupt_side=tr.get("corrupt_side", "student"),
+                      teacherless=teacherless).to(device)
     train_params = [p for p in stack.parameters() if p.requires_grad]
     n_params = sum(p.numel() for p in train_params)
 
@@ -121,7 +123,8 @@ def main():
         if step % eval_every == 0 or step == steps:
             model.eval()
             ev = task.evaluate(model, np.random.default_rng(eval_rng_seed),
-                               device=device)
+                               device=device,
+                               **({"teacherless": True} if teacherless else {}))
             eranks = layer_effective_ranks(
                 model, task.batch(256, np.random.default_rng(eval_rng_seed), device))
             model.train()

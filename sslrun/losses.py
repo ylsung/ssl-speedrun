@@ -331,8 +331,103 @@ class JepaPerTokenLoss(nn.Module):
         return self.weight * total / n_terms
 
 
+class JepaBeliefLoss(nn.Module):
+    """Future-summary latent target from the SAME decoder run right-to-left
+    (FSP, arXiv:2510.14751 "learned summaries"; Belief State Transformer,
+    arXiv:2410.23506). Round-8 rationale: teacher-forced forward hiddens are
+    shaped by NTP and carry mostly short-range features, so predicting them
+    (jepa_pooled) inherits NTP's myopia; a reversed-pass state at reversed
+    index L-2-t is a causal summary of *only* the suffix x_{t+1..L-1}.
+
+    LossStack runs the shared trunk on the length-reversed sequence (RoPE:
+    positions 0..T-1, direction identifiable from content) and supplies
+    rev_* tensors. Two terms:
+      - ground_w: plain NTP on the reversed student pass (backward LM), so
+        reversed inputs are in-distribution and the EMA teacher's reversed
+        states are grounded rather than garbage. ground_w>0 with weight=0 is
+        the attribution control (backward LM alone, no latent loss).
+      - weight: forward hidden at t (predictor MLP) matches the stop-grad
+        (default EMA) reversed-pass tgt_layer state summarizing x_{t+1..}.
+        answer_only restricts source positions t to those whose suffix
+        starts in the answer region (incl. the pre-answer planning token).
+    """
+    name = "belief"
+
+    def __init__(self, d_model: int, weight: float = 0.5,
+                 ground_w: float = 0.5, src_layer: int = -1,
+                 tgt_layer: int = 4, answer_only: bool = True,
+                 target: str = "ema", objective: str = "cosine",
+                 temperature: float = 0.1, **kw):
+        super().__init__()
+        assert objective in ("cosine", "l2", "infonce")
+        self.weight = weight
+        self.ground_w = ground_w
+        self.src_layer = src_layer
+        self.tgt_layer = tgt_layer
+        self.answer_only = answer_only
+        self.target = target
+        self.objective = objective
+        self.temperature = temperature
+        self.predictor = nn.Sequential(
+            nn.Linear(d_model, 2 * d_model, bias=False),
+            nn.GELU(),
+            nn.Linear(2 * d_model, d_model, bias=False),
+        )
+
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
+        rev_tokens = batch["rev_tokens"]
+        lengths = batch["lengths"]
+        B, T = rev_tokens.shape
+        ar = torch.arange(T, device=rev_tokens.device)
+        rev_valid = ar.unsqueeze(0) < lengths.unsqueeze(1)
+        total = logits.new_zeros(())
+
+        if self.ground_w > 0:
+            rev_logits = batch["rev_logits"]
+            m = rev_valid[:, 1:]
+            if m.sum() > 0:
+                total = total + self.ground_w * F.cross_entropy(
+                    rev_logits[:, :-1][m], rev_tokens[:, 1:][m])
+
+        if self.weight > 0:
+            src_hiddens = batch.get("src_hiddens") or hiddens
+            h = src_hiddens[self.src_layer]
+            rev_h = (batch["rev_tgt_hiddens"] if self.target == "ema"
+                     else batch["rev_hiddens"])
+            tgt = rev_h[self.tgt_layer].detach().float()
+            D = h.size(-1)
+            # belief state for source position t lives at reversed index
+            # L-2-t (causal summary of x_{t+1..L-1}); needs t <= L-2
+            jmap = lengths.unsqueeze(1) - 2 - ar.unsqueeze(0)  # (B, T)
+            ok = (jmap >= 0) & batch["valid_mask"]
+            if self.answer_only:
+                am = torch.zeros_like(ok)
+                am[:, :-1] = batch["target_mask"][:, 1:]
+                ok = ok & am
+            if ok.sum() == 0:
+                return total
+            z_all = tgt.gather(
+                1, jmap.clamp_min(0).unsqueeze(-1).expand(-1, -1, D))
+            p = self.predictor(h).float()[ok]
+            z = z_all[ok]
+            if self.objective == "cosine":
+                align = (1.0 - F.cosine_similarity(p, z, dim=-1)).mean()
+            elif self.objective == "l2":
+                align = (p - z).pow(2).mean()
+            else:  # infonce, in-batch negatives over subsampled pairs
+                n = min(p.size(0), 1024)
+                idx = torch.randperm(p.size(0), device=p.device)[:n]
+                pn = F.normalize(p[idx], dim=-1)
+                zn = F.normalize(z[idx], dim=-1)
+                sim = pn @ zn.T / self.temperature
+                align = F.cross_entropy(
+                    sim, torch.arange(n, device=p.device))
+            total = total + self.weight * align
+        return total
+
+
 LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss,
-                                     JepaPerTokenLoss)}
+                                     JepaPerTokenLoss, JepaBeliefLoss)}
 
 
 class LossStack(nn.Module):
@@ -344,17 +439,24 @@ class LossStack(nn.Module):
     """
 
     def __init__(self, model, loss_cfgs: list, ema_decay: float = 0.999,
-                 corrupt_p: float = 0.0, corrupt_side: str = "student"):
+                 corrupt_p: float = 0.0, corrupt_side: str = "student",
+                 teacherless: bool = False):
         super().__init__()
         # student: one corrupted pass, NTP rides it (2 passes total)
         # ema:     corrupt the teacher's input (noisy-target control)
         # latent:  clean pass for NTP + separate corrupted pass that supplies
         #          the latent-loss source hiddens (3 passes, clean attribution)
         assert corrupt_side in ("student", "ema", "latent")
+        # teacherless (Bachmann & Nagarajan): replace the *answer-region*
+        # inputs with the mask embedding — removes the teacher-forcing crutch
+        # while every target stays determined by the clean question. Mutually
+        # exclusive with random corruption; eval must decode in parallel.
+        assert not (teacherless and corrupt_p > 0)
         self.model = model
         self.ema_decay = ema_decay
         self.corrupt_p = corrupt_p
         self.corrupt_side = corrupt_side
+        self.teacherless = teacherless
         plugins = []
         for cfg in loss_cfgs:
             cfg = dict(cfg)
@@ -363,6 +465,7 @@ class LossStack(nn.Module):
             plugins.append(cls(d_model=model.cfg.d_model,
                                vocab_size=model.cfg.vocab_size, **cfg))
         self.plugins = nn.ModuleList(plugins)
+        self.needs_reverse = any(p.name == "belief" for p in plugins)
         self.ema_model = None
         if any(getattr(p, "target", "same") == "ema" for p in plugins):
             self.ema_model = copy.deepcopy(model).requires_grad_(False)
@@ -379,7 +482,9 @@ class LossStack(nn.Module):
 
     def forward(self, batch):
         drop = None
-        if self.corrupt_p > 0 and self.training:
+        if self.teacherless:
+            drop = batch["target_mask"] & batch["valid_mask"]
+        elif self.corrupt_p > 0 and self.training:
             drop = (torch.rand_like(batch["tokens"], dtype=torch.float)
                     < self.corrupt_p) & batch["valid_mask"]
             drop[:, 0] = False  # never corrupt BOS
@@ -395,6 +500,25 @@ class LossStack(nn.Module):
                     batch["tokens"],
                     drop if self.corrupt_side == "ema" else None)
         batch = {**batch, "drop_mask": drop, "src_hiddens": src_hiddens}
+        if self.needs_reverse:
+            # per-row flip of the valid region (PAD tail stays in place);
+            # reversed tokens sit at RoPE positions 0..T-1 — only relative
+            # offsets exist, direction is identifiable from content
+            tokens = batch["tokens"]
+            lengths = batch["valid_mask"].sum(dim=1)
+            ar = torch.arange(tokens.size(1), device=tokens.device)
+            ridx = torch.where(ar.unsqueeze(0) < lengths.unsqueeze(1),
+                               (lengths.unsqueeze(1) - 1 - ar).clamp_min(0),
+                               ar.unsqueeze(0).expand(tokens.size(0), -1))
+            rev_tokens = tokens.gather(1, ridx)
+            rev_logits, rev_hiddens = self.model(rev_tokens)
+            rev_tgt_hiddens = None
+            if self.ema_model is not None:
+                with torch.no_grad():
+                    _, rev_tgt_hiddens = self.ema_model(rev_tokens)
+            batch.update(rev_tokens=rev_tokens, rev_logits=rev_logits,
+                         rev_hiddens=rev_hiddens,
+                         rev_tgt_hiddens=rev_tgt_hiddens, lengths=lengths)
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:

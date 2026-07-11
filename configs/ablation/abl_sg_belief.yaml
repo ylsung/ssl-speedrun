@@ -1,0 +1,15 @@
+# round-8 cell sg_belief: NTP + reversed-pass future-summary latent target
+# (FSP-style learned summaries; shared decoder, EMA teacher on flipped seq)
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: belief, weight: 0.5, ground_w: 0.5, tgt_layer: 4, answer_only: true,
+     target: ema, objective: cosine}
+train:
+  steps: 4000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 200
+  seed: 0

@@ -318,3 +318,53 @@ structurally bites — the Bachmann–Nagarajan regime with a dial.
 Difficulty pilots: NTP 1-seed, 4×4 and 5×5 (`configs/pilot/pilot_ge_*`).
 Floor watch: edge_f1 is the graded signal; if embed_acc ≈ 0 and edge_f1
 low at 4×4, shrink or add curriculum before the method grid.
+
+## Round 8 — scheme-level fixes: future-summary targets + teacherless (star graph)
+
+Motivation (user + post-mortem, JOURNEY.md): rounds 1–7 point at the *scheme*,
+not the loss — teacher-forced forward hiddens are shaped by NTP and carry
+mostly short-range features, so pooled-latent targets inherit NTP's myopia.
+Two fixes, both changing what the trunk is asked to know rather than how the
+target is regressed, tested where the required lookahead is maximal and
+NTP+every auxiliary is at chance: star graph d=5 n=5 (chance = .2; anchors
+ntp .076±.057, mtp .185±.040, jepa .094±.072).
+
+**A. `belief` loss (FSP arXiv:2510.14751 "learned summaries"; BST
+arXiv:2410.23506), single shared decoder per user's design:** run the same
+trunk on the length-reversed sequence (RoPE → positions 0..T−1, direction
+identifiable from content — reversed sequences start with EOS). Grounding
+term `ground_w`: backward NTP on the reversed student pass, making reversed
+inputs in-distribution so the EMA teacher's reversed states are meaningful.
+Alignment term `weight`: forward hidden at t predicts (2-layer MLP,
+cosine, stop-grad) the EMA reversed-pass tgt-layer state at reversed index
+L−2−t — a causal summary of exactly the suffix x_{t+1..L−1}, i.e. a target
+that provably contains only future information. answer_only restricts source
+positions to the answer region + the pre-answer planning token (suffix
+beliefs at shuffled-edge-list positions are mostly noise). Cost ~2× step
+time (1 extra grad pass + 2 EMA passes). MTP has no analogue of this trick:
+in token space the suffix already *is* the target set; the reversed pass
+adds the one thing tokens can't — a learned compression of the suffix.
+
+**B. Teacherless (Bachmann & Nagarajan):** replace answer-region *inputs*
+with the learned mask embedding (`train: teacherless: true`); the question
+stays clean, every target stays well-posed, and the teacher-forcing crutch —
+the thing that lets NTP shortcut the planning token — is removed. Differs
+from round-3 corruption in placement, not numerics (round 3 corrupted random
+*context*, making ~p of targets ill-posed + distribution-shifting all of
+them). Eval decodes in parallel: one forward with masked answer inputs
+(verified: logits invariant to gold answer tokens). Equivalent to MTP with
+unbounded horizon through the trunk, no extra passes.
+
+Cells (3 seeds, 4000 steps): `abl_sg_tl` (B alone — replication; expected
+off chance), `abl_sg_belief` (A alone), `abl_sg_belief_ctl` (backward LM
+grounding only, weight=0 — attribution control for A), `abl_sg_tl_jepa`
+(B + forward pooled latent — corruption combo done right), `abl_sg_tl_belief`
+(A + B). Smoke-tested: reverse-index oracle, grad flow, ctl grounding-only,
+teacherless leak check, both train.py paths.
+
+Predictions: if the myopic-target diagnosis is right, sg_belief > jepa anchor
+(.094) and possibly off chance; sg_belief_ctl attributes any gain between the
+backward LM and the latent loss; sg_tl replicates B&N's lift; combos test
+whether latent targets help once the crutch is gone. If sg_belief ≈ jepa,
+the diagnosis is wrong at this scale and the latent-loss story is dead on
+Tier 0 regardless of target content.
