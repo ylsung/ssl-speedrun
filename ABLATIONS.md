@@ -369,3 +369,39 @@ backward LM and the latent loss; sg_tl replicates B&N's lift; combos test
 whether latent targets help once the crutch is gone. If sg_belief ≈ jepa,
 the diagnosis is wrong at this scale and the latent-loss story is dead on
 Tier 0 regardless of target content.
+
+## Round 9 — backchain: backward-chaining belief targets (star graph)
+
+Design agreed with user 2026-07-12 (option "a" of the post-round-8
+synthesis; full spec in the conversation and BackchainLoss docstring).
+Two requirements distilled from rounds 1–8: targets must be (i) *forced
+sufficient* — computed behind a bottleneck, since attention otherwise lets
+every state stay myopic (the transformer version of the user's degenerate
+||h−ĥ|| solution, confirmed by round-8 belief ≈ ctl) — and (ii) *learnable*
+— the round-8 fully-reversed teacher read the answer before the edge list,
+making backward NTP on the path unlearnable. Fix: teacher view x̃ =
+question forward + answer span reversed (in-place flip of target_mask).
+Every reversed-answer token is then an easy step (goal copy → unique-parent
+lookups), giving a curriculum of partially-walked states, and the state at
+the end of the scan has computed the whole arm.
+
+`backchain` loss = three terms on top of forward NTP:
+- ground_w=.5: NTP on the reversed span (x̃_{s+1..e}; x̃_s excluded — the
+  EQ position has an identical prefix in both views and must not receive
+  conflicting forward/reversed targets).
+- mtp_w=.5, k=8: linear heads read single reversed-pass states, predict the
+  next k reversed tokens — the bottleneck; k ≥ answer length (7) so early
+  chain states must contain the entire remaining plan. bc_m in the logs is
+  the health metric (stuck at ~log|V| ⇒ bottleneck never filled).
+- weight=.5: forward hidden at t → predictor → cosine to stop-grad EMA
+  reversed-pass layer-4 state at j(t)=s+e−1−t (the state that back-chained
+  through exactly x_{t+1..e}); planning position (EQ) maps to the deepest
+  chain state. Sources t ∈ [s−1, e−1].
+
+Cost ~2.4× NTP step. Inference unchanged (plain forward decoder). Cells
+(3 seeds): `abl_sg_bc` (full), `abl_sg_bc_noalign` (weight=0 — is it the
+latent loss or the chaining multitask?), `abl_sg_bc_nomtp` (mtp_w=0 — does
+the bottleneck matter beyond reading order?). Read against round-8
+full-reverse cells (order baseline), anchors ntp .076 / mtp .185 / chance
+.2. Smoke-tested: view-flip + j(t) oracles, EQ-conflict guard, grad flow,
+variant configs, 30-step train.py run.

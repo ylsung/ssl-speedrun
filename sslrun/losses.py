@@ -426,8 +426,127 @@ class JepaBeliefLoss(nn.Module):
         return total
 
 
+class BackchainLoss(nn.Module):
+    """Round 9: backward-chaining belief targets (design: ABLATIONS.md §R9).
+
+    Teacher view x̃ = x with the (contiguous) target_mask span reversed in
+    place — question forward, answer reversed — so every reversed-answer
+    token is predictable by easy local steps (goal copy, then unique-parent
+    lookups) and the trunk *computes* the plan while scanning it. LossStack
+    runs the student (grad) and EMA teacher (no grad) on x̃ and supplies
+    bc_* tensors. Three terms:
+
+      ground_w: NTP on the reversed span (targets x̃_{s+1..e}; the first
+        flipped token x̃_s is excluded — position s−1 has an identical
+        prefix in both views, so training its prediction toward x̃_s would
+        conflict with forward NTP at the planning position).
+      mtp_w:    k−1 linear heads read single reversed-pass states and
+        predict the next k reversed tokens — the bottleneck that forces
+        each state to *contain* the remaining chain (attention bypass
+        closed). Learnable via the chain curriculum: late states have
+        walked most steps already.
+      weight:   forward hidden at t (predictor MLP, cosine/InfoNCE) matches
+        the stop-grad EMA reversed-pass tgt_layer state at j(t) = s+e−1−t —
+        the state that has just finished back-chaining through exactly the
+        suffix x_{t+1..e} that position t still has to generate. Source
+        positions t ∈ [s−1, e−1] (answer region incl. the planning token).
+
+    Per-term values are exposed in last_parts (bc_g / bc_m / bc_a) — bc_m
+    is the health metric: if it stays at ~log|V| the bottleneck never
+    filled. Heads + predictor are train-only; inference is a plain decoder.
+    """
+    name = "backchain"
+
+    def __init__(self, d_model: int, vocab_size: int, k: int = 8,
+                 weight: float = 0.5, ground_w: float = 0.5,
+                 mtp_w: float = 0.5, src_layer: int = -1, tgt_layer: int = 4,
+                 target: str = "ema", objective: str = "cosine",
+                 temperature: float = 0.1, **kw):
+        super().__init__()
+        assert objective in ("cosine", "infonce")
+        self.k = k
+        self.weight = weight
+        self.ground_w = ground_w
+        self.mtp_w = mtp_w
+        self.src_layer = src_layer
+        self.tgt_layer = tgt_layer
+        self.target = target
+        self.objective = objective
+        self.temperature = temperature
+        self.heads = nn.ModuleList(
+            nn.Linear(d_model, vocab_size, bias=False) for _ in range(k - 1))
+        self.predictor = nn.Sequential(
+            nn.Linear(d_model, 2 * d_model, bias=False),
+            nn.GELU(),
+            nn.Linear(2 * d_model, d_model, bias=False),
+        )
+        self.last_parts = {}
+
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
+        bc_tokens, bc_mask = batch["bc_tokens"], batch["bc_mask"]
+        s, e = batch["bc_span"]                        # (B,), (B,) inclusive
+        total = logits.new_zeros(())
+        self.last_parts = {}
+
+        if self.ground_w > 0:
+            bc_logits = batch["bc_logits"]
+            m = bc_mask[:, 1:]
+            if m.sum() > 0:
+                g = F.cross_entropy(bc_logits[:, :-1][m], bc_tokens[:, 1:][m])
+                total = total + self.ground_w * g
+                self.last_parts["bc_g"] = float(g.detach())
+
+        if self.mtp_w > 0:
+            h = batch["bc_hiddens"][-1]
+            mtp, n_terms = h.new_zeros(()), 0
+            for i, head in enumerate(self.heads):
+                off = i + 2
+                if h.size(1) <= off:
+                    continue
+                m = bc_mask[:, off:]
+                if m.sum() == 0:
+                    continue
+                lg = head(h[:, :-off])
+                mtp = mtp + F.cross_entropy(lg[m], bc_tokens[:, off:][m])
+                n_terms += 1
+            if n_terms > 0:
+                mtp = mtp / n_terms
+                total = total + self.mtp_w * mtp
+                self.last_parts["bc_m"] = float(mtp.detach())
+
+        if self.weight > 0:
+            h_src = hiddens[self.src_layer]
+            B, T, D = h_src.shape
+            ar = torch.arange(T, device=h_src.device)
+            bc_h = (batch["bc_tgt_hiddens"] if self.target == "ema"
+                    else batch["bc_hiddens"])
+            tgt = bc_h[self.tgt_layer].detach().float()
+            # source positions t with t+1 inside the span
+            ok = torch.zeros_like(batch["target_mask"])
+            ok[:, :-1] = batch["target_mask"][:, 1:]
+            jmap = (s + e - 1).unsqueeze(1) - ar.unsqueeze(0)  # (B, T)
+            jmap = jmap.clamp(0, T - 1)
+            z_all = tgt.gather(1, jmap.unsqueeze(-1).expand(-1, -1, D))
+            if ok.sum() > 0:
+                p = self.predictor(h_src).float()[ok]
+                z = z_all[ok]
+                if self.objective == "cosine":
+                    a = (1.0 - F.cosine_similarity(p, z, dim=-1)).mean()
+                else:
+                    n = min(p.size(0), 1024)
+                    idx = torch.randperm(p.size(0), device=p.device)[:n]
+                    pn = F.normalize(p[idx], dim=-1)
+                    zn = F.normalize(z[idx], dim=-1)
+                    sim = pn @ zn.T / self.temperature
+                    a = F.cross_entropy(sim, torch.arange(n, device=p.device))
+                total = total + self.weight * a
+                self.last_parts["bc_a"] = float(a.detach())
+        return total
+
+
 LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss,
-                                     JepaPerTokenLoss, JepaBeliefLoss)}
+                                     JepaPerTokenLoss, JepaBeliefLoss,
+                                     BackchainLoss)}
 
 
 class LossStack(nn.Module):
@@ -466,6 +585,7 @@ class LossStack(nn.Module):
                                vocab_size=model.cfg.vocab_size, **cfg))
         self.plugins = nn.ModuleList(plugins)
         self.needs_reverse = any(p.name == "belief" for p in plugins)
+        self.needs_backchain = any(p.name == "backchain" for p in plugins)
         self.ema_model = None
         if any(getattr(p, "target", "same") == "ema" for p in plugins):
             self.ema_model = copy.deepcopy(model).requires_grad_(False)
@@ -519,10 +639,34 @@ class LossStack(nn.Module):
             batch.update(rev_tokens=rev_tokens, rev_logits=rev_logits,
                          rev_hiddens=rev_hiddens,
                          rev_tgt_hiddens=rev_tgt_hiddens, lengths=lengths)
+        if self.needs_backchain:
+            # teacher view x̃: flip the contiguous target_mask span in place
+            # (question forward, answer reversed); see BackchainLoss docstring
+            tokens, tmask = batch["tokens"], batch["target_mask"]
+            B, T = tokens.shape
+            ar = torch.arange(T, device=tokens.device)
+            s = tmask.int().argmax(dim=1)                       # first True
+            e = s + tmask.sum(dim=1) - 1                        # last True
+            midx = torch.where(tmask, (s + e).unsqueeze(1) - ar.unsqueeze(0),
+                               ar.unsqueeze(0).expand(B, -1))
+            bc_tokens = tokens.gather(1, midx)
+            # CE/MTP targets exclude the first flipped token x̃_s (position
+            # s−1 has an identical prefix in both views — see docstring)
+            bc_mask = tmask & (ar.unsqueeze(0) > s.unsqueeze(1))
+            bc_logits, bc_hiddens = self.model(bc_tokens)
+            bc_tgt_hiddens = None
+            if self.ema_model is not None:
+                with torch.no_grad():
+                    _, bc_tgt_hiddens = self.ema_model(bc_tokens)
+            batch.update(bc_tokens=bc_tokens, bc_mask=bc_mask,
+                         bc_logits=bc_logits, bc_hiddens=bc_hiddens,
+                         bc_tgt_hiddens=bc_tgt_hiddens, bc_span=(s, e))
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:
             l = p(logits, hiddens, batch, tgt_hiddens)
             parts[p.name] = float(l.detach())
+            if getattr(p, "last_parts", None):
+                parts.update(p.last_parts)
             total = total + l
         return total, parts
