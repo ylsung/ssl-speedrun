@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_belief_seed2",
+  "config": "configs/ablation/abl_sg_belief.yaml",
+  "device": "cuda",
+  "params": 4998656,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.17578125,
+    "decision_acc": 0.17578125
+  },
+  "best": {
+    "path_acc": 0.2109375,
+    "decision_acc": 0.2109375
+  },
+  "eranks": {
+    "erank_0": 29.58,
+    "erank_1": 23.52,
+    "erank_2": 12.79,
+    "erank_3": 2.41,
+    "erank_4": 2.29,
+    "erank_5": 2.04,
+    "erank_6": 3.37
+  },
+  "wall_s": 305.7
+}

@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_tl_seed1",
+  "config": "configs/ablation/abl_sg_tl.yaml",
+  "device": "cuda",
+  "params": 4736512,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.0,
+    "decision_acc": 0.03515625
+  },
+  "best": {
+    "path_acc": 0.0,
+    "decision_acc": 0.07421875
+  },
+  "eranks": {
+    "erank_0": 31.32,
+    "erank_1": 13.74,
+    "erank_2": 21.49,
+    "erank_3": 31.72,
+    "erank_4": 38.06,
+    "erank_5": 43.5,
+    "erank_6": 42.52
+  },
+  "wall_s": 155.3
+}
