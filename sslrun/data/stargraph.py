@@ -25,6 +25,11 @@ class StarGraphConfig:
     n: int = 5            # arm length (edges per arm)
     num_nodes: int = 50   # node-id pool size (>= d*n + 1)
     seed: int = 0
+    # round-10 diagnostic: emit the answer goal→center (EOS stays last).
+    # Every step is then deterministic-easy (goal is in the query; each next
+    # node is the unique parent toward the center) — pure NTP should solve
+    # this ~perfectly if backward order is learnable at all.
+    reverse_path: bool = False
 
     @property
     def vocab_size(self):
@@ -61,7 +66,8 @@ class StarGraphTask:
             seq += [u, v, ESEP]
         seq += [QRY, center, goal, EQ]
         prefix_len = len(seq)
-        seq += path + [EOS]
+        ans = path[::-1] if self.cfg.reverse_path else path
+        seq += ans + [EOS]
         return seq, prefix_len, path
 
     def batch(self, batch_size: int, rng: np.random.Generator, device="cpu"):

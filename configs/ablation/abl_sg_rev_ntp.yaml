@@ -1,0 +1,15 @@
+# round-10 diagnostic sg_rev_ntp: reversed-answer star graph, pure NTP.
+# Emission goal→center (EOS last): every answer step is deterministic-easy,
+# so NTP should reach ~100% path_acc iff backward order is learnable —
+# the premise underlying backchain alignment (user request 2026-07-12).
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0, reverse_path: true}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 4000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 200
+  seed: 0
