@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_bc_nomtp_seed1",
+  "config": "configs/ablation/abl_sg_bc_nomtp.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.2109375,
+    "decision_acc": 0.2109375
+  },
+  "best": {
+    "path_acc": 0.22265625,
+    "decision_acc": 0.22265625
+  },
+  "eranks": {
+    "erank_0": 32.81,
+    "erank_1": 16.57,
+    "erank_2": 8.62,
+    "erank_3": 12.74,
+    "erank_4": 10.93,
+    "erank_5": 11.96,
+    "erank_6": 30.59
+  },
+  "wall_s": 263.0
+}

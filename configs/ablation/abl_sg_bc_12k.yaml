@@ -1,0 +1,16 @@
+# round-9 follow-up sg_bc_12k: 3x budget — bc_m (bottleneck fill) was still
+# descending at 4000 steps (1.56 and falling); test whether chain
+# internalization completes and converts with more steps
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: backchain, weight: 0.5, ground_w: 0.5, mtp_w: 0.5, k: 8,
+     src_layer: -1, tgt_layer: 4, target: ema, objective: infonce}
+train:
+  steps: 12000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 400
+  seed: 0
