@@ -121,3 +121,14 @@ class StarGraphTask:
             dec_ok += (out[:, 1] == gold[:, 1]).sum().item()
             tot += batch_size
         return {"path_acc": full_ok / tot, "decision_acc": dec_ok / tot}
+
+
+if __name__ == "__main__":
+    task = StarGraphTask(
+        StarGraphConfig(n=5, d=5, num_nodes=50, seed=0)
+    )
+    
+    task._sample(np.random.default_rng(0))
+    
+    breakpoint()
+    

@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_bc_noalign_12k_seed0",
+  "config": "configs/ablation/abl_sg_bc_noalign_12k.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 12000,
+  "final": {
+    "path_acc": 0.18359375,
+    "decision_acc": 0.18359375
+  },
+  "best": {
+    "path_acc": 0.2578125,
+    "decision_acc": 0.2578125
+  },
+  "eranks": {
+    "erank_0": 31.25,
+    "erank_1": 8.09,
+    "erank_2": 1.51,
+    "erank_3": 1.09,
+    "erank_4": 1.14,
+    "erank_5": 1.41,
+    "erank_6": 1.85
+  },
+  "wall_s": 876.2
+}

@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_bc_12k_seed5",
+  "config": "configs/ablation/abl_sg_bc_12k.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 12000,
+  "final": {
+    "path_acc": 0.61328125,
+    "decision_acc": 0.61328125
+  },
+  "best": {
+    "path_acc": 0.62890625,
+    "decision_acc": 0.62890625
+  },
+  "eranks": {
+    "erank_0": 43.93,
+    "erank_1": 13.93,
+    "erank_2": 1.26,
+    "erank_3": 1.04,
+    "erank_4": 1.05,
+    "erank_5": 1.07,
+    "erank_6": 1.09
+  },
+  "wall_s": 921.3
+}

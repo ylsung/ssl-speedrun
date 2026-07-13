@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_rev_ntp_12k_seed0",
+  "config": "configs/ablation/abl_sg_rev_ntp_12k.yaml",
+  "device": "cuda",
+  "params": 4736512,
+  "steps": 12000,
+  "final": {
+    "path_acc": 0.0,
+    "decision_acc": 0.02734375
+  },
+  "best": {
+    "path_acc": 0.0,
+    "decision_acc": 0.078125
+  },
+  "eranks": {
+    "erank_0": 28.69,
+    "erank_1": 4.62,
+    "erank_2": 1.18,
+    "erank_3": 1.23,
+    "erank_4": 1.25,
+    "erank_5": 1.36,
+    "erank_6": 2.68
+  },
+  "wall_s": 475.7
+}
