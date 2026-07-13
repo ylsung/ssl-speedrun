@@ -79,14 +79,18 @@ def main():
 
     opt = torch.optim.AdamW(train_params, lr=tr["lr"],
                             weight_decay=tr.get("weight_decay", 0.01),
-                            betas=(0.9, 0.95))
+                            betas=tuple(tr.get("betas", (0.9, 0.95))))
     steps, warmup = tr["steps"], tr.get("warmup", 100)
+    sched_kind = tr.get("lr_schedule", "cosine")   # cosine | constant
+    min_frac = tr.get("lr_min_frac", 0.1)
 
     def lr_at(s):
         if s < warmup:
             return s / max(warmup, 1)
+        if sched_kind == "constant":
+            return 1.0
         p = (s - warmup) / max(steps - warmup, 1)
-        return 0.1 + 0.45 * (1 + math.cos(math.pi * p))  # cosine to 10%
+        return min_frac + (1 - min_frac) * 0.5 * (1 + math.cos(math.pi * p))
 
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lr_at)
 
