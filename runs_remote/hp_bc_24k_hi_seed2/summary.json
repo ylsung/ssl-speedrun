@@ -1,0 +1,25 @@
+{
+  "run": "hp_bc_24k_hi_seed2",
+  "config": "configs/ablation/hp_bc_24k_hi.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 24000,
+  "final": {
+    "path_acc": 0.19921875,
+    "decision_acc": 0.19921875
+  },
+  "best": {
+    "path_acc": 0.2578125,
+    "decision_acc": 0.2578125
+  },
+  "eranks": {
+    "erank_0": 36.32,
+    "erank_1": 2.28,
+    "erank_2": 1.04,
+    "erank_3": 1.06,
+    "erank_4": 1.06,
+    "erank_5": 1.06,
+    "erank_6": 1.07
+  },
+  "wall_s": 1851.8
+}
