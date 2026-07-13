@@ -1,0 +1,15 @@
+# round-12 tuning base (user decision): pure reversed-answer NTP — the
+# minimal clicking phenomenon. Goal: a config that clicks >80% of seeds.
+# hp_rev_48k_hi: constant LR 2.0e-3, warmup 500, 48k steps.
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0, reverse_path: true}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 2.0e-3
+  warmup: 500
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant
