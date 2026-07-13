@@ -1,0 +1,25 @@
+{
+  "run": "abl_sg_bc_nce_seed2",
+  "config": "configs/ablation/abl_sg_bc_nce.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 4000,
+  "final": {
+    "path_acc": 0.15625,
+    "decision_acc": 0.15625
+  },
+  "best": {
+    "path_acc": 0.24609375,
+    "decision_acc": 0.24609375
+  },
+  "eranks": {
+    "erank_0": 40.86,
+    "erank_1": 15.57,
+    "erank_2": 1.48,
+    "erank_3": 1.32,
+    "erank_4": 1.3,
+    "erank_5": 1.41,
+    "erank_6": 1.57
+  },
+  "wall_s": 296.2
+}
