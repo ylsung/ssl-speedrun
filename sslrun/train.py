@@ -80,7 +80,13 @@ def main():
     opt = torch.optim.AdamW(train_params, lr=tr["lr"],
                             weight_decay=tr.get("weight_decay", 0.01),
                             betas=tuple(tr.get("betas", (0.9, 0.95))))
-    steps, warmup = tr["steps"], tr.get("warmup", 100)
+    steps = tr["steps"]
+    # warmup_frac (fraction of total steps) takes precedence over absolute
+    # warmup; computed after any --steps override so it scales with budget
+    if "warmup_frac" in tr:
+        warmup = int(tr["warmup_frac"] * steps)
+    else:
+        warmup = tr.get("warmup", 100)
     sched_kind = tr.get("lr_schedule", "cosine")   # cosine | constant
     min_frac = tr.get("lr_min_frac", 0.1)
 

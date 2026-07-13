@@ -1,0 +1,14 @@
+# round-12 wave 2: warmup-fraction axis (user request). hp_rev_48k_wu10:
+# constant LR 1.0e-3, warmup = 0.10 x 48k steps.
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0, reverse_path: true}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 1.0e-3
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant
+  warmup_frac: 0.10
