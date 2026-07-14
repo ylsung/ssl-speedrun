@@ -1,0 +1,25 @@
+{
+  "run": "hp_rev_48k_wu2_seed0",
+  "config": "configs/ablation/hp_rev_48k_wu2.yaml",
+  "device": "cuda",
+  "params": 4736512,
+  "steps": 48000,
+  "final": {
+    "path_acc": 1.0,
+    "decision_acc": 1.0
+  },
+  "best": {
+    "path_acc": 1.0,
+    "decision_acc": 1.0
+  },
+  "eranks": {
+    "erank_0": 25.7,
+    "erank_1": 9.98,
+    "erank_2": 16.31,
+    "erank_3": 4.53,
+    "erank_4": 5.23,
+    "erank_5": 5.96,
+    "erank_6": 7.86
+  },
+  "wall_s": 2937.7
+}
