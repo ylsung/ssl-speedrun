@@ -1,0 +1,17 @@
+# round-11 HP sweep hp_bc_noalign_24k_const: minimal-recipe cell: reversed-NTP grounding ONLY (no heads, no alignment)
+# (sg_bc InfoNCE). Axis: schedule=constant, lr=1.0e-3, wd=0.01, warmup=200
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: backchain, weight: 0.0, ground_w: 0.5, mtp_w: 0.0, k: 8,
+     src_layer: -1, tgt_layer: 4, target: ema, objective: infonce}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant
+  weight_decay: 0.01
