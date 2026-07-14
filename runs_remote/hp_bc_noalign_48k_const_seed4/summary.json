@@ -1,0 +1,25 @@
+{
+  "run": "hp_bc_noalign_48k_const_seed4",
+  "config": "configs/ablation/hp_bc_noalign_48k_const.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 48000,
+  "final": {
+    "path_acc": 1.0,
+    "decision_acc": 1.0
+  },
+  "best": {
+    "path_acc": 1.0,
+    "decision_acc": 1.0
+  },
+  "eranks": {
+    "erank_0": 35.06,
+    "erank_1": 1.1,
+    "erank_2": 1.17,
+    "erank_3": 1.06,
+    "erank_4": 1.08,
+    "erank_5": 1.22,
+    "erank_6": 1.41
+  },
+  "wall_s": 8341.3
+}

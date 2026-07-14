@@ -1,0 +1,2 @@
+step,loss,loss_parts,path_acc,decision_acc,erank_last,lr,tok_per_s
+400,3.32895,"{""ntp"": 2.099224328994751, ""backchain"": 1.2297264337539673, ""bc_g"": 2.4594528675079346}",0.00000,0.04688,7.88,1.00e-03,144538

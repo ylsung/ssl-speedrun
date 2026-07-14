@@ -1,0 +1,25 @@
+{
+  "run": "hp_rev_12k_const_seed4",
+  "config": "configs/ablation/hp_rev_12k_const.yaml",
+  "device": "cuda",
+  "params": 4736512,
+  "steps": 12000,
+  "final": {
+    "path_acc": 0.99609375,
+    "decision_acc": 1.0
+  },
+  "best": {
+    "path_acc": 1.0,
+    "decision_acc": 1.0
+  },
+  "eranks": {
+    "erank_0": 27.21,
+    "erank_1": 19.92,
+    "erank_2": 12.6,
+    "erank_3": 11.01,
+    "erank_4": 6.39,
+    "erank_5": 3.25,
+    "erank_6": 5.7
+  },
+  "wall_s": 398.2
+}
