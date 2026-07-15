@@ -544,9 +544,87 @@ class BackchainLoss(nn.Module):
         return total
 
 
+class FSPLoss(nn.Module):
+    """Round 15: FSP-faithful cell (arXiv:2510.14751, user design 2026-07-15).
+
+    A SECOND decoder (separate parameters, freshly initialized — not an EMA
+    copy) is co-trained on the question-forward/answer-reversed view with
+    plain NTP on the reversed span (rev_w; this is its only objective). The
+    standard decoder trains with forward NTP plus ONE extra term: its last
+    hidden state at t (predictor MLP) predicts the reverse decoder's
+    stop-grad tgt_layer (default last) state at j(t) = s+e−1−t — the state
+    that has back-chained through exactly the suffix x_{t+1..e}.
+
+    Contrast with backchain: the standard decoder gets NO reversed-view
+    pass of its own — no grounding CE, no rev-MTP heads on its trunk. If
+    this cell solves star graph, the latent alignment channel alone
+    transfers the plan; comparison with plain NTP is confound-free.
+    LossStack owns the aux decoder (aux_model) and supplies aux_logits /
+    aux_hiddens computed on the bc view.
+    """
+    name = "fsp"
+
+    def __init__(self, d_model: int, weight: float = 0.5, rev_w: float = 1.0,
+                 src_layer: int = -1, tgt_layer: int = -1,
+                 objective: str = "infonce", temperature: float = 0.1, **kw):
+        super().__init__()
+        assert objective in ("cosine", "infonce")
+        self.weight = weight
+        self.rev_w = rev_w
+        self.src_layer = src_layer
+        self.tgt_layer = tgt_layer
+        self.objective = objective
+        self.temperature = temperature
+        self.predictor = nn.Sequential(
+            nn.Linear(d_model, 2 * d_model, bias=False),
+            nn.GELU(),
+            nn.Linear(2 * d_model, d_model, bias=False),
+        )
+        self.last_parts = {}
+
+    def forward(self, logits, hiddens, batch, tgt_hiddens=None):
+        bc_tokens, bc_mask = batch["bc_tokens"], batch["bc_mask"]
+        s, e = batch["bc_span"]
+        aux_logits, aux_hiddens = batch["aux_logits"], batch["aux_hiddens"]
+        total = logits.new_zeros(())
+        self.last_parts = {}
+
+        if self.rev_w > 0:
+            m = bc_mask[:, 1:]
+            if m.sum() > 0:
+                g = F.cross_entropy(aux_logits[:, :-1][m], bc_tokens[:, 1:][m])
+                total = total + self.rev_w * g
+                self.last_parts["fsp_r"] = float(g.detach())
+
+        if self.weight > 0:
+            h_src = hiddens[self.src_layer]
+            B, T, D = h_src.shape
+            ar = torch.arange(T, device=h_src.device)
+            tgt = aux_hiddens[self.tgt_layer].detach().float()
+            ok = torch.zeros_like(batch["target_mask"])
+            ok[:, :-1] = batch["target_mask"][:, 1:]
+            jmap = ((s + e - 1).unsqueeze(1) - ar.unsqueeze(0)).clamp(0, T - 1)
+            z_all = tgt.gather(1, jmap.unsqueeze(-1).expand(-1, -1, D))
+            if ok.sum() > 0:
+                p = self.predictor(h_src).float()[ok]
+                z = z_all[ok]
+                if self.objective == "cosine":
+                    a = (1.0 - F.cosine_similarity(p, z, dim=-1)).mean()
+                else:
+                    n = min(p.size(0), 1024)
+                    idx = torch.randperm(p.size(0), device=p.device)[:n]
+                    pn = F.normalize(p[idx], dim=-1)
+                    zn = F.normalize(z[idx], dim=-1)
+                    sim = pn @ zn.T / self.temperature
+                    a = F.cross_entropy(sim, torch.arange(n, device=p.device))
+                total = total + self.weight * a
+                self.last_parts["fsp_a"] = float(a.detach())
+        return total
+
+
 LOSS_REGISTRY = {c.name: c for c in (NTPLoss, MTPLoss, JepaPooledLoss,
                                      JepaPerTokenLoss, JepaBeliefLoss,
-                                     BackchainLoss)}
+                                     BackchainLoss, FSPLoss)}
 
 
 class LossStack(nn.Module):
@@ -586,9 +664,16 @@ class LossStack(nn.Module):
         self.plugins = nn.ModuleList(plugins)
         self.needs_reverse = any(p.name == "belief" for p in plugins)
         self.needs_backchain = any(p.name == "backchain" for p in plugins)
+        self.needs_fsp = any(p.name == "fsp" for p in plugins)
         self.ema_model = None
         if any(getattr(p, "target", "same") == "ema" for p in plugins):
             self.ema_model = copy.deepcopy(model).requires_grad_(False)
+        self.aux_model = None
+        if self.needs_fsp:
+            # standalone reverse decoder: same architecture, fresh init,
+            # its own gradients (joins the optimizer via this registration)
+            self.aux_model = copy.deepcopy(model)
+            self.aux_model.apply(self.aux_model._init)
 
     @torch.no_grad()
     def update_ema(self):
@@ -639,7 +724,7 @@ class LossStack(nn.Module):
             batch.update(rev_tokens=rev_tokens, rev_logits=rev_logits,
                          rev_hiddens=rev_hiddens,
                          rev_tgt_hiddens=rev_tgt_hiddens, lengths=lengths)
-        if self.needs_backchain:
+        if self.needs_backchain or self.needs_fsp:
             # teacher view x̃: flip the contiguous target_mask span in place
             # (question forward, answer reversed); see BackchainLoss docstring
             tokens, tmask = batch["tokens"], batch["target_mask"]
@@ -653,14 +738,18 @@ class LossStack(nn.Module):
             # CE/MTP targets exclude the first flipped token x̃_s (position
             # s−1 has an identical prefix in both views — see docstring)
             bc_mask = tmask & (ar.unsqueeze(0) > s.unsqueeze(1))
-            bc_logits, bc_hiddens = self.model(bc_tokens)
+            batch.update(bc_tokens=bc_tokens, bc_mask=bc_mask, bc_span=(s, e))
+        if self.needs_backchain:
+            bc_logits, bc_hiddens = self.model(batch["bc_tokens"])
             bc_tgt_hiddens = None
             if self.ema_model is not None:
                 with torch.no_grad():
-                    _, bc_tgt_hiddens = self.ema_model(bc_tokens)
-            batch.update(bc_tokens=bc_tokens, bc_mask=bc_mask,
-                         bc_logits=bc_logits, bc_hiddens=bc_hiddens,
-                         bc_tgt_hiddens=bc_tgt_hiddens, bc_span=(s, e))
+                    _, bc_tgt_hiddens = self.ema_model(batch["bc_tokens"])
+            batch.update(bc_logits=bc_logits, bc_hiddens=bc_hiddens,
+                         bc_tgt_hiddens=bc_tgt_hiddens)
+        if self.needs_fsp:
+            aux_logits, aux_hiddens = self.aux_model(batch["bc_tokens"])
+            batch.update(aux_logits=aux_logits, aux_hiddens=aux_hiddens)
         parts = {}
         total = logits.new_zeros(())
         for p in self.plugins:

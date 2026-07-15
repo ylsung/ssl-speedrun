@@ -1,0 +1,14 @@
+# round-15: NTP control on gridembed 4x4 at the frozen schedule (round-7 anchor
+# at 4k-cosine: ntp best .040 = greedy baseline)
+task: {kind: gridembed, width: 4, height: 4, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant

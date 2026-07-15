@@ -1,0 +1,19 @@
+# round-15 FSP-faithful cell (user design): standalone reverse decoder
+# (fresh params, NOT EMA) co-trained on question-forward/answer-reversed NTP;
+# standard decoder = pure forward NTP + last-hidden alignment to the reverse
+# decoder's j(t) belief state. No reversed pass on the standard trunk —
+# confound-free test of the latent transfer channel vs plain NTP.
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+  - {kind: fsp, weight: 0.5, rev_w: 1.0, src_layer: -1, tgt_layer: -1,
+     objective: infonce}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant
