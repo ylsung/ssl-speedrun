@@ -1,0 +1,25 @@
+{
+  "run": "hp_sg_mtp8_48k_const_seed1",
+  "config": "configs/ablation/hp_sg_mtp8_48k_const.yaml",
+  "device": "cuda",
+  "params": 4836864,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.83984375,
+    "decision_acc": 0.83984375
+  },
+  "best": {
+    "path_acc": 0.8515625,
+    "decision_acc": 0.8515625
+  },
+  "eranks": {
+    "erank_0": 32.78,
+    "erank_1": 38.09,
+    "erank_2": 1.21,
+    "erank_3": 1.29,
+    "erank_4": 1.37,
+    "erank_5": 1.75,
+    "erank_6": 1.86
+  },
+  "wall_s": 4680.6
+}

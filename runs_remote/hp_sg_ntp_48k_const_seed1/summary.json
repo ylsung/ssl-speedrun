@@ -1,0 +1,25 @@
+{
+  "run": "hp_sg_ntp_48k_const_seed1",
+  "config": "configs/ablation/hp_sg_ntp_48k_const.yaml",
+  "device": "cuda",
+  "params": 4736512,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.2109375,
+    "decision_acc": 0.2109375
+  },
+  "best": {
+    "path_acc": 0.24609375,
+    "decision_acc": 0.24609375
+  },
+  "eranks": {
+    "erank_0": 20.63,
+    "erank_1": 30.16,
+    "erank_2": 5.07,
+    "erank_3": 1.23,
+    "erank_4": 1.13,
+    "erank_5": 1.14,
+    "erank_6": 1.33
+  },
+  "wall_s": 3184.8
+}

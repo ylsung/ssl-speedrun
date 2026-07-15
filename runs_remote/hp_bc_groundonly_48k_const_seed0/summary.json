@@ -1,0 +1,25 @@
+{
+  "run": "hp_bc_groundonly_48k_const_seed0",
+  "config": "configs/ablation/hp_bc_groundonly_48k_const.yaml",
+  "device": "cuda",
+  "params": 5099008,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.21875,
+    "decision_acc": 0.21875
+  },
+  "best": {
+    "path_acc": 0.2578125,
+    "decision_acc": 0.2578125
+  },
+  "eranks": {
+    "erank_0": 23.85,
+    "erank_1": 14.15,
+    "erank_2": 23.92,
+    "erank_3": 1.02,
+    "erank_4": 1.03,
+    "erank_5": 1.04,
+    "erank_6": 1.2
+  },
+  "wall_s": 5178.5
+}
