@@ -1,0 +1,27 @@
+{
+  "run": "hp_ge4_mtp8_48k_const_seed1",
+  "config": "configs/ablation/hp_ge4_mtp8_48k_const.yaml",
+  "device": "cuda",
+  "params": 4773376,
+  "steps": 48000,
+  "final": {
+    "embed_acc": 0.88671875,
+    "perm_valid": 0.953125,
+    "edge_f1": 0.9882423808457075
+  },
+  "best": {
+    "embed_acc": 0.89453125,
+    "perm_valid": 1.0,
+    "edge_f1": 0.9885260258778581
+  },
+  "eranks": {
+    "erank_0": 12.72,
+    "erank_1": 10.63,
+    "erank_2": 2.23,
+    "erank_3": 2.5,
+    "erank_4": 2.77,
+    "erank_5": 2.89,
+    "erank_6": 3.45
+  },
+  "wall_s": 3577.5
+}

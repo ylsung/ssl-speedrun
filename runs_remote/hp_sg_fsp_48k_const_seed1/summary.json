@@ -1,0 +1,25 @@
+{
+  "run": "hp_sg_fsp_48k_const_seed1",
+  "config": "configs/ablation/hp_sg_fsp_48k_const.yaml",
+  "device": "cuda",
+  "params": 9735168,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.1875,
+    "decision_acc": 0.1875
+  },
+  "best": {
+    "path_acc": 0.265625,
+    "decision_acc": 0.265625
+  },
+  "eranks": {
+    "erank_0": 15.21,
+    "erank_1": 1.92,
+    "erank_2": 2.4,
+    "erank_3": 1.09,
+    "erank_4": 1.0,
+    "erank_5": 1.0,
+    "erank_6": 1.0
+  },
+  "wall_s": 6019.4
+}

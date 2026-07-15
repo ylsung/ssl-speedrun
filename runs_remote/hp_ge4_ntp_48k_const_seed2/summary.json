@@ -1,0 +1,27 @@
+{
+  "run": "hp_ge4_ntp_48k_const_seed2",
+  "config": "configs/ablation/hp_ge4_ntp_48k_const.yaml",
+  "device": "cuda",
+  "params": 4728576,
+  "steps": 48000,
+  "final": {
+    "embed_acc": 0.1015625,
+    "perm_valid": 0.31640625,
+    "edge_f1": 0.8372981113231568
+  },
+  "best": {
+    "embed_acc": 0.16015625,
+    "perm_valid": 0.921875,
+    "edge_f1": 0.8568264008507513
+  },
+  "eranks": {
+    "erank_0": 14.49,
+    "erank_1": 18.4,
+    "erank_2": 14.88,
+    "erank_3": 7.85,
+    "erank_4": 6.91,
+    "erank_5": 4.88,
+    "erank_6": 5.26
+  },
+  "wall_s": 2849.7
+}
