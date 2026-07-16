@@ -1,0 +1,25 @@
+{
+  "run": "hp_sg_pause_48k_const_seed2",
+  "config": "configs/ablation/hp_sg_pause_48k_const.yaml",
+  "device": "cuda",
+  "params": 4737024,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.20703125,
+    "decision_acc": 0.20703125
+  },
+  "best": {
+    "path_acc": 0.25390625,
+    "decision_acc": 0.25390625
+  },
+  "eranks": {
+    "erank_0": 12.78,
+    "erank_1": 7.21,
+    "erank_2": 5.81,
+    "erank_3": 9.91,
+    "erank_4": 1.12,
+    "erank_5": 1.2,
+    "erank_6": 1.38
+  },
+  "wall_s": 2028.7
+}

@@ -1,0 +1,25 @@
+{
+  "run": "hp_sg_thought_48k_const_seed1",
+  "config": "configs/ablation/hp_sg_thought_48k_const.yaml",
+  "device": "cuda",
+  "params": 4737024,
+  "steps": 48000,
+  "final": {
+    "path_acc": 0.18359375,
+    "decision_acc": 0.18359375
+  },
+  "best": {
+    "path_acc": 0.24609375,
+    "decision_acc": 0.24609375
+  },
+  "eranks": {
+    "erank_0": 22.96,
+    "erank_1": 23.45,
+    "erank_2": 26.14,
+    "erank_3": 23.79,
+    "erank_4": 22.55,
+    "erank_5": 17.53,
+    "erank_6": 40.66
+  },
+  "wall_s": 6518.0
+}
