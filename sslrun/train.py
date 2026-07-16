@@ -66,6 +66,12 @@ def main():
     eval_rng_seed = seed + 10_000
 
     task, vocab_size, seq_len = build_task(cfg)
+    n_thoughts = int(tr.get("thoughts", 0))
+    thought_mode = tr.get("thought_mode", "continuous")
+    base_vocab = vocab_size
+    if n_thoughts:
+        vocab_size += 2                      # BOT, EOT appended past vocab
+        seq_len += n_thoughts + 2
     mcfg = ModelConfig(vocab_size=vocab_size, max_seq_len=seq_len, **cfg["model"])
     model = GPT(mcfg).to(device)
     teacherless = bool(tr.get("teacherless", False))
@@ -73,7 +79,9 @@ def main():
                       ema_decay=tr.get("ema_decay", 0.999),
                       corrupt_p=tr.get("corrupt_p", 0.0),
                       corrupt_side=tr.get("corrupt_side", "student"),
-                      teacherless=teacherless).to(device)
+                      teacherless=teacherless, n_thoughts=n_thoughts,
+                      thought_mode=thought_mode,
+                      base_vocab=base_vocab).to(device)
     train_params = [p for p in stack.parameters() if p.requires_grad]
     n_params = sum(p.numel() for p in train_params)
 
@@ -132,9 +140,13 @@ def main():
 
         if step % eval_every == 0 or step == steps:
             model.eval()
+            ev_kw = {}
+            if teacherless:
+                ev_kw["teacherless"] = True
+            if n_thoughts:
+                ev_kw.update(thoughts=n_thoughts, thought_mode=thought_mode)
             ev = task.evaluate(model, np.random.default_rng(eval_rng_seed),
-                               device=device,
-                               **({"teacherless": True} if teacherless else {}))
+                               device=device, **ev_kw)
             eranks = layer_effective_ranks(
                 model, task.batch(256, np.random.default_rng(eval_rng_seed), device))
             model.train()

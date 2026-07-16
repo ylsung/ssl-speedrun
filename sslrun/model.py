@@ -112,16 +112,22 @@ class GPT(nn.Module):
         elif isinstance(m, nn.Embedding):
             nn.init.normal_(m.weight, std=0.02)
 
-    def forward(self, idx, drop_mask=None):
+    def forward(self, idx, drop_mask=None, inject=None):
         """Returns (logits, hiddens). hiddens[0] = embedding output,
         hiddens[i] = output of block i (pre final norm), len = n_layer + 1.
         drop_mask (B, T) bool: replace those positions' input embeddings with
         the learned mask embedding (corruption for denoising-style
-        objectives; a zero-out was numerically unstable through RMSNorm)."""
+        objectives; a zero-out was numerically unstable through RMSNorm).
+        inject: (mask (B,T) bool, emb (B,T,D)) — replace those positions'
+        input embeddings with the given vectors (continuous-thought slots);
+        gradients flow through emb."""
         x = self.tok_emb(idx)
         if drop_mask is not None:
             m = drop_mask.unsqueeze(-1)
             x = torch.where(m, self.mask_emb.to(x.dtype).expand_as(x), x)
+        if inject is not None:
+            im, ie = inject
+            x = torch.where(im.unsqueeze(-1), ie.to(x.dtype), x)
         hiddens = [x]
         for blk in self.blocks:
             x = blk(x, self.rope_cos, self.rope_sin)

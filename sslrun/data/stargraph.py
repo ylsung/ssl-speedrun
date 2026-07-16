@@ -94,8 +94,52 @@ class StarGraphTask:
         }
 
     @torch.no_grad()
+    def _decode_with_thoughts(self, model, prefix, n_new, m, mode):
+        """prefix + BOT + m thought slots + EOT, then greedy decode n_new
+        tokens. BOT/EOT ids sit just past the task vocab (trainer contract).
+        continuous: slots are filled by the norm_f(last-hidden) rollout and
+        injected as input embeddings; pause: slots are literal BOT tokens."""
+        BOT = self.cfg.vocab_size
+        EOT = BOT + 1
+        B = prefix.size(0)
+        s = prefix.size(1)
+        D = model.cfg.d_model
+        cur = torch.cat([prefix, prefix.new_full((B, m + 2), BOT)], dim=1)
+        cur[:, -1] = EOT
+        th = []
+        if mode == "continuous":
+            for j in range(m):
+                L = s + 1 + j
+                inj = None
+                if th:
+                    ie = torch.zeros(B, L, D, device=cur.device,
+                                     dtype=th[0].dtype)
+                    ie[:, s + 1:s + 1 + len(th)] = torch.stack(th, dim=1)
+                    im = torch.zeros(B, L, dtype=torch.bool, device=cur.device)
+                    im[:, s + 1:s + 1 + len(th)] = True
+                    inj = (im, ie)
+                _, hid = model(cur[:, :L], inject=inj)
+                th.append(model.norm_f(hid[-1][:, -1]))
+        outs = []
+        for _ in range(n_new):
+            inj = None
+            if th:
+                T = cur.size(1)
+                ie = torch.zeros(B, T, D, device=cur.device, dtype=th[0].dtype)
+                ie[:, s + 1:s + 1 + m] = torch.stack(th, dim=1)
+                im = torch.zeros(B, T, dtype=torch.bool, device=cur.device)
+                im[:, s + 1:s + 1 + m] = True
+                inj = (im, ie)
+            logits, _ = model(cur, inject=inj)
+            nxt = logits[:, -1].argmax(dim=-1, keepdim=True)
+            outs.append(nxt)
+            cur = torch.cat([cur, nxt], dim=1)
+        return torch.cat(outs, dim=1)
+
+    @torch.no_grad()
     def evaluate(self, model, rng: np.random.Generator, n_batches: int = 4,
-                 batch_size: int = 64, device="cpu", teacherless: bool = False):
+                 batch_size: int = 64, device="cpu", teacherless: bool = False,
+                 thoughts: int = 0, thought_mode: str = "continuous"):
         """Greedy-decode from the prefix; fixed-length task so prefix_len is
         constant and we can decode the whole batch at once. teacherless:
         parallel decode instead — one forward pass with the answer-region
@@ -108,7 +152,11 @@ class StarGraphTask:
         for _ in range(n_batches):
             batch = self.batch(batch_size, rng, device)
             plen = int(batch["prefix_len"][0])
-            if teacherless:
+            if thoughts:
+                out = self._decode_with_thoughts(
+                    model, batch["tokens"][:, :plen], n_new, thoughts,
+                    thought_mode)
+            elif teacherless:
                 drop = batch["target_mask"] & batch["valid_mask"]
                 logits, _ = model(batch["tokens"], drop)
                 out = logits[:, plen - 1:plen - 1 + n_new].argmax(dim=-1)

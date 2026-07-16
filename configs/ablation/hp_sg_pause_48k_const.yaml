@@ -1,0 +1,17 @@
+# round-16: continuous latent thoughts in pretraining (Coconut-style, user
+# design). BOT + 4 thought slots + EOT inserted after the prefix; slot j's
+# input embedding = norm_f(last hidden) of the previous position, generated
+task: {kind: stargraph, d: 5, n: 5, num_nodes: 50, seed: 0}
+model: {n_layer: 6, n_head: 4, d_model: 256}
+losses:
+  - {kind: ntp, weight: 1.0}
+train:
+  steps: 48000
+  batch_size: 128
+  lr: 1.0e-3
+  warmup: 200
+  eval_every: 400
+  seed: 0
+  lr_schedule: constant
+  thoughts: 4
+  thought_mode: pause
